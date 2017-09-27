@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 
 import java.awt.*;
 
-public class main extends Application {
+public class price extends Application {
 
     public static void main(String[] args) {
         launch(args);
