@@ -1,0 +1,4 @@
+food¦1.5¦Ingr¦Diet
+beverage¦2.3¦null¦true
+extra¦2.0
+coffee¦1.4¦ingr
