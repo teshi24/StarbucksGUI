@@ -52,7 +52,7 @@ public class Coffee implements Category{
         }
         Boolean pOk = false;
         while(!pOk){
-            System.out.print(String.format(format, "Price: ", price, " New price: "));
+            System.out.print(String.format(format, "Price: ", price, " New Price: "));
             input = userInput.nextLine();
             if(!input.equals("null")){
                 try {
