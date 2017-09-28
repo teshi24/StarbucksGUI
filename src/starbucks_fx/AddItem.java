@@ -1,6 +1,7 @@
 package starbucks_fx;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -9,14 +10,18 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import starbucks.Menu;
+import starbucks.MenuItemFactory;
 
 public class AddItem extends Application {
-
+    // all possible fields with item information
     Label message, nameL, priceL, ingredientsL, optionalL;
-    // all possible fields - not each item needs each optional
     TextField name, price, ingredients, optional;
+
+    // required
     Button addItem;
     GridPane form;
+    MenuItemFactory factory;
 
     public static void main(String[] args) {
         launch(args);
@@ -24,6 +29,8 @@ public class AddItem extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        factory = MenuItemFactory.getInstance();
+
         primaryStage.setScene(callAddItem(0));
         primaryStage.show();
 
@@ -60,29 +67,47 @@ public class AddItem extends Application {
         addItem = new Button("add Item");
         addItem.setMinSize(50,40);
 
+        addItem.setOnAction((ActionEvent e) -> {
+            boolean ok = false;
+            String nam;
+            double pri;
+            String ing;
+            boolean opt;
+            String mes = "";
+            // check name and price
+            if(ingredients != null){
+                ing = ingredients.getText();
+            }else{
+
+            }
+            if(optional != null){
+
+            }else{
+
+            }
+
+            if(ok){
+                //MenuItemFactory factory = MenuItemFactory.getInstance();
+                //(starbucks.MenuItemFactory)factory.add(nam,pri,ing,opt);
+            }else{
+                message.setText(mes);
+            }
+        });
+
         form.add(message,0,0,2,1);
         form.add(nameL,0,1);
         form.add(name,1,1);
         form.add(priceL,0,2);
         form.add(price,1,2);
 
-        String item = "error";
         switch(category){
-            case 0: item="coffee";
-                    setMessageText(item);
-                    addCoffee();
+            case 0: addCoffee();
                     break;
-            case 1: item="food";
-                    setMessageText(item);
-                    addFood();
+            case 1: addFood();
                     break;
-            case 2: item="beverage";
-                    setMessageText(item);
-                    addBeverage();
+            case 2: addBeverage();
                     break;
-            case 3: item="extra";
-                    setMessageText(item);
-                    addExtra();
+            case 3: addExtra();
                     break;
             default: return null;
         }
@@ -91,9 +116,10 @@ public class AddItem extends Application {
     }
 
     private void addCoffee(){
-        //initialize specific item information
+        setMessageText("coffee");
         ingredientsL = new Label("ingredients:");
         ingredients = new TextField();
+
 
         form.add(ingredientsL,0,3);
         form.add(ingredients,1,3);
@@ -101,10 +127,10 @@ public class AddItem extends Application {
     }
 
     private void addFood(){
-        //initialize specific item information
+        setMessageText("food");
         ingredientsL = new Label("ingredients:");
-        optionalL = new Label("dietary info:");
         ingredients = new TextField();
+        optionalL = new Label("dietary info:");
         optional = new TextField();
 
         form.add(ingredientsL,0,3);
@@ -115,7 +141,7 @@ public class AddItem extends Application {
     }
 
     private void addBeverage(){
-        //initialize specific item information
+        setMessageText("beverage");
         optionalL = new Label("heat:");
         optional = new TextField();
 
@@ -125,8 +151,7 @@ public class AddItem extends Application {
     }
 
     private void addExtra(){
-        //no specific item information
-
+        setMessageText("extra");
         form.add(addItem,1,3);
     }
 
