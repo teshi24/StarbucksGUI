@@ -25,19 +25,9 @@ public class AddItem {
     private Button addItem;
     private int category = -1;
     /*
-    double priceD = Double.parseDouble(price.getText());
-    boolean dietB;
-
-    if(optional.getText().equals("hot")){
-        dietB = true;
-    }else if(optional.getText().equals("cold")){
-        dietB = false;
-    }
-
     //addItem.setOnAction((ActionEvent e) -> add(name.getText(),priceD,ingredients.getText(),dietB));
-
-    //Scene addFood = new Scene();
     */
+
     public Scene showAddItem(){
         bigPicture = new VBox();
         bigPicture.setPadding(new Insets(10,10,10,10));
@@ -76,7 +66,6 @@ public class AddItem {
         }
         return new Scene(bigPicture,500,500);
     }
-
 
     public GridPane callAddItem(int category){
         if(category >= 0) {
@@ -165,7 +154,6 @@ public class AddItem {
         ingredientsL = new Label("ingredients:");
         ingredients = new TextField();
 
-
         form.add(ingredientsL,0,3);
         form.add(ingredients,1,3);
         form.add(addItem,1,4);
@@ -212,9 +200,4 @@ public class AddItem {
         choose.setText("Change the item type if needed.");
         bigPicture.getChildren().add(form);
     }
-    /*
-    public void add(String name, double price, String ingredients, boolean optional = null){
-        //
-    }
-    */
 }
