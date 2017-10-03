@@ -157,7 +157,7 @@ public class Menu {
                     price = Double.parseDouble(priceStr);
                     doubleOk = true;
                 } catch(NumberFormatException e){
-                    System.out.println("-- Please enter a valid price. --");
+                    System.out.println("-- Please enter a valid Price. --");
                 }
             }
             System.out.println("-- Opional values, if you want to leave a value enter 'null' --");
