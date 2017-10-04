@@ -44,6 +44,13 @@ public class Food implements Category{
     }
 
     @Override
+    public double getPrice() { return price; }
+
+    public String getIngredients() { return ingredients; }
+
+    public String getDietaryInfo() { return dietaryInfo; }
+
+    @Override
     public void edit() {
         String input;
         String format = "%-14s%-50s%-19s";

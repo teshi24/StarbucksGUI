@@ -17,6 +17,8 @@ public interface Category {
     public void edit();
     
     public String getName();
+
+    public double getPrice();
     
     @Override
     public String toString();
