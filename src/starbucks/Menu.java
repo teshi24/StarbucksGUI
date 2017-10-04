@@ -14,7 +14,7 @@ import java.util.Scanner;
  */
 public class Menu {
     
-    private ArrayList<Category> items = new ArrayList<>();
+    public static ArrayList<Category> items = new ArrayList<>();
     private static final Menu menu = new Menu();
     private MenuItemFactory factory = MenuItemFactory.getInstance();
     Scanner userInput = new Scanner(System.in);
