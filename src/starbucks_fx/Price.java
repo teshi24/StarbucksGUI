@@ -1,6 +1,10 @@
+/*
+    TODO: - Anpassen an AddItem
+    TODO: - 00.00 CHF adden - Natalie!!
+ */
+
 package starbucks_fx;
 
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -8,22 +12,30 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class Price extends Application {
+public class Price{
 
     TextField display;
+    String price;
 
-    public static void main(String[] args) {
-        launch(args);
+
+    public String getPrice() {
+
+
+        return price;
     }
 
-    @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle("Price");
-        Scene scene;
+    public void enterPrice() {
+        Stage priceStage = new Stage();
+        priceStage.setTitle("Price");
 
+        priceStage.setScene(getPriceScene());
+        priceStage.setResizable(false);
+        priceStage.show();
+    }
+
+    private Scene getPriceScene(){
         FlowPane pane = new FlowPane();
         pane.setPadding(new Insets(10));
         pane.setHgap(10);
@@ -79,8 +91,10 @@ public class Price extends Application {
 
         ok.setOnAction((ActionEvent e) -> {
             String priceString = display.getText();
-            double prie = Double.parseDouble(priceString);
+
+            double price = Double.parseDouble(priceString);
             // set price in java program..
+            // close Price
         });
 
         delete.setOnAction((ActionEvent e) -> {
@@ -88,19 +102,15 @@ public class Price extends Application {
         });
 
         pane.getChildren().addAll(
-            display,
-            key1, key2, key3,
-            key4, key5, key6,
-            key7, key8, key9,
-            comma, key0, delete,
-            ok
+                display,
+                key1, key2, key3,
+                key4, key5, key6,
+                key7, key8, key9,
+                comma, key0, delete,
+                ok
         );
 
-        scene = new Scene(pane, 210, 240);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-        primaryStage.setResizable(false);
-
+        return new Scene(pane, 210, 240);
     }
 
     private void setDisplay(String input){

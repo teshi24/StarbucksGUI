@@ -1,8 +1,8 @@
 /**
- * to do:   Daten speichern und übernehmen wenn ein neues Menu Item ausgewählt wird
- * to ask:  - Handling Datenüberprüfung: Spezifische überprüfungen weiterhin über Menu / direkt hier?
- *            - Not null / format von Name und Preis schon hier umgesetzt, da nicht spezifisch
- *          - Static?
+ * TODO:   - Daten speichern und übernehmen wenn ein neues Menu Item ausgewählt wird --> Static vars
+ * TODO:   - heat: radio buttons
+ * TODO:   - Spezifische überprüfungen weiterhin über Menu
+ * TODO:   - Not null / format von Name und Preis schon hier umgesetzt, da nicht spezifisch
  */
 package starbucks_fx;
 
@@ -10,7 +10,6 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -18,6 +17,8 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import starbucks.MenuItemFactory;
+
+import javax.xml.crypto.Data;
 
 /**
  * GUI: add an item to the menu
@@ -42,6 +43,8 @@ public class AddItem {
      * @return Scene with view for menu point 'add item'
      */
     public Node getAddItemView(){
+        DataHolder.initVars();
+
         bigPicture = new VBox();
         bigPicture.setPadding(new Insets(10,10,10,10));
         bigPicture.setSpacing(10);
@@ -77,7 +80,7 @@ public class AddItem {
             choose.setText("Choose the item you want to add.");
             bigPicture.getChildren().addAll(choose,choice);
         }
-        //return new Scene(bigPicture,500,500);
+
         return bigPicture;
     }
 
@@ -103,17 +106,15 @@ public class AddItem {
         // get form only if category is ok
         if(category >= 0 && category < 4) {
             form = new GridPane();
-            form.setAlignment(Pos.CENTER);
+            form.setAlignment(Pos.TOP_LEFT);
             form.setHgap(10);
             form.setVgap(5);
             form.setPadding(new Insets(10, 10, 10, 10));
 
             // fill standard attributes
             message = new Label();
-            nameL = new Label("name:");
-            priceL = new Label("price:");
-            name = new TextField();
-            price = new TextField();
+            initName();
+            initPrice();
 
             form.add(message, 0, 0, 2, 1);
             form.add(nameL, 0, 1);
@@ -127,20 +128,15 @@ public class AddItem {
 
             // fill specific attributes
             switch (category) {
-                case 0:
-                    getCoffeeAttributes();
-                    break;
-                case 1:
-                    getFoodAttributes();
-                    break;
-                case 2:
-                    getBeverageAttributes();
-                    break;
-                case 3:
-                    getExtraAttributes();
-                    break;
-                default:
-                    return null;
+                case 0: getCoffeeAttributes();
+                        break;
+                case 1: getFoodAttributes();
+                        break;
+                case 2: getBeverageAttributes();
+                        break;
+                case 3: getExtraAttributes();
+                        break;
+                default: return null;
             }
             return form;
         }
@@ -152,8 +148,7 @@ public class AddItem {
      */
     private void getCoffeeAttributes(){
         setMessageText("coffee");
-        ingredientsL = new Label("ingredients:");
-        ingredients = new TextField();
+        initIngredients();
 
         form.add(ingredientsL,0,3);
         form.add(ingredients,1,3);
@@ -165,10 +160,8 @@ public class AddItem {
      */
     private void getFoodAttributes(){
         setMessageText("food");
-        ingredientsL = new Label("ingredients:");
-        ingredients = new TextField();
-        optionalL = new Label("dietary info:");
-        optional = new TextField();
+        initIngredients();
+        initOptional();
 
         form.add(ingredientsL,0,3);
         form.add(ingredients,1,3);
@@ -182,8 +175,7 @@ public class AddItem {
      */
     private void getBeverageAttributes(){
         setMessageText("beverage");
-        optionalL = new Label("heat:");
-        optional = new TextField();
+        initHeath();
 
         form.add(optionalL,0,3);
         form.add(optional,1,3);
@@ -202,10 +194,66 @@ public class AddItem {
         message.setText("Add some " + item + " to your menu.");
     }
 
+    private void initName(){
+        nameL = new Label("name:");
+        name = new TextField();
+        name.setText(DataHolder.name);
+        name.setOnAction((ActionEvent e) -> DataHolder.name = name.getText());
+    }
+    private void initPrice(){
+        priceL = new Label("price:");
+        price = new TextField();
+        price.setText(DataHolder.priceString);
+        price.setEditable(false);
+        price.setOnAction((ActionEvent e) -> {Price p = new Price();p.enterPrice();while(!DataHolder.ok){}price.setText(DataHolder.priceString);});
+    }
+    private void initIngredients(){
+        ingredientsL = new Label("ingredients:");
+        ingredients = new TextField();
+        ingredients = new TextField();
+        ingredients.setText(DataHolder.ingredients);
+        ingredients.setOnAction((ActionEvent e) -> DataHolder.ingredients = ingredients.getText());
+    }
+    private void initOptional(){
+        optionalL = new Label("dietary info:");
+        optional = new TextField();
+        optional.setText(DataHolder.optional);
+        optional.setOnAction((ActionEvent e) -> DataHolder.optional = optional.getText());
+    }
+    private void initHeath(){
+        optionalL = new Label("heat:");
+        optional = new TextField();
+    }
+
+
     /**
      * check values and send them to MenuItemFactory to finally create the menu items
      */
     private void sendValues(){
+        DataHolder.ok = true;
+        String mes = "";
+        // check inserted values
+        if (DataHolder.name == null && DataHolder.name.equals("")) {
+            mes += "Please enter a name for your product." + System.lineSeparator();
+            DataHolder.ok = false;
+        }
+        if(DataHolder.price == 0){
+            DataHolder.ok = false;
+        }
+        // send values to Factory if the input is ok
+        if (DataHolder.ok) {
+            MenuItemFactory factory = MenuItemFactory.getInstance();
+            factory.create(DataHolder.name, DataHolder.price, DataHolder.ingredients, DataHolder.optional);
+        } else {
+            message.setText(mes);
+        }
+    }
+
+
+    /**
+     * check values and send them to MenuItemFactory to finally create the menu items
+     */
+    private void sendValuesOld(){
         boolean ok = false;
         String nam = "";
         double pri = 0;
