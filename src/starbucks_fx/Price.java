@@ -29,8 +29,6 @@ public class Price extends Application {
         pane.setHgap(10);
         pane.setVgap(10);
 
-        VBox box = new VBox();
-
         Button key0, key1, key2, key3, key4, key5, key6, key7, key8, key9;
         Button comma, ok, delete;
         Label priceLabel;
