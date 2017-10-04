@@ -40,6 +40,9 @@ public class Extra implements Category {
     }
 
     @Override
+    public double getPrice() { return price; }
+
+    @Override
     public void edit() {
         String input;
         String format = "%-7s%-20s%-12s";

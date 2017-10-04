@@ -52,7 +52,8 @@ public class Template extends Application {
 
         Label homeMenuLabel = new Label("Home");
         homeMenuLabel.setOnMouseClicked(event -> {
-            //TODO: Add action
+            Home h = new Home();
+            layout.setCenter(h.getHomeView());
         });
         home.setGraphic(homeMenuLabel);
 

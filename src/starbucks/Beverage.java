@@ -48,6 +48,13 @@ public class Beverage implements Category {
     }
 
     @Override
+    public double getPrice() { return price; }
+
+    public String getIngredients() { return ingredients; }
+
+    public boolean getHot() { return hot; }
+
+    @Override
     public void edit() {
         String input;
         String format = "%-13s%-50s%-18s";

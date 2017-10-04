@@ -42,6 +42,11 @@ public class Coffee implements Category{
     }
 
     @Override
+    public double getPrice() { return price; }
+
+    public String getIngredients() { return ingredients; }
+
+    @Override
     public void edit() {
         String input;
         String format = "%-13s%-50s%-18s";
