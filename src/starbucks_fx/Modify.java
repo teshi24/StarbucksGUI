@@ -16,18 +16,23 @@ import java.util.ArrayList;
 
 public class Modify {
 
-    int cIndex, bIndex, eIndex, fIndex = 3;
+    VBox box = new VBox();
+
+    Label title;
+
     GridPane cPane = getCoffeePane();
     GridPane bPane = getBeveragePane();
     GridPane ePane = getExtraPane();
     GridPane fPane = getFoodPane();
+
+    int cIndex, bIndex, eIndex, fIndex = 3;
 
     /**
      * get whole view
      * @return Scene with view for menu point 'Modify'
      */
     public Node getModifyView() {
-        VBox box = new VBox();
+
         box.setPadding(new Insets(10));
         box.setSpacing(10);
 
@@ -36,20 +41,17 @@ public class Modify {
         ePane.setPadding(new Insets(10,10,10,0));
         fPane.setPadding(new Insets(10,10,10,0));
 
-        Label title;
         title       = new Label("Modify Starbucks Menu");
 
         setModify();
 
-        box.getChildren().addAll(title,cPane, bPane, ePane, fPane);
-
         return box;
     }
 
-    //TODO: use static arraylist<category> from Menu
     public void setModify() {
-
+        //TODO: else fall "please add menu item, menu is empty"
         if (!Menu.items.isEmpty()){
+            box.getChildren().addAll(title,cPane, bPane, ePane, fPane);
             for (Category item : Menu.items) {
                 if (item instanceof Coffee) {
                     Label name        = new Label(((Coffee) item).getName());
@@ -58,11 +60,11 @@ public class Modify {
                     Button modify     = new Button("modify");
                     Button delete     = new Button("delete");
 
-                    cPane.add(name, cIndex, 0);
-                    cPane.add(price, cIndex, 1);
-                    cPane.add(ingredients, cIndex, 2);
-                    cPane.add(modify, cIndex,4);
-                    cPane.add(delete, cIndex, 5);
+                    cPane.add(name, 0, cIndex);
+                    cPane.add(price, 1, cIndex);
+                    cPane.add(ingredients, 2, cIndex);
+                    cPane.add(modify, 4, cIndex);
+                    cPane.add(delete, 5, cIndex);
 
                     cIndex ++;
 
@@ -80,12 +82,12 @@ public class Modify {
                     Button modify     = new Button("modify");
                     Button delete     = new Button("delete");
 
-                    bPane.add(name, bIndex, 0);
-                    bPane.add(price, bIndex, 1);
-                    bPane.add(ingredients, bIndex, 2);
-                    bPane.add(temp, bIndex, 3);
-                    bPane.add(modify, bIndex,4);
-                    bPane.add(delete, bIndex, 5);
+                    bPane.add(name, 0, bIndex);
+                    bPane.add(price, 1, bIndex);
+                    bPane.add(ingredients, 2, bIndex);
+                    bPane.add(temp, 3, bIndex);
+                    bPane.add(modify, 4, bIndex);
+                    bPane.add(delete, 5, bIndex);
 
                     bIndex ++;
                 }
@@ -95,10 +97,10 @@ public class Modify {
                     Button modify     = new Button("modify");
                     Button delete     = new Button("delete");
 
-                    ePane.add(name, eIndex, 0);
-                    ePane.add(price, eIndex, 1);
-                    ePane.add(modify, eIndex,4);
-                    ePane.add(delete, eIndex, 5);
+                    ePane.add(name, 0, eIndex);
+                    ePane.add(price, 1, eIndex);
+                    ePane.add(modify, 4, eIndex);
+                    ePane.add(delete, 5, eIndex);
 
                     eIndex ++;
                 }
@@ -110,16 +112,19 @@ public class Modify {
                     Button modify     = new Button("modify");
                     Button delete     = new Button("delete");
 
-                    fPane.add(name, fIndex, 0);
-                    fPane.add(price, fIndex, 1);
-                    fPane.add(ingredients, fIndex, 2);
-                    fPane.add(dietaryInfo, fIndex, 3);
-                    fPane.add(modify, fIndex,4);
-                    fPane.add(delete, fIndex, 5);
+                    fPane.add(name, 0, fIndex);
+                    fPane.add(price, 1, fIndex);
+                    fPane.add(ingredients, 2, fIndex);
+                    fPane.add(dietaryInfo, 3, fIndex);
+                    fPane.add(modify, 4, fIndex);
+                    fPane.add(delete, 5, fIndex);
 
                     fIndex ++;
                 }
             }
+        } else {
+            Label error = new Label("Menu is empty. You can add menu-items in the Add-Option.");
+            box.getChildren().addAll(title, error);
         }
     }
 
