@@ -28,6 +28,13 @@ public class Modify {
      */
     public Node getModifyView() {
         VBox box = new VBox();
+        box.setPadding(new Insets(10));
+        box.setSpacing(10);
+
+        cPane.setPadding(new Insets(10,10,10,0));
+        bPane.setPadding(new Insets(10,10,10,0));
+        ePane.setPadding(new Insets(10,10,10,0));
+        fPane.setPadding(new Insets(10,10,10,0));
 
         Label title;
         title       = new Label("Modify Starbucks Menu");
