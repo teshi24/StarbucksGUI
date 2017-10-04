@@ -1,12 +1,14 @@
 package starbucks_fx;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -59,6 +61,13 @@ public class Template extends Application {
         Menu modify = new Menu("Modify");
         Menu add = new Menu("Add");
         Menu help = new Menu("Help");
+        // -> direkter aufruf funktioniert noch nicht, müsste mit Workaround gelöst werden mittels Graphical iwas (Google: java fx menu onclick, 2. Ergebnis)
+        // Direkt: add.setOnAction((ActionEvent e) -> {AddItem a = new AddItem();layout.setCenter(a.getAddItemView());});
+        // sub menu example
+        MenuItem addTest = new MenuItem("Add Test");
+        addTest.setOnAction((ActionEvent e) -> {AddItem a = new AddItem();layout.setCenter(a.getAddItemView());});
+        add.getItems().addAll(addTest);
+
         menu.getMenus().addAll(home, modify, add, help);
         return menu;
     }

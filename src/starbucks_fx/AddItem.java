@@ -9,6 +9,7 @@ package starbucks_fx;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -40,7 +41,7 @@ public class AddItem {
      * get whole view
      * @return Scene with view for menu point 'add item'
      */
-    public Scene getAddItemView(){
+    public Node getAddItemView(){
         bigPicture = new VBox();
         bigPicture.setPadding(new Insets(10,10,10,10));
         bigPicture.setSpacing(10);
@@ -76,7 +77,8 @@ public class AddItem {
             choose.setText("Choose the item you want to add.");
             bigPicture.getChildren().addAll(choose,choice);
         }
-        return new Scene(bigPicture,500,500);
+        //return new Scene(bigPicture,500,500);
+        return bigPicture;
     }
 
     /**

@@ -10,8 +10,9 @@ public class TestAddItemViews extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        AddItem adden = new AddItem();
+/*        AddItem adden = new AddItem();
         primaryStage.setScene(adden.getAddItemView());
         primaryStage.show();
+*/
     }
 }
