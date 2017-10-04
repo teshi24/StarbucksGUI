@@ -2,6 +2,7 @@ package starbucks_fx;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -13,7 +14,7 @@ import starbucks.*;
 
 import java.util.ArrayList;
 
-public class Modify extends Application {
+public class Modify {
 
     int cIndex, bIndex, eIndex, fIndex = 3;
     GridPane cPane = getCoffeePane();
@@ -21,31 +22,28 @@ public class Modify extends Application {
     GridPane ePane = getExtraPane();
     GridPane fPane = getFoodPane();
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle("Modify Starbucks Menu");
-        Scene scene;
-
+    /**
+     * get whole view
+     * @return Scene with view for menu point 'Modify'
+     */
+    public Node getModifyView() {
         VBox box = new VBox();
 
         Label title;
         title       = new Label("Modify Starbucks Menu");
 
+        setModify();
+
         box.getChildren().addAll(title,cPane, bPane, ePane, fPane);
 
-        scene = new Scene(box, 500, 200);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        return box;
     }
 
     //TODO: use static arraylist<category> from Menu
-    public void setModify(ArrayList<Category> menuList) {
-        if (!menuList.isEmpty()){
-            for (Category item : menuList) {
+    public void setModify() {
+
+        if (!Menu.items.isEmpty()){
+            for (Category item : Menu.items) {
                 if (item instanceof Coffee) {
                     Label name        = new Label(((Coffee) item).getName());
                     Label price       = new Label(Double.toString(((Coffee) item).getPrice()));
@@ -131,9 +129,9 @@ public class Modify extends Application {
         ingredients = new Label("Ingredients");
 
         pane.add(title,0,0,6,1);
-        pane.add(product, 1, 0);
+        pane.add(product, 0, 1);
         pane.add(price, 1, 1);
-        pane.add(ingredients, 1, 2);
+        pane.add(ingredients, 2, 1);
 
         return pane;
     }
@@ -152,10 +150,10 @@ public class Modify extends Application {
         temp        = new Label("Hot/Cold");
 
         pane.add(title,0,0,6,1);
-        pane.add(product, 1, 0);
+        pane.add(product, 0, 1);
         pane.add(price, 1, 1);
-        pane.add(ingredients, 1, 2);
-        pane.add(temp, 1,3);
+        pane.add(ingredients, 2, 1);
+        pane.add(temp, 3,1);
 
         return  pane;
     }
@@ -172,7 +170,7 @@ public class Modify extends Application {
         price   = new Label("Price");
 
         pane.add(title,0,0,6,1);
-        pane.add(product, 1, 0);
+        pane.add(product, 0, 1);
         pane.add(price, 1, 1);
 
         return pane;
@@ -192,10 +190,10 @@ public class Modify extends Application {
         info        = new Label("Dietary Info");
 
         pane.add(title,0,0,6,1);
-        pane.add(product, 1, 0);
+        pane.add(product, 0, 1);
         pane.add(price, 1, 1);
-        pane.add(ingredients, 1, 2);
-        pane.add(info, 1,3);
+        pane.add(ingredients, 2, 1);
+        pane.add(info, 3,1);
 
         return pane;
     }
