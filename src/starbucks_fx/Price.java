@@ -1,6 +1,7 @@
 /*
-    TODO: - Anpassen an AddItem
-    TODO: - 00.00 CHF adden - Natalie!!
+    TODO: Nadja - Anpassen an AddItem
+    TODO: Natalie - 00.00 CHF adden
+    TODO: Natalie / Nadja - 2 punkte nicht erlaubt -> beim Button "." überprüfen: if noch kein Punkt: Punkt adden; else Alert mittels Dialog
  */
 
 package starbucks_fx;
@@ -60,6 +61,7 @@ public class Price{
         delete = new Button("C");
 
         display = new TextField();
+        display.setEditable(false);
 
         key0.setPrefSize(60, 30);
         key1.setPrefSize(60, 30);

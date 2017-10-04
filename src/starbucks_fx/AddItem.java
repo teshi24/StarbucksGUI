@@ -1,24 +1,22 @@
 /**
- * TODO:   - Daten speichern und übernehmen wenn ein neues Menu Item ausgewählt wird --> Static vars
- * TODO:   - heat: radio buttons
- * TODO:   - Spezifische überprüfungen weiterhin über Menu
- * TODO:   - Not null / format von Name und Preis schon hier umgesetzt, da nicht spezifisch
+ * TODO:   Nadja - Daten speichern und übernehmen wenn ein neues Menu Item ausgewählt wird --> Static vars
+ * TODO:   Nadja - heat: radio buttons
+ * TODO:   Nadja - Spezifische Überprüfungen weiterhin über Menu
+ * TODO:   Nadja - Not null / format von Name und Preis schon hier umgesetzt, da nicht spezifisch
  */
 package starbucks_fx;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import starbucks.MenuItemFactory;
-
-import javax.xml.crypto.Data;
 
 /**
  * GUI: add an item to the menu
@@ -37,6 +35,9 @@ public class AddItem {
     /** all possible attribute fields */
     private Label message, nameL, priceL, ingredientsL, optionalL;
     private TextField name, price, ingredients, optional;
+    private ToggleGroup heat;
+    private RadioButton hot;
+    private RadioButton cold;
 
     /**
      * get whole view
@@ -177,8 +178,9 @@ public class AddItem {
         setMessageText("beverage");
         initHeath();
 
-        form.add(optionalL,0,3);
-        form.add(optional,1,3);
+        form.add(optionalL,0,3,2,1);
+        form.add(hot,1,3,2,1);
+        form.add(cold,2,3);
         form.add(addItem,1,4);
     }
 
@@ -205,7 +207,7 @@ public class AddItem {
         price = new TextField();
         price.setText(DataHolder.priceString);
         price.setEditable(false);
-        price.setOnAction((ActionEvent e) -> {Price p = new Price();p.enterPrice();while(!DataHolder.ok){}price.setText(DataHolder.priceString);});
+        price.setOnMouseClicked(e -> {Price p = new Price();p.enterPrice();/*while(!DataHolder.ok){}*/price.setText(DataHolder.priceString);});
     }
     private void initIngredients(){
         ingredientsL = new Label("ingredients:");
@@ -223,6 +225,22 @@ public class AddItem {
     private void initHeath(){
         optionalL = new Label("heat:");
         optional = new TextField();
+        heat = new ToggleGroup();
+        hot = new RadioButton("hot");
+        hot.setToggleGroup(heat);
+        cold = new RadioButton("cold");
+        cold.setToggleGroup(heat);
+        if(DataHolder.hot){
+            hot.setSelected(true);
+        }else{
+            cold.setSelected(true);
+        }
+        heat.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+
+            }
+        });
     }
 
 
@@ -244,6 +262,7 @@ public class AddItem {
         if (DataHolder.ok) {
             MenuItemFactory factory = MenuItemFactory.getInstance();
             factory.create(DataHolder.name, DataHolder.price, DataHolder.ingredients, DataHolder.optional);
+            DataHolder.initVars();
         } else {
             message.setText(mes);
         }
