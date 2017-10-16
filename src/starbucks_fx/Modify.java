@@ -1,6 +1,7 @@
 package starbucks_fx;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -12,6 +13,7 @@ import javafx.stage.Stage;
 import org.w3c.dom.html.HTMLTitleElement;
 import starbucks.*;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class Modify {
@@ -24,8 +26,11 @@ public class Modify {
     GridPane bPane = getBeveragePane();
     GridPane ePane = getExtraPane();
     GridPane fPane = getFoodPane();
+    Menu menu      = Menu.getInstance();
 
     int cIndex, bIndex, eIndex, fIndex = 3;
+
+    //TODO:Redundanzen löschen variablen mehrmals verwenden
 
     /**
      * get whole view
@@ -49,7 +54,6 @@ public class Modify {
     }
 
     public void setModify() {
-        //TODO: else fall "please add menu item, menu is empty"
         if (!Menu.items.isEmpty()){
             box.getChildren().addAll(title,cPane, bPane, ePane, fPane);
             for (Category item : Menu.items) {
@@ -57,13 +61,17 @@ public class Modify {
                     Label name        = new Label(((Coffee) item).getName());
                     Label price       = new Label(Double.toString(((Coffee) item).getPrice()));
                     Label ingredients = new Label(((Coffee) item).getIngredients());
-                    Button modify     = new Button("modify");
+                    Button edit     = new Button("edit");
                     Button delete     = new Button("delete");
+
+                    delete.setOnAction((ActionEvent e) -> menu.remove(item));
+                    //TODO: edit modifi action
+                    edit.setOnAction((ActionEvent e) -> menu.edit());
 
                     cPane.add(name, 0, cIndex);
                     cPane.add(price, 1, cIndex);
                     cPane.add(ingredients, 2, cIndex);
-                    cPane.add(modify, 4, cIndex);
+                    cPane.add(edit, 4, cIndex);
                     cPane.add(delete, 5, cIndex);
 
                     cIndex ++;
@@ -79,14 +87,16 @@ public class Modify {
                     } else {
                         temp.setText("Cold");
                     }
-                    Button modify     = new Button("modify");
+                    Button edit     = new Button("edit");
                     Button delete     = new Button("delete");
+
+                    delete.setOnAction((ActionEvent e) -> menu.remove(item));
 
                     bPane.add(name, 0, bIndex);
                     bPane.add(price, 1, bIndex);
                     bPane.add(ingredients, 2, bIndex);
                     bPane.add(temp, 3, bIndex);
-                    bPane.add(modify, 4, bIndex);
+                    bPane.add(edit, 4, bIndex);
                     bPane.add(delete, 5, bIndex);
 
                     bIndex ++;
@@ -94,12 +104,14 @@ public class Modify {
                 if (item instanceof Extra) {
                     Label name        = new Label(((Extra) item).getName());
                     Label price       = new Label(Double.toString(((Extra) item).getPrice()));
-                    Button modify     = new Button("modify");
+                    Button edit     = new Button("edit");
                     Button delete     = new Button("delete");
+
+                    delete.setOnAction((ActionEvent e) -> menu.remove(item));
 
                     ePane.add(name, 0, eIndex);
                     ePane.add(price, 1, eIndex);
-                    ePane.add(modify, 4, eIndex);
+                    ePane.add(edit, 4, eIndex);
                     ePane.add(delete, 5, eIndex);
 
                     eIndex ++;
@@ -109,14 +121,17 @@ public class Modify {
                     Label price       = new Label(Double.toString(((Food) item).getPrice()));
                     Label ingredients = new Label(((Food) item).getIngredients());
                     Label dietaryInfo = new Label(((Food) item).getDietaryInfo());
-                    Button modify     = new Button("modify");
+                    Button edit     = new Button("edit");
+                    edit.setOnAction((ActionEvent e) -> {});
                     Button delete     = new Button("delete");
+
+                    delete.setOnAction((ActionEvent e) -> menu.remove(item));
 
                     fPane.add(name, 0, fIndex);
                     fPane.add(price, 1, fIndex);
                     fPane.add(ingredients, 2, fIndex);
                     fPane.add(dietaryInfo, 3, fIndex);
-                    fPane.add(modify, 4, fIndex);
+                    fPane.add(edit, 4, fIndex);
                     fPane.add(delete, 5, fIndex);
 
                     fIndex ++;

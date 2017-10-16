@@ -5,6 +5,8 @@
  */
 package starbucks;
 
+import org.omg.CosNaming.NamingContextPackage.NotFound;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -103,10 +105,10 @@ public class Menu {
                 System.out.println("------------------------------------------------------------------------------------------");
                 System.out.println("- Extra                                                                                  -");
                 System.out.println("------------------------------------------------------------------------------------------");
-                System.out.println("");        
+                System.out.println("");
                 String format = "%-22s%5s";
-                System.out.println(String.format(format, "Name", "Price"));             
-                System.out.println("");        
+                System.out.println(String.format(format, "Name", "Price"));
+                System.out.println("");
                 for(Category item : items){
                     if(item instanceof Extra){
                         item.print();
@@ -190,8 +192,21 @@ public class Menu {
         String that = userInput.nextLine();
     }
     
-    public void edit(){
-        Boolean edited = false;
+    public void edit(Category itemToChange){
+        if(itemToChange instanceof Coffee){
+            //TODO:edit coffee
+        } else if(itemToChange instanceof Beverage){
+            //TODO: edit beverage
+        } else if(itemToChange instanceof Food){
+            //TODO:edit food
+        } else if(itemToChange instanceof  Extra){
+            //TODO:edit extra
+        } else{
+            //TODO:handle weird errors
+        }
+
+
+        /*Boolean edited = false;
         System.out.print("Enter the name of the MenuItem you want to edit: ");
         String name = userInput.nextLine();
         if(!items.isEmpty()){
@@ -208,29 +223,16 @@ public class Menu {
         } else {
             System.out.println("-- MenuItem " + name + " was successfully edited. --");
         }
-        String that = userInput.nextLine();
+        String that = userInput.nextLine();*/
     }
     
-    public void remove(){
-        Category toDelete = null;
-        Boolean found = false;
-        System.out.print("Enter the name of the MenuItem you want to delete: ");
-        String name = userInput.nextLine();
-        if(!items.isEmpty()){
-            for(Category item : items){
-                if(item.getName().equals(name)){
-                    toDelete = item;
-                    found = true;
-                }
-            }
-        }
-        if(!found){
-            System.out.println("-- MenuItem: " + name + " was not found in Menu-List. --");
-        } else {
+    public void remove(Category toDelete){
+        try{
             items.remove(toDelete);
-            System.out.println("-- MenuItem: " + name + " successfully deleted. --");
+        } catch(Exception e){
+            return;
+            //TODO: add catch Clause
         }
-        String that = userInput.nextLine();
     }
     
     public static Menu getInstance(){
