@@ -1,3 +1,7 @@
+/*
+  * TODO: Home direkt laden beim start
+  *
+ */
 package starbucks_fx;
 
 import javafx.application.Application;
@@ -50,6 +54,8 @@ public class Template extends Application {
         Menu add = new Menu();
         Menu help = new Menu();
 
+        DataHolder dh = new DataHolder();
+
         Label homeMenuLabel = new Label("Home");
         homeMenuLabel.setOnMouseClicked(event -> {
             Home h = new Home();
@@ -67,7 +73,7 @@ public class Template extends Application {
 
         Label addMenuLabel = new Label("Add");
         addMenuLabel.setOnMouseClicked(event -> {
-            AddItem a = new AddItem();
+            AddItem a = new AddItem(dh);
             layout.setCenter(a.getAddItemView());
         });
         add.setGraphic(addMenuLabel);

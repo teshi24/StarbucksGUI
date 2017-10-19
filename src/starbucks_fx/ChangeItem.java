@@ -1,5 +1,4 @@
 /*
-    TODO: Nadja - Anpassen an AddItem
     TODO: Natalie - 00.00 CHF adden
     TODO: Natalie / Nadja - 2 punkte nicht erlaubt -> beim Button "." überprüfen: if noch kein Punkt: Punkt adden; else Alert mittels Dialog
  */

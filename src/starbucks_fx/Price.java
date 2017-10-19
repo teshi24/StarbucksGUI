@@ -1,5 +1,6 @@
 /*
     TODO: Nadja - Anpassen an AddItem
+    TODO: add picture
     TODO: Natalie - 00.00 CHF adden
     TODO: Natalie / Nadja - 2 punkte nicht erlaubt -> beim Button "." überprüfen: if noch kein Punkt: Punkt adden; else Alert mittels Dialog
  */
@@ -13,34 +14,37 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class Price{
 
     TextField display;
     String price;
-
+    private Stage priceStage;
 
     public String getPrice() {
-
-
         return price;
     }
 
-    public void enterPrice() {
+    public void enterPrice(DataHolder dh) {
         Stage priceStage = new Stage();
         priceStage.setTitle("Price");
 
-        priceStage.setScene(getPriceScene());
+        priceStage.setScene(getPriceScene(dh));
         priceStage.setResizable(false);
+
+        this.priceStage = priceStage;
         priceStage.show();
     }
 
-    private Scene getPriceScene(){
+    private Scene getPriceScene(DataHolder dh){
         FlowPane pane = new FlowPane();
         pane.setPadding(new Insets(10));
         pane.setHgap(10);
         pane.setVgap(10);
+        pane.getStylesheets().add("resources/css/style.css");
 
         Button key0, key1, key2, key3, key4, key5, key6, key7, key8, key9;
         Button comma, ok, delete;
@@ -62,6 +66,7 @@ public class Price{
 
         display = new TextField();
         display.setEditable(false);
+        display.setText(dh.getPriceString());
 
         key0.setPrefSize(60, 30);
         key1.setPrefSize(60, 30);
@@ -89,14 +94,26 @@ public class Price{
         key7.setOnAction((ActionEvent e) -> setDisplay(key7.getText()));
         key8.setOnAction((ActionEvent e) -> setDisplay(key8.getText()));
         key9.setOnAction((ActionEvent e) -> setDisplay(key9.getText()));
-        comma.setOnAction((ActionEvent e) -> setDisplay(comma.getText()));
+        comma.setOnAction((ActionEvent e) -> {
+            try{
+                Integer.parseInt(display.getText());
+                setDisplay(comma.getText());
+            }catch(Exception ex){
+                ErrorMsg.addErrorMsg(priceStage,"Please enter a price in the format '0' or '0.00'.");
+            }
+        });
 
         ok.setOnAction((ActionEvent e) -> {
             String priceString = display.getText();
-
-            double price = Double.parseDouble(priceString);
-            // set price in java program..
-            // close Price
+            //try{
+                double price = Double.parseDouble(priceString);
+                dh.setPriceString(priceString);
+                dh.setPrice(price);
+                // TODO: Nadja - set price in java program..
+                priceStage.close();
+            /*}catch(Exception ex){
+                ErrorMsg.addErrorMsg(priceStage,"Please enter a price in the format '0' or '0.00'.");
+            }*/
         });
 
         delete.setOnAction((ActionEvent e) -> {

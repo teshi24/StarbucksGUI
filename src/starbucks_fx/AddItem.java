@@ -1,6 +1,5 @@
 /**
  * TODO:   Nadja - Daten speichern und übernehmen wenn ein neues Menu Item ausgewählt wird --> Static vars
- * TODO:   Nadja - heat: radio buttons
  * TODO:   Nadja - Spezifische Überprüfungen weiterhin über Menu
  * TODO:   Nadja - Not null / format von Name und Preis schon hier umgesetzt, da nicht spezifisch
  */
@@ -15,13 +14,14 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import starbucks.MenuItemFactory;
 
 /**
  * GUI: add an item to the menu
  */
-public class AddItem {
+public class AddItem extends DataObserver{
     /** whole view */
     private VBox bigPicture;
     /** info text to the choice */
@@ -35,16 +35,22 @@ public class AddItem {
     /** all possible attribute fields */
     private Label message, nameL, priceL, ingredientsL, optionalL;
     private TextField name, price, ingredients, optional;
+    private HBox heatContainer;
     private ToggleGroup heat;
     private RadioButton hot;
     private RadioButton cold;
+
+    public AddItem(DataHolder dh){
+        this.dh = dh;
+        this.dh.attach(this);
+    }
 
     /**
      * get whole view
      * @return Scene with view for menu point 'add item'
      */
     public Node getAddItemView(){
-        DataHolder.initVars();
+        dh.initVars();
 
         bigPicture = new VBox();
         bigPicture.setPadding(new Insets(10,10,10,10));
@@ -73,7 +79,7 @@ public class AddItem {
         addExtra.setOnAction((ActionEvent e)    -> showForm(3));
 
         choice.getChildren().addAll(addCoffee,addFood,addBeverage,addExtra);
-
+        choose.setPadding(new Insets(0,10,0,10));
         if(form != null){
             choose.setText("Change the item type if needed.");
             bigPicture.getChildren().addAll(choose,choice,form);
@@ -123,7 +129,7 @@ public class AddItem {
             form.add(priceL, 0, 2);
             form.add(price, 1, 2);
 
-            addItem = new Button("add Item");
+            addItem = new Button("add item");
             addItem.setMinSize(50, 40);
             addItem.setOnAction((ActionEvent e) -> sendValues());
 
@@ -178,9 +184,10 @@ public class AddItem {
         setMessageText("beverage");
         initHeath();
 
-        form.add(optionalL,0,3,2,1);
-        form.add(hot,1,3,2,1);
-        form.add(cold,2,3);
+        form.add(optionalL,0,3);
+        form.add(heatContainer,1,3);
+        //form.add(hot,1,3);
+        //form.add(cold,2,3);
         form.add(addItem,1,4);
     }
 
@@ -199,28 +206,31 @@ public class AddItem {
     private void initName(){
         nameL = new Label("name:");
         name = new TextField();
-        name.setText(DataHolder.name);
-        name.setOnAction((ActionEvent e) -> DataHolder.name = name.getText());
+        name.setText(dh.getName());
+        name.setOnAction((ActionEvent e) -> dh.setName(name.getText()));
     }
     private void initPrice(){
         priceL = new Label("price:");
         price = new TextField();
-        price.setText(DataHolder.priceString);
+        price.setText(dh.getPriceString());
         price.setEditable(false);
-        price.setOnMouseClicked(e -> {Price p = new Price();p.enterPrice();/*while(!DataHolder.ok){}*/price.setText(DataHolder.priceString);});
+        price.setOnMouseClicked(e -> {
+            Price p = new Price();
+            p.enterPrice(dh);
+        });
     }
     private void initIngredients(){
         ingredientsL = new Label("ingredients:");
         ingredients = new TextField();
         ingredients = new TextField();
-        ingredients.setText(DataHolder.ingredients);
-        ingredients.setOnAction((ActionEvent e) -> DataHolder.ingredients = ingredients.getText());
+        ingredients.setText(dh.getIngredients());
+        ingredients.setOnAction((ActionEvent e) -> dh.setIngredients(ingredients.getText()));
     }
     private void initOptional(){
         optionalL = new Label("dietary info:");
         optional = new TextField();
-        optional.setText(DataHolder.optional);
-        optional.setOnAction((ActionEvent e) -> DataHolder.optional = optional.getText());
+        optional.setText(dh.getOptional());
+        optional.setOnAction((ActionEvent e) -> dh.setOptional(optional.getText()));
     }
     private void initHeath(){
         optionalL = new Label("heat:");
@@ -230,7 +240,7 @@ public class AddItem {
         hot.setToggleGroup(heat);
         cold = new RadioButton("cold");
         cold.setToggleGroup(heat);
-        if(DataHolder.hot){
+        if(dh.isHot()){
             hot.setSelected(true);
         }else{
             cold.setSelected(true);
@@ -241,6 +251,8 @@ public class AddItem {
 
             }
         });
+        heatContainer = new HBox(hot,cold);
+        heatContainer.setSpacing(10);
     }
 
 
@@ -248,21 +260,21 @@ public class AddItem {
      * check values and send them to MenuItemFactory to finally create the menu items
      */
     private void sendValues(){
-        DataHolder.ok = true;
+        boolean ok = true;
         String mes = "";
         // check inserted values
-        if (DataHolder.name == null && DataHolder.name.equals("")) {
+        if (dh.getName() == null && dh.getName().equals("")) {
             mes += "Please enter a name for your product." + System.lineSeparator();
-            DataHolder.ok = false;
+            ok = false;
         }
-        if(DataHolder.price == 0){
-            DataHolder.ok = false;
+        if(dh.getPrice() == 0){
+            ok = false;
         }
         // send values to Factory if the input is ok
-        if (DataHolder.ok) {
+        if (ok && dh.isOk()) {
             MenuItemFactory factory = MenuItemFactory.getInstance();
-            factory.create(DataHolder.name, DataHolder.price, DataHolder.ingredients, DataHolder.optional);
-            DataHolder.initVars();
+            factory.create(dh.getName(), dh.getPrice(), dh.getIngredients(), dh.getOptional());
+            dh.initVars();
         } else {
             message.setText(mes);
         }
@@ -308,6 +320,21 @@ public class AddItem {
             factory.create(nam, pri, ing, opt);
         } else {
             message.setText(mes);
+        }
+    }
+
+    @Override
+    public void update() {
+        name.setText(dh.getName());
+        price.setText(dh.getPriceString());
+        ingredients.setText(dh.getName());
+        optional.setText(dh.getName());
+        if(heatContainer != null){
+            if(dh.isHot()){
+                hot.setSelected(true);
+            }else{
+                cold.setSelected(true);
+            }
         }
     }
 }

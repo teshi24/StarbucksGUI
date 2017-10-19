@@ -3,3 +3,11 @@
  -fx-border-width: 1 0 0 0;
  -fx-border-color: #A9A9A9;
 }
+.button{
+ -fx-color:#ffffff;
+ -fx-padding:4px,0px,4px,0px;
+ -fx-border-color:#A9A9A9;
+ -fx-wrap-text:true;
+ -fx-text-alignment:center;
+ -fx-background-color:#efeded;
+}

@@ -65,8 +65,8 @@ public class Modify {
                     Button delete     = new Button("delete");
 
                     delete.setOnAction((ActionEvent e) -> menu.remove(item));
-                    //TODO: edit modifi action
-                    edit.setOnAction((ActionEvent e) -> menu.edit());
+                    //TODO: edit modify action
+                    //edit.setOnAction((ActionEvent e) -> menu.edit());
 
                     cPane.add(name, 0, cIndex);
                     cPane.add(price, 1, cIndex);
