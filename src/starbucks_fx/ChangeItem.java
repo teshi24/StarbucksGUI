@@ -1,8 +1,7 @@
-/*
-    TODO: Natalie - 00.00 CHF adden
-    TODO: Natalie / Nadja - 2 punkte nicht erlaubt -> beim Button "." überprüfen: if noch kein Punkt: Punkt adden; else Alert mittels Dialog
+/**
+ * TODO: anpassen an neues Handling AddItem
+ * TODO: evtl als Observer verwenden für DataHolder (siehe ebenfalls AddItem)
  */
-
 package starbucks_fx;
 
 import javafx.event.ActionEvent;
@@ -21,7 +20,6 @@ public class ChangeItem{
 
 
     public String getPrice() {
-
 
         return price;
     }

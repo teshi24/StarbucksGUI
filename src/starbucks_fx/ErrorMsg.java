@@ -28,7 +28,9 @@ public class ErrorMsg {
         errorStage.setResizable(false);
         errorStage.show();
     }
-
+    public static String getCharNotAllowed(){
+        return "Entered char is not allowed.";
+    }
     /**
      * @param errorStage
      * @param errorMsg

@@ -17,9 +17,10 @@ public class Template extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
+    private Stage primaryStage;
     @Override
     public void start(Stage primaryStage) {
+        this.primaryStage = primaryStage;
         primaryStage.setTitle("Starbucks Manager");
         primaryStage.getIcons().add(new Image("resources/images/icon.png"));
         configureLayoutBorderPane();
@@ -72,7 +73,7 @@ public class Template extends Application {
 
         Label addMenuLabel = new Label("Add");
         addMenuLabel.setOnMouseClicked(event -> {
-            AddItem a = new AddItem(dh);
+            AddItem a = new AddItem(dh, primaryStage);
             layout.setCenter(a.getAddItemView());
         });
         add.setGraphic(addMenuLabel);

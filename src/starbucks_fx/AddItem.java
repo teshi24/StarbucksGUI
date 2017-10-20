@@ -1,5 +1,6 @@
 /**
  * TODO Nadja:   Handle Button addItem (Achtung: not null von Name und Preis)
+ * TODO Nadja:   Handle trennzeichen nicht erlaubt in allen bereichen
  */
 package starbucks_fx;
 
@@ -14,6 +15,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import starbucks.MenuItemFactory;
 
 /**
@@ -38,9 +40,12 @@ public class AddItem extends DataObserver{
     private RadioButton hot;
     private RadioButton cold;
 
-    public AddItem(DataHolder dh){
+    Stage primaryStage;
+    public AddItem(DataHolder dh, Stage primaryStage){
         this.dh = dh;
         this.dh.attach(this);
+
+        this.primaryStage = primaryStage;
     }
 
     /**
@@ -186,8 +191,6 @@ public class AddItem extends DataObserver{
 
         form.add(optionalL,0,3);
         form.add(heatContainer,1,3);
-        //form.add(hot,1,3);
-        //form.add(cold,2,3);
         form.add(addItem,1,4);
     }
 
@@ -209,17 +212,14 @@ public class AddItem extends DataObserver{
         name.setText(dh.getName());
         name.textProperty().addListener((observable, oldValue, newValue)->{
             String text = name.getText().toString();
-            dh.setName(text);
-        });
-        /*
-        name.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                dh.setName(name.getText().toString());
+            if(!text.contains("|") && !text.contains("¦")){
+                //TODO Nadja: remove wrong char
+                //TODO Nadja: add this listener to the other items too
+                dh.setName(text);
+            }else{
+                ErrorMsg.addErrorMsg(primaryStage, ErrorMsg.getCharNotAllowed());
             }
         });
-        */
-        //setOnAction((ActionEvent e) -> dh.setName(name.getText()));
     }
     private void initPrice(){
         priceL = new Label("price:");
@@ -236,13 +236,13 @@ public class AddItem extends DataObserver{
         ingredients = new TextField();
         ingredients = new TextField();
         ingredients.setText(dh.getIngredients());
-        ingredients.setOnAction((ActionEvent e) -> dh.setIngredients(ingredients.getText()));
+        ingredients.textProperty().addListener((observable, oldValue, newValue)->dh.setIngredients(ingredients.getText().toString()));
     }
     private void initOptional(){
         optionalL = new Label("dietary info:");
         optional = new TextField();
         optional.setText(dh.getOptional());
-        optional.setOnAction((ActionEvent e) -> dh.setOptional(optional.getText()));
+        optional.textProperty().addListener((observable, oldValue, newValue)->dh.setOptional(optional.getText().toString()));
     }
     private void initHeath(){
         optionalL = new Label("heat:");
@@ -260,7 +260,11 @@ public class AddItem extends DataObserver{
         heat.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             @Override
             public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-
+                if(cold.isSelected()){
+                    dh.setHot(false);
+                }else{
+                    dh.setHot(true);
+                }
             }
         });
         heatContainer = new HBox(hot,cold);
