@@ -1,7 +1,3 @@
-/*
-  * TODO: Home direkt laden beim start
-  *
- */
 package starbucks_fx;
 
 import javafx.application.Application;
@@ -28,6 +24,9 @@ public class Template extends Application {
         primaryStage.getIcons().add(new Image("resources/images/icon.png"));
         configureLayoutBorderPane();
         primaryStage.setScene(new Scene(layout, 500, 400));
+
+        Home h = new Home();
+        layout.setCenter(h.getHomeView());
 
         primaryStage.show();
     }

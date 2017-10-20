@@ -39,31 +39,42 @@ public class DataHolder extends Observable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
         notifyAllObservers();
     }
 
-    public void setPriceString(String priceString) {
+    /**
+     * sets price and priceString to be ensure that they stores same value
+     * @param price
+     */
+    public void setPrice(double price) {
+        this.price = price;
+        setPriceString(""+price);
+        notifyAllObservers();
+    }
+
+    private void setPriceString(String priceString) {
         this.priceString = priceString;
+        notifyAllObservers();
     }
 
     public void setIngredients(String ingredients) {
         this.ingredients = ingredients;
+        notifyAllObservers();
     }
 
     public void setOptional(String optional) {
         this.optional = optional;
+        notifyAllObservers();
     }
 
     public void setHot(boolean hot) {
         this.hot = hot;
+        notifyAllObservers();
     }
 
     public void setOk(boolean ok) {
         this.ok = ok;
+        notifyAllObservers();
     }
 
     public String getName() {

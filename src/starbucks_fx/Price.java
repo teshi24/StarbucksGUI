@@ -1,8 +1,6 @@
 /*
-    TODO: Nadja - Anpassen an AddItem
     TODO: add picture
     TODO: Natalie - 00.00 CHF adden
-    TODO: Natalie / Nadja - 2 punkte nicht erlaubt -> beim Button "." überprüfen: if noch kein Punkt: Punkt adden; else Alert mittels Dialog
  */
 
 package starbucks_fx;
@@ -83,7 +81,6 @@ public class Price{
         delete.setPrefSize(60,30);
         display.setPrefSize(200, 30);
 
-        // Set Action of keys
         key0.setOnAction((ActionEvent e) -> setDisplay(key0.getText()));
         key1.setOnAction((ActionEvent e) -> setDisplay(key1.getText()));
         key2.setOnAction((ActionEvent e) -> setDisplay(key2.getText()));
@@ -96,7 +93,10 @@ public class Price{
         key9.setOnAction((ActionEvent e) -> setDisplay(key9.getText()));
         comma.setOnAction((ActionEvent e) -> {
             try{
-                Integer.parseInt(display.getText());
+                String currentText = display.getText();
+                if(!currentText.equals("")){
+                    Integer.parseInt(currentText);
+                }
                 setDisplay(comma.getText());
             }catch(Exception ex){
                 ErrorMsg.addErrorMsg(priceStage,"Please enter a price in the format '0' or '0.00'.");
@@ -105,15 +105,9 @@ public class Price{
 
         ok.setOnAction((ActionEvent e) -> {
             String priceString = display.getText();
-            //try{
-                double price = Double.parseDouble(priceString);
-                dh.setPriceString(priceString);
-                dh.setPrice(price);
-                // TODO: Nadja - set price in java program..
-                priceStage.close();
-            /*}catch(Exception ex){
-                ErrorMsg.addErrorMsg(priceStage,"Please enter a price in the format '0' or '0.00'.");
-            }*/
+            double price = Double.parseDouble(priceString);
+            dh.setPrice(price);
+            priceStage.close();
         });
 
         delete.setOnAction((ActionEvent e) -> {

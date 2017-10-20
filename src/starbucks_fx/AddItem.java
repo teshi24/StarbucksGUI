@@ -1,4 +1,5 @@
 /**
+ * TODO:   Nadja - Preisanzeige 0.00
  * TODO:   Nadja - Daten speichern und übernehmen wenn ein neues Menu Item ausgewählt wird --> Static vars
  * TODO:   Nadja - Spezifische Überprüfungen weiterhin über Menu
  * TODO:   Nadja - Not null / format von Name und Preis schon hier umgesetzt, da nicht spezifisch
@@ -118,6 +119,7 @@ public class AddItem extends DataObserver{
             form.setVgap(5);
             form.setPadding(new Insets(10, 10, 10, 10));
 
+            // TODO: Label entfernen, durch Dialog ersetzen
             // fill standard attributes
             message = new Label();
             initName();
@@ -145,6 +147,7 @@ public class AddItem extends DataObserver{
                         break;
                 default: return null;
             }
+
             return form;
         }
         return null;
@@ -207,7 +210,19 @@ public class AddItem extends DataObserver{
         nameL = new Label("name:");
         name = new TextField();
         name.setText(dh.getName());
-        name.setOnAction((ActionEvent e) -> dh.setName(name.getText()));
+        name.textProperty().addListener((observable, oldValue, newValue)->{
+            String text = name.getText().toString();
+            dh.setName(text);
+        });
+        /*
+        name.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                dh.setName(name.getText().toString());
+            }
+        });
+        */
+        //setOnAction((ActionEvent e) -> dh.setName(name.getText()));
     }
     private void initPrice(){
         priceL = new Label("price:");
@@ -254,7 +269,6 @@ public class AddItem extends DataObserver{
         heatContainer = new HBox(hot,cold);
         heatContainer.setSpacing(10);
     }
-
 
     /**
      * check values and send them to MenuItemFactory to finally create the menu items
@@ -327,8 +341,12 @@ public class AddItem extends DataObserver{
     public void update() {
         name.setText(dh.getName());
         price.setText(dh.getPriceString());
-        ingredients.setText(dh.getName());
-        optional.setText(dh.getName());
+        if(ingredients != null){
+            ingredients.setText(dh.getIngredients());
+        }
+        if(optional != null){
+            optional.setText(dh.getOptional());
+        }
         if(heatContainer != null){
             if(dh.isHot()){
                 hot.setSelected(true);
