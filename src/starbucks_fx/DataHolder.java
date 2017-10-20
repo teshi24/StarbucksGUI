@@ -1,5 +1,7 @@
 package starbucks_fx;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -48,7 +50,8 @@ public class DataHolder extends Observable {
      */
     public void setPrice(double price) {
         this.price = price;
-        setPriceString(""+price);
+        NumberFormat format = new DecimalFormat("#0.00");
+        setPriceString(format.format(price));
         notifyAllObservers();
     }
 

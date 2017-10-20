@@ -1,8 +1,5 @@
 /**
- * TODO:   Nadja - Preisanzeige 0.00
- * TODO:   Nadja - Daten speichern und übernehmen wenn ein neues Menu Item ausgewählt wird --> Static vars
- * TODO:   Nadja - Spezifische Überprüfungen weiterhin über Menu
- * TODO:   Nadja - Not null / format von Name und Preis schon hier umgesetzt, da nicht spezifisch
+ * TODO Nadja:   Handle Button addItem (Achtung: not null von Name und Preis)
  */
 package starbucks_fx;
 
