@@ -11,97 +11,97 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- *
  * @author natal
  */
 public class Menu {
-    
+
     public static ArrayList<Category> items = new ArrayList<>();
     private static final Menu menu = new Menu();
     private MenuItemFactory factory = MenuItemFactory.getInstance();
     Scanner userInput = new Scanner(System.in);
-    
-    private Menu(){
-        
+
+    private Menu() {
+
     }
-    
-    public void fillItems(ArrayList<ArrayList<String>> products){
+
+    public void fillItems(ArrayList<ArrayList<String>> products) {
+        items = new ArrayList<>();
         String name;
         Double price;
         String ingredients;
         String optional;
-        for(ArrayList<String> product : products){
+        for (ArrayList<String> product : products) {
             name = product.get(0);
             ingredients = product.get(2);
             optional = product.get(3);
-            try{
+            try {
                 price = Double.parseDouble(product.get(1));
                 items.add(factory.create(name, price, ingredients, optional));
-            } catch(NumberFormatException e){
+            } catch (NumberFormatException e) {
                 System.out.println("-- Product with name: " + product.get(0) + " could not be added to Menu. --");
             }
         }
     }
-    
-    public ArrayList<String> toStringArray(){
+
+    public ArrayList<String> toStringArray() {
         ArrayList<String> file = new ArrayList<>();
-        for(Category item: items){
+        for (Category item : items) {
             file.add(item.toString());
         }
         return file;
     }
-    
-    public void print(){
-        if(!items.isEmpty()){
+
+    public void print() {
+        if (!items.isEmpty()) {
             String isInMenu = "";
-            for(Category item : items){
-                if(item instanceof Coffee){
+            for (Category item : items) {
+                if (item instanceof Coffee) {
                     isInMenu += "C";
                 }
-                if(item instanceof Beverage){
+                if (item instanceof Beverage) {
                     isInMenu += "B";
                 }
-                if(item instanceof Extra){
+                if (item instanceof Extra) {
                     isInMenu += "E";
                 }
-                if(item instanceof Food){
+                if (item instanceof Food) {
                     isInMenu += "F";
                 }
-            }   
+            }
             System.out.println("******************************************************************************************");
             System.out.println("*                                   Starbucks Menu                                       *");
             System.out.println("******************************************************************************************");
-            if(isInMenu.contains("C")){
+            if (isInMenu.contains("C")) {
                 System.out.println("------------------------------------------------------------------------------------------");
                 System.out.println("- Coffees                                                                                -");
                 System.out.println("------------------------------------------------------------------------------------------");
                 System.out.println("");
                 String format = "%-22s%-7s%11s";
                 System.out.println(String.format(format, "Name", "Price", "Ingredients"));
-                System.out.println("");        
-                for(Category item : items){
-                    if(item instanceof Coffee){
+                System.out.println("");
+                for (Category item : items) {
+                    if (item instanceof Coffee) {
                         item.print();
                     }
                 }
             }
-            if(isInMenu.contains("B")){
-                System.out.println("");        
+            if (isInMenu.contains("B")) {
+                System.out.println("");
                 System.out.println("------------------------------------------------------------------------------------------");
                 System.out.println("- Beverage                                                                               -");
                 System.out.println("------------------------------------------------------------------------------------------");
-                System.out.println("");      
+                System.out.println("");
                 String format = "%-22s%-7s%-50s%5s";
-                System.out.println(String.format(format, "Name", "Price", "Ingredients", "Temperature"));            
-                System.out.println("");        
-                for(Category item : items){
-                    if(item instanceof Beverage){
+                System.out.println(String.format(format, "Name", "Price", "Ingredients", "Temperature"));
+                System.out.println("");
+                for (Category item : items) {
+                    if (item instanceof Beverage) {
                         item.print();
                     }
                 }
             }
-            if(isInMenu.contains("E")){
-                System.out.println("");        
+            if (isInMenu.contains("E")) {
+                System.out.println("");
                 System.out.println("------------------------------------------------------------------------------------------");
                 System.out.println("- Extra                                                                                  -");
                 System.out.println("------------------------------------------------------------------------------------------");
@@ -109,23 +109,23 @@ public class Menu {
                 String format = "%-22s%5s";
                 System.out.println(String.format(format, "Name", "Price"));
                 System.out.println("");
-                for(Category item : items){
-                    if(item instanceof Extra){
+                for (Category item : items) {
+                    if (item instanceof Extra) {
                         item.print();
                     }
                 }
             }
-            if(isInMenu.contains("F")){
-                System.out.println("");        
+            if (isInMenu.contains("F")) {
+                System.out.println("");
                 System.out.println("------------------------------------------------------------------------------------------");
                 System.out.println("- Food                                                                                   -");
                 System.out.println("------------------------------------------------------------------------------------------");
-                System.out.println("");      
+                System.out.println("");
                 String format = "%-22s%-7s%-50s%12s";
-                System.out.println(String.format(format, "Name", "Price", "Ingredients", "Dietary Info"));             
-                System.out.println("");        
-                for(Category item : items){
-                    if(item instanceof Food){
+                System.out.println(String.format(format, "Name", "Price", "Ingredients", "Dietary Info"));
+                System.out.println("");
+                for (Category item : items) {
+                    if (item instanceof Food) {
                         item.print();
                     }
                 }
@@ -137,41 +137,41 @@ public class Menu {
             System.out.println("-- No product in Starbucks menu yet. --");
         }
         String that = userInput.nextLine();
-        
+
     }
-    
-    public void add(){
-        Boolean nameOk   = true;
+
+    public void add() {
+        Boolean nameOk = true;
         Boolean doubleOk = false;
-        double price     = 0;
+        double price = 0;
         System.out.print("Name:                     ");
         String name = userInput.nextLine();
-        for(Category item : items){
-            if(item.getName().equals(name)){
+        for (Category item : items) {
+            if (item.getName().equals(name)) {
                 nameOk = false;
             }
         }
-        if(nameOk){
-            while(!doubleOk){
-                try{
+        if (nameOk) {
+            while (!doubleOk) {
+                try {
                     System.out.print("Price:                    ");
                     String priceStr = userInput.nextLine();
                     price = Double.parseDouble(priceStr);
                     doubleOk = true;
-                } catch(NumberFormatException e){
+                } catch (NumberFormatException e) {
                     System.out.println("-- Please enter a valid Price. --");
                 }
             }
             System.out.println("-- Opional values, if you want to leave a value enter 'null' --");
             System.out.print("Ingredients:              ");
             String ingredients = userInput.nextLine();
-            if(ingredients.equals("null")){
+            if (ingredients.equals("null")) {
                 ingredients = null;
             }
             System.out.print("Dietary Info or hot/cold: ");
             String optional = userInput.nextLine();
             switch (optional) {
-                case "hot": 
+                case "hot":
                     optional = "true";
                     break;
                 case "cold":
@@ -182,7 +182,7 @@ public class Menu {
                     break;
             }
             Category item = factory.create(name, price, ingredients, optional);
-            if(item != null){
+            if (item != null) {
                 items.add(item);
                 System.out.println("-- The MenuItem was added to the Menu. --");
             }
@@ -191,17 +191,17 @@ public class Menu {
         }
         String that = userInput.nextLine();
     }
-    
-    public void edit(Category itemToChange){
-        if(itemToChange instanceof Coffee){
+
+    public void edit(Category itemToChange) {
+        if (itemToChange instanceof Coffee) {
             //TODO:edit coffee
-        } else if(itemToChange instanceof Beverage){
+        } else if (itemToChange instanceof Beverage) {
             //TODO: edit beverage
-        } else if(itemToChange instanceof Food){
+        } else if (itemToChange instanceof Food) {
             //TODO:edit food
-        } else if(itemToChange instanceof  Extra){
+        } else if (itemToChange instanceof Extra) {
             //TODO:edit extra
-        } else{
+        } else {
             //TODO:handle weird errors
         }
 
@@ -225,18 +225,18 @@ public class Menu {
         }
         String that = userInput.nextLine();*/
     }
-    
-    public void remove(Category toDelete){
-        try{
+
+    public void remove(Category toDelete) {
+        try {
             items.remove(toDelete);
-        } catch(Exception e){
+        } catch (Exception e) {
             return;
             //TODO: add catch Clause
         }
     }
-    
-    public static Menu getInstance(){
-        if(menu == null) {
+
+    public static Menu getInstance() {
+        if (menu == null) {
             Menu menu = new Menu();
         }
         return menu;
