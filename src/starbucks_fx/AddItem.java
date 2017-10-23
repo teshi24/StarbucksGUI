@@ -1,6 +1,5 @@
-/**
+﻿/**
  * TODO Nadja:   Handle Button addItem (Achtung: not null von Name und Preis)
- * TODO Nadja:   Handle trennzeichen nicht erlaubt in allen bereichen
  */
 package starbucks_fx;
 
@@ -33,7 +32,7 @@ public class AddItem extends DataObserver{
     /** form button */
     private Button addItem;
     /** all possible attribute fields */
-    private Label message, nameL, priceL, ingredientsL, optionalL;
+    private Label nameL, priceL, ingredientsL, optionalL;
     private TextField name, price, ingredients, optional;
     private HBox heatContainer;
     private ToggleGroup heat;
@@ -123,19 +122,17 @@ public class AddItem extends DataObserver{
 
             // TODO: Label entfernen, durch Dialog ersetzen
             // fill standard attributes
-            message = new Label();
             initName();
             initPrice();
 
-            form.add(message, 0, 0, 2, 1);
-            form.add(nameL, 0, 1);
-            form.add(name, 1, 1);
-            form.add(priceL, 0, 2);
-            form.add(price, 1, 2);
+            form.add(nameL, 0, 0);
+            form.add(name, 1, 0);
+            form.add(priceL, 0, 1);
+            form.add(price, 1, 1);
 
             addItem = new Button("add item");
             addItem.setMinSize(50, 40);
-            addItem.setOnAction((ActionEvent e) -> sendValues());
+            addItem.setOnAction((ActionEvent e) -> sendValues(category));
 
             // fill specific attributes
             switch (category) {
@@ -149,7 +146,6 @@ public class AddItem extends DataObserver{
                         break;
                 default: return null;
             }
-
             return form;
         }
         return null;
@@ -159,51 +155,51 @@ public class AddItem extends DataObserver{
      * get specific attributes
      */
     private void getCoffeeAttributes(){
-        setMessageText("coffee");
+        setChooseText("coffee");
         initIngredients();
 
-        form.add(ingredientsL,0,3);
-        form.add(ingredients,1,3);
-        form.add(addItem,1,4);
+        form.add(ingredientsL,0,2);
+        form.add(ingredients,1,2);
+        form.add(addItem,1,3);
     }
 
     /**
      * get specific attributes
      */
     private void getFoodAttributes(){
-        setMessageText("food");
+        setChooseText("food");
         initIngredients();
         initOptional();
 
-        form.add(ingredientsL,0,3);
-        form.add(ingredients,1,3);
-        form.add(optionalL,0,4);
-        form.add(optional,1,4);
-        form.add(addItem,1,5);
-    }
-
-    /**
-     * get specific attributes
-     */
-    private void getBeverageAttributes(){
-        setMessageText("beverage");
-        initHeath();
-
+        form.add(ingredientsL,0,2);
+        form.add(ingredients,1,2);
         form.add(optionalL,0,3);
-        form.add(heatContainer,1,3);
+        form.add(optional,1,3);
         form.add(addItem,1,4);
     }
 
     /**
      * get specific attributes
      */
-    private void getExtraAttributes(){
-        setMessageText("extra");
+    private void getBeverageAttributes(){
+        setChooseText("beverage");
+        initHeath();
+
+        form.add(optionalL,0,2);
+        form.add(heatContainer,1,2);
         form.add(addItem,1,3);
     }
 
-    private void setMessageText(String item){
-        message.setText("Add some " + item + " to your menu.");
+    /**
+     * get specific attributes
+     */
+    private void getExtraAttributes(){
+        setChooseText("extra");
+        form.add(addItem,1,2);
+    }
+
+    private void setChooseText(String item){
+        choose.setText("You are add some " + item + " to your menu.");
     }
 
     private void initName(){
@@ -213,10 +209,9 @@ public class AddItem extends DataObserver{
         name.textProperty().addListener((observable, oldValue, newValue)->{
             String text = name.getText().toString();
             if(!text.contains("|") && !text.contains("¦")){
-                //TODO Nadja: remove wrong char
-                //TODO Nadja: add this listener to the other items too
                 dh.setName(text);
             }else{
+                name.setText(dh.getName());
                 ErrorMsg.addErrorMsg(primaryStage, ErrorMsg.getCharNotAllowed());
             }
         });
@@ -236,13 +231,29 @@ public class AddItem extends DataObserver{
         ingredients = new TextField();
         ingredients = new TextField();
         ingredients.setText(dh.getIngredients());
-        ingredients.textProperty().addListener((observable, oldValue, newValue)->dh.setIngredients(ingredients.getText().toString()));
+        ingredients.textProperty().addListener((observable, oldValue, newValue)->{
+            String text = ingredients.getText().toString();
+            if(!text.contains("|") && !text.contains("¦")){
+                dh.setIngredients(text);
+            }else{
+                ingredients.setText(dh.getIngredients());
+                ErrorMsg.addErrorMsg(primaryStage, ErrorMsg.getCharNotAllowed());
+            }
+        });
     }
     private void initOptional(){
         optionalL = new Label("dietary info:");
         optional = new TextField();
         optional.setText(dh.getOptional());
-        optional.textProperty().addListener((observable, oldValue, newValue)->dh.setOptional(optional.getText().toString()));
+        optional.textProperty().addListener((observable, oldValue, newValue)->{
+            String text = optional.getText().toString();
+            if(!text.contains("|") && !text.contains("¦")){
+                dh.setOptional(text);
+            }else{
+                optional.setText(dh.getOptional());
+                ErrorMsg.addErrorMsg(primaryStage, ErrorMsg.getCharNotAllowed());
+            }
+        });
     }
     private void initHeath(){
         optionalL = new Label("heat:");
@@ -274,16 +285,29 @@ public class AddItem extends DataObserver{
     /**
      * check values and send them to MenuItemFactory to finally create the menu items
      */
-    private void sendValues(){
+    private void sendValues(int category){
         boolean ok = true;
-        String mes = "";
+        String mes = "Please add the required information to your product: " + System.lineSeparator();
         // check inserted values
-        if (dh.getName() == null && dh.getName().equals("")) {
-            mes += "Please enter a name for your product." + System.lineSeparator();
+        if (dh.getName() == null || dh.getName().equals("")) {
+            mes += "name" + System.lineSeparator();
             ok = false;
         }
-        if(dh.getPrice() == 0){
+        if(dh.getPriceString() == null || dh.getPrice() == 0){
+            mes += "price" + System.lineSeparator();
             ok = false;
+        }
+        if(category < 2){
+            if(dh.getIngredients() == null || dh.getIngredients().equals("")){
+                mes += "ingredients" + System.lineSeparator();
+                ok = false;
+            }
+            if(category == 1){
+                if(dh.getOptional() == null || dh.getIngredients().equals("")){
+                    mes += "dietary info";
+                    ok = false;
+                }
+            }
         }
         // send values to Factory if the input is ok
         if (ok && dh.isOk()) {
@@ -291,10 +315,9 @@ public class AddItem extends DataObserver{
             factory.create(dh.getName(), dh.getPrice(), dh.getIngredients(), dh.getOptional());
             dh.initVars();
         } else {
-            message.setText(mes);
+            ErrorMsg.addErrorMsg(primaryStage, mes);
         }
     }
-
 
     /**
      * check values and send them to MenuItemFactory to finally create the menu items
@@ -334,7 +357,7 @@ public class AddItem extends DataObserver{
             MenuItemFactory factory = MenuItemFactory.getInstance();
             factory.create(nam, pri, ing, opt);
         } else {
-            message.setText(mes);
+            ErrorMsg.addErrorMsg(primaryStage,mes);
         }
     }
 
