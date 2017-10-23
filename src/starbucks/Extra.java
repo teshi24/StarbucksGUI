@@ -44,28 +44,7 @@ public class Extra implements Category {
 
     @Override
     public void edit() {
-        String input;
-        String format = "%-7s%-20s%-12s";
-        System.out.print(String.format(format, "Name: ", name, " New name: "));
-        input = userInput.nextLine();
-        if(!input.equals("null")){
-            name = input;
-        }
-        Boolean pOk = false;
-        while(!pOk){
-            System.out.print(String.format(format, "Price: ", price, " New Price: "));
-            input = userInput.nextLine();
-            if(!input.equals("null")){
-                try {
-                    price = Double.parseDouble(input);
-                    pOk = true;
-                } catch (NumberFormatException e){
-                    System.out.println("-- Price could not be changed. Input was not nummeric. --");
-                }
-            } else {
-                pOk = true;
-            }            
-        }
+
     }
     
 }
