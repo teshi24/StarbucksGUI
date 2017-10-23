@@ -1,5 +1,5 @@
-﻿/**
- * TODO Nadja:   Handle Button addItem (Achtung: not null von Name und Preis)
+/**
+ * TODO Nadja: Handle Button addItem
  */
 package starbucks_fx;
 
@@ -84,12 +84,12 @@ public class AddItem extends DataObserver{
         choose.setPadding(new Insets(0,10,0,10));
         if(form != null){
             choose.setText("Change the item type if needed.");
+
             bigPicture.getChildren().addAll(choose,choice,form);
         }else{
             choose.setText("Choose the item you want to add.");
             bigPicture.getChildren().addAll(choose,choice);
         }
-
         return bigPicture;
     }
 
@@ -137,13 +137,13 @@ public class AddItem extends DataObserver{
             // fill specific attributes
             switch (category) {
                 case 0: getCoffeeAttributes();
-                        break;
+                    break;
                 case 1: getFoodAttributes();
-                        break;
+                    break;
                 case 2: getBeverageAttributes();
-                        break;
+                    break;
                 case 3: getExtraAttributes();
-                        break;
+                    break;
                 default: return null;
             }
             return form;
@@ -157,7 +157,6 @@ public class AddItem extends DataObserver{
     private void getCoffeeAttributes(){
         setChooseText("coffee");
         initIngredients();
-
         form.add(ingredientsL,0,2);
         form.add(ingredients,1,2);
         form.add(addItem,1,3);
@@ -222,7 +221,7 @@ public class AddItem extends DataObserver{
         price.setText(dh.getPriceString());
         price.setEditable(false);
         price.setOnMouseClicked(e -> {
-            Price p = new Price();
+            Price p = new Price(primaryStage);
             p.enterPrice(dh);
         });
     }
@@ -315,6 +314,7 @@ public class AddItem extends DataObserver{
             factory.create(dh.getName(), dh.getPrice(), dh.getIngredients(), dh.getOptional());
             dh.initVars();
         } else {
+
             ErrorMsg.addErrorMsg(primaryStage, mes);
         }
     }

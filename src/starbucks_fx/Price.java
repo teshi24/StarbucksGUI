@@ -21,6 +21,11 @@ public class Price{
     TextField display;
     String price;
     private Stage priceStage;
+    private Stage ownerStage;
+
+    public Price(Stage ownerStage){
+        this.ownerStage = ownerStage;
+    }
 
     public String getPrice() {
         return price;
@@ -30,6 +35,8 @@ public class Price{
         Stage priceStage = new Stage();
         priceStage.setTitle("Price");
 
+        priceStage.initOwner(ownerStage);
+        priceStage.initModality(Modality.WINDOW_MODAL);
         priceStage.setScene(getPriceScene(dh));
         priceStage.setResizable(false);
 
