@@ -23,12 +23,6 @@ public class Extra implements Category {
     }
 
     @Override
-    public void print() {
-        String format = "%-20s%2s%5s";
-        System.out.println(String.format(format, name, "  ", price));
-    }
-
-    @Override
     public String toString() {
         String concat = name + "¦" + price;
         return concat;

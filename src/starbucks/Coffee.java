@@ -25,12 +25,6 @@ public class Coffee implements Category{
     }
 
     @Override
-    public void print() {
-        String format = "%-20s%2s%5s%2s%-50s";
-        System.out.println(String.format(format, name, "  ", price, " ", ingredients));
-    }
-
-    @Override
     public String toString() {
         String concat = name + "¦" + price + "¦" + ingredients;
         return concat;

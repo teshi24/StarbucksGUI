@@ -25,16 +25,7 @@ public class Beverage implements Category {
         this.ingredients = ingredients;
         this.hot = hot;
     }
-    
-    @Override
-    public void print() {
-        String temp = "cold";
-        if(hot){
-            temp = "hot";
-        }
-        String format = "%-20s%2s%5s%2s%-50s%-5s";
-        System.out.println(String.format(format, name, " ", price, " ", ingredients, temp));
-    }
+
 
     @Override
     public String toString() {

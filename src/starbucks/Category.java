@@ -10,9 +10,6 @@ package starbucks;
  * @author natal
  */
 public interface Category {
- 
-    
-    public void print();
         
     public void edit();
     

@@ -25,12 +25,6 @@ public class Food implements Category{
         this.ingredients = ingredients;
         this.dietaryInfo = dietaryInfo;
     }
-        
-    @Override
-    public void print() {
-        String format = "%-20s%2s%5s%2s%-50s%-12s";
-        System.out.println(String.format(format, name, " ", price, " ", ingredients, dietaryInfo));
-    }
 
     @Override
     public String toString() {
