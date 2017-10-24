@@ -1,29 +1,25 @@
 package starbucks_fx;
 
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.stage.Stage;
-import org.w3c.dom.html.HTMLTitleElement;
 import starbucks.*;
 
-import javax.swing.*;
-import java.util.ArrayList;
-
-public class Modify {
+public class Modify extends DataObserver{
 
     ScrollPane sp = new ScrollPane();
     VBox box      = new VBox();
 
+    GridPane pane;
     GridPane cPane = getCoffeePane();
     GridPane bPane = getBeveragePane();
     GridPane ePane = getExtraPane();
@@ -35,10 +31,11 @@ public class Modify {
     int eIndex = 3;
     int fIndex = 3;
 
-    Label title, name, product, price, ingredients, temp, dietaryInfo, error;
+    private Label titleL, nameL, productL, priceL, ingredientsL, tempL, dietaryInfoL, errorL;
+    private TextField name, price, ingredients, optional;
+    private HBox heatContainer;
+    private
     Button edit, delete;
-
-    //TODO:Redundanzen löschen variablen mehrmals verwenden
 
     /**
      * get whole view
@@ -53,8 +50,8 @@ public class Modify {
         ePane.setPadding(new Insets(10,10,10,0));
         fPane.setPadding(new Insets(10,10,10,0));
 
-        title       = new Label("Modify Starbucks Menu");
-        title.setFont(Font.font("Veranda",FontWeight.BOLD, 20));
+        titleL = new Label("Modify Starbucks Menu");
+        titleL.setFont(Font.font("Veranda",FontWeight.BOLD, 20));
 
         setModify();
 
@@ -64,21 +61,21 @@ public class Modify {
 
     public void setModify() {
         if (!Menu.items.isEmpty()){
-            box.getChildren().addAll(title,cPane, bPane, ePane, fPane);
+            box.getChildren().addAll(titleL,cPane, bPane, ePane, fPane);
             for (Category item : Menu.items) {
                 if (item instanceof Coffee) {
-                    name        = new Label(((Coffee) item).getName());
-                    price       = new Label(Double.toString(((Coffee) item).getPrice()));
-                    ingredients = new Label(((Coffee) item).getIngredients());
+                    nameL = new Label(((Coffee) item).getName());
+                    priceL = new Label(Double.toString(((Coffee) item).getPrice()));
+                    ingredientsL = new Label(((Coffee) item).getIngredients());
                     edit        = new Button("edit");
                     delete      = new Button("delete");
 
                     delete.setOnAction((ActionEvent e) -> menu.remove(item));
-                    //edit.setOnAction((ActionEvent e) -> menu.edit());
+                    //edit.setOnAction((ActionEvent e) -> menu.edit(item.getName(), item.getPrice(), item.getIngredients()));
 
-                    cPane.add(name, 0, cIndex);
-                    cPane.add(price, 1, cIndex);
-                    cPane.add(ingredients, 2, cIndex);
+                    cPane.add(nameL, 0, cIndex);
+                    cPane.add(priceL, 1, cIndex);
+                    cPane.add(ingredientsL, 2, cIndex);
                     cPane.add(edit, 4, cIndex);
                     cPane.add(delete, 5, cIndex);
 
@@ -86,51 +83,53 @@ public class Modify {
 
                 }
                 if (item instanceof Beverage) {
-                    name        = new Label(((Beverage) item).getName());
-                    price       = new Label(Double.toString(((Beverage) item).getPrice()));
-                    ingredients = new Label(((Beverage) item).getIngredients());
-                    temp        = new Label();
+                    nameL = new Label(((Beverage) item).getName());
+                    priceL = new Label(Double.toString(((Beverage) item).getPrice()));
+                    ingredientsL = new Label(((Beverage) item).getIngredients());
+                    tempL = new Label();
                     if(((Beverage) item).getHot()){
-                        temp.setText("Hot");
+                        tempL.setText("Hot");
                     } else {
-                        temp.setText("Cold");
+                        tempL.setText("Cold");
                     }
                     edit        = new Button("edit");
                     delete      = new Button("delete");
 
                     delete.setOnAction((ActionEvent e) -> menu.remove(item));
-                    //edit.setOnAction((ActionEvent e) -> );
+                    //edit.setOnAction((ActionEvent e) -> menu.edit(item.getName(), item.getPrice(), item.getIngredients(),));
 
-                    bPane.add(name, 0, bIndex);
-                    bPane.add(price, 1, bIndex);
-                    bPane.add(ingredients, 2, bIndex);
-                    bPane.add(temp, 3, bIndex);
+                    bPane.add(nameL, 0, bIndex);
+                    bPane.add(priceL, 1, bIndex);
+                    bPane.add(ingredientsL, 2, bIndex);
+                    bPane.add(tempL, 3, bIndex);
                     bPane.add(edit, 4, bIndex);
                     bPane.add(delete, 5, bIndex);
 
                     bIndex ++;
                 }
+
                 if (item instanceof Extra) {
-                    name        = new Label(((Extra) item).getName());
-                    price       = new Label(Double.toString(((Extra) item).getPrice()));
+                    nameL = new Label(((Extra) item).getName());
+                    priceL = new Label(Double.toString(((Extra) item).getPrice()));
                     edit        = new Button("edit");
                     delete      = new Button("delete");
 
-                    delete.setOnAction((ActionEvent e) -> menu.remove(item));
+                    delete.setOnAction((ActionEvent e) ->
+                            menu.remove(item));
                     //edit.setOnAction((ActionEvent e) -> );
 
-                    ePane.add(name, 0, eIndex);
-                    ePane.add(price, 1, eIndex);
+                    ePane.add(nameL, 0, eIndex);
+                    ePane.add(priceL, 1, eIndex);
                     ePane.add(edit, 4, eIndex);
                     ePane.add(delete, 5, eIndex);
 
                     eIndex ++;
                 }
                 if (item instanceof Food) {
-                    name        = new Label(((Food) item).getName());
-                    price       = new Label(Double.toString(((Food) item).getPrice()));
-                    ingredients = new Label(((Food) item).getIngredients());
-                    dietaryInfo = new Label(((Food) item).getDietaryInfo());
+                    nameL = new Label(((Food) item).getName());
+                    priceL = new Label(Double.toString(((Food) item).getPrice()));
+                    ingredientsL = new Label(((Food) item).getIngredients());
+                    dietaryInfoL = new Label(((Food) item).getDietaryInfo());
                     edit        = new Button("edit");
                     edit.setOnAction((ActionEvent e) -> {});
                     delete      = new Button("delete");
@@ -138,10 +137,10 @@ public class Modify {
                     delete.setOnAction((ActionEvent e) -> menu.remove(item));
                     //edit.setOnAction((ActionEvent e) -> );
 
-                    fPane.add(name, 0, fIndex);
-                    fPane.add(price, 1, fIndex);
-                    fPane.add(ingredients, 2, fIndex);
-                    fPane.add(dietaryInfo, 3, fIndex);
+                    fPane.add(nameL, 0, fIndex);
+                    fPane.add(priceL, 1, fIndex);
+                    fPane.add(ingredientsL, 2, fIndex);
+                    fPane.add(dietaryInfoL, 3, fIndex);
                     fPane.add(edit, 4, fIndex);
                     fPane.add(delete, 5, fIndex);
 
@@ -149,106 +148,106 @@ public class Modify {
                 }
             }
         } else {
-            error = new Label("Menu is empty. You can add menu-items in the Add-Option.");
-            box.getChildren().addAll(title, error);
+            errorL = new Label("Menu is empty. You can add menu-items in the Add-Option.");
+            box.getChildren().addAll(titleL, errorL);
         }
     }
 
     private GridPane getCoffeePane(){
-        GridPane pane = new GridPane();
+        pane = new GridPane();
         pane.setPadding(new Insets(10));
         pane.setVgap(10);
         pane.setHgap(10);
 
-        title       = new Label("Coffee");
-        product     = new Label("Product");
-        price       = new Label("Price");
-        ingredients = new Label("Ingredients");
+        titleL = new Label("Coffee");
+        productL = new Label("Product");
+        priceL = new Label("Price");
+        ingredientsL = new Label("Ingredients");
 
-        setStyle(title, "Veranda", 18);
-        setStyle(product, "Veranda", 13);
-        setStyle(price, "Veranda", 13);
-        setStyle(ingredients, "Veranda", 13);
+        setStyle(titleL, "Veranda", 18);
+        setStyle(productL, "Veranda", 13);
+        setStyle(priceL, "Veranda", 13);
+        setStyle(ingredientsL, "Veranda", 13);
 
-        pane.add(title,0,0,6,1);
-        pane.add(product, 0, 1);
-        pane.add(price, 1, 1);
-        pane.add(ingredients, 2, 1);
+        pane.add(titleL,0,0,6,1);
+        pane.add(productL, 0, 1);
+        pane.add(priceL, 1, 1);
+        pane.add(ingredientsL, 2, 1);
 
         return pane;
     }
 
     private GridPane getBeveragePane(){
-        GridPane pane = new GridPane();
+        pane = new GridPane();
         pane.setPadding(new Insets(10));
         pane.setVgap(10);
         pane.setHgap(10);
 
-        title       = new Label("Beverage");
-        product     = new Label("Product");
-        price       = new Label("Price");
-        ingredients = new Label("Ingredients");
-        temp        = new Label("Hot/Cold");
+        titleL = new Label("Beverage");
+        productL = new Label("Product");
+        priceL = new Label("Price");
+        ingredientsL = new Label("Ingredients");
+        tempL = new Label("Hot/Cold");
 
-        setStyle(title, "Veranda", 18);
-        setStyle(product, "Veranda", 13);
-        setStyle(price, "Veranda", 13);
-        setStyle(ingredients, "Veranda", 13);
-        setStyle(temp, "Veranda", 13);
+        setStyle(titleL, "Veranda", 18);
+        setStyle(productL, "Veranda", 13);
+        setStyle(priceL, "Veranda", 13);
+        setStyle(ingredientsL, "Veranda", 13);
+        setStyle(tempL, "Veranda", 13);
 
-        pane.add(title,0,0,6,1);
-        pane.add(product, 0, 1);
-        pane.add(price, 1, 1);
-        pane.add(ingredients, 2, 1);
-        pane.add(temp, 3,1);
+        pane.add(titleL,0,0,6,1);
+        pane.add(productL, 0, 1);
+        pane.add(priceL, 1, 1);
+        pane.add(ingredientsL, 2, 1);
+        pane.add(tempL, 3,1);
 
         return  pane;
     }
 
     private GridPane getExtraPane(){
-        GridPane pane = new GridPane();
+        pane = new GridPane();
         pane.setPadding(new Insets(10));
         pane.setVgap(10);
         pane.setHgap(10);
 
-        title   = new Label("Extras");
-        product = new Label("Product");
-        price   = new Label("Price");
+        titleL = new Label("Extras");
+        productL = new Label("Product");
+        priceL = new Label("Price");
 
-        setStyle(title, "Veranda", 18);
-        setStyle(product, "Veranda", 13);
-        setStyle(price, "Veranda", 13);
+        setStyle(titleL, "Veranda", 18);
+        setStyle(productL, "Veranda", 13);
+        setStyle(priceL, "Veranda", 13);
 
-        pane.add(title,0,0,6,1);
-        pane.add(product, 0, 1);
-        pane.add(price, 1, 1);
+        pane.add(titleL,0,0,6,1);
+        pane.add(productL, 0, 1);
+        pane.add(priceL, 1, 1);
 
         return pane;
     }
 
     private GridPane getFoodPane(){
-        GridPane pane = new GridPane();
+        pane = new GridPane();
         pane.setPadding(new Insets(10));
         pane.setVgap(10);
         pane.setHgap(10);
 
-        title       = new Label("Food");
-        product     = new Label("Product");
-        price       = new Label("Price");
-        ingredients = new Label("Ingredients");
-        dietaryInfo = new Label("Dietary Info");
+        titleL = new Label("Food");
+        productL = new Label("Product");
+        priceL = new Label("Price");
+        ingredientsL = new Label("Ingredients");
+        dietaryInfoL = new Label("Dietary Info");
 
-        setStyle(title, "Veranda", 18);
-        setStyle(product, "Veranda", 13);
-        setStyle(price, "Veranda", 13);
-        setStyle(ingredients, "Veranda", 13);
-        setStyle(dietaryInfo, "Veranda", 13);
+        setStyle(titleL, "Veranda", 18);
+        setStyle(productL, "Veranda", 13);
+        setStyle(priceL, "Veranda", 13);
+        setStyle(ingredientsL, "Veranda", 13);
+        setStyle(dietaryInfoL, "Veranda", 13);
 
-        pane.add(title,0,0,6,1);
-        pane.add(product, 0, 1);
-        pane.add(price, 1, 1);
-        pane.add(ingredients, 2, 1);
-        pane.add(dietaryInfo, 3,1);
+        pane.add(titleL,0,0,6,1);
+        pane.add(productL, 0, 1);
+        pane.add(priceL, 1, 1);
+        pane.add(ingredientsL, 2, 1);
+        pane.add(dietaryInfoL, 3,1);
 
         return pane;
     }
@@ -257,4 +256,27 @@ public class Modify {
         label.setFont(Font.font(family, FontWeight.BOLD, size));
     }
 
+    // TODO: check if we could use same frames to add and modify products
+
+
+    @Override
+    public void update(){
+        /*
+        nameL.setText(dh.getName());
+        priceL.setText(dh.getPriceString());
+        if(ingredientsL != null){
+            ingredientsL.setText(dh.getIngredients());
+        }
+        if(optional != null){
+            optional.setText(dh.getOptional());
+        }
+        if(heatContainer != null){
+            if(dh.isHot()){
+                hot.setSelected(true);
+            }else{
+                cold.setSelected(true);
+            }
+        }
+        */
+    }
 }

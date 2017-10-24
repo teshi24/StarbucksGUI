@@ -45,7 +45,7 @@ public class DataHolder extends Observable {
     }
 
     /**
-     * sets price and priceString to be ensure that they stores same value
+     * sets priceL and priceString to be ensure that they stores same value
      * @param price
      */
     public void setPrice(double price) {

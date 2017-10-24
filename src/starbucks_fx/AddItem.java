@@ -228,7 +228,6 @@ public class AddItem extends DataObserver{
     private void initIngredients(){
         ingredientsL = new Label("ingredients:");
         ingredients = new TextField();
-        ingredients = new TextField();
         ingredients.setText(dh.getIngredients());
         ingredients.textProperty().addListener((observable, oldValue, newValue)->{
             String text = ingredients.getText().toString();
@@ -286,19 +285,19 @@ public class AddItem extends DataObserver{
      */
     private void sendValues(int category){
         boolean ok = true;
-        String mes = "Please add the required information to your product: " + System.lineSeparator();
+        String mes = "Please add the required information to your productL: " + System.lineSeparator();
         // check inserted values
         if (dh.getName() == null || dh.getName().equals("")) {
-            mes += "name" + System.lineSeparator();
+            mes += "nameL" + System.lineSeparator();
             ok = false;
         }
         if(dh.getPriceString() == null || dh.getPrice() == 0){
-            mes += "price" + System.lineSeparator();
+            mes += "priceL" + System.lineSeparator();
             ok = false;
         }
         if(category < 2){
             if(dh.getIngredients() == null || dh.getIngredients().equals("")){
-                mes += "ingredients" + System.lineSeparator();
+                mes += "ingredientsL" + System.lineSeparator();
                 ok = false;
             }
             if(category == 1){
@@ -333,13 +332,13 @@ public class AddItem extends DataObserver{
         if (name != null && !name.getText().equals("")) {
             nam = name.getText();
         } else {
-            mes += "Please enter a name for your product." + System.lineSeparator();
+            mes += "Please enter a nameL for your productL." + System.lineSeparator();
             ok = false;
         }
         try {
             pri = Double.parseDouble(price.getText());
         } catch (Exception ex) {
-            mes += "Please enter a valid price. (Format: 9.99)";
+            mes += "Please enter a valid priceL. (Format: 9.99)";
             ok = false;
         }
         // send values to Factory if the input is ok

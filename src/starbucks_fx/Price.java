@@ -105,7 +105,7 @@ public class Price{
                 }
                 setDisplay(comma.getText());
             }catch(Exception ex){
-                ErrorMsg.addErrorMsg(priceStage,"Please enter a price in the format '0' or '0.00'.");
+                ErrorMsg.addErrorMsg(priceStage,"Please enter a priceL in the format '0' or '0.00'.");
             }
         });
 

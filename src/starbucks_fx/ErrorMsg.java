@@ -18,7 +18,7 @@ public class ErrorMsg {
     private void ErrorMsg() {}
 
     /**
-     * generates a popup for error messages
+     * generates a popup for errorL messages
      * @param ownerStage - stage which is calling the method
      * @param errorMsg - message which should be shown
      */
