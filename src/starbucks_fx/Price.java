@@ -1,6 +1,6 @@
-/*
-    TODO: add picture
-    TODO: Natalie - 00.00 CHF adden
+/**
+ * TODO: Icon hinzufügen
+ * TODO Natalie: CHF-Label adden
  */
 
 package starbucks_fx;
@@ -12,7 +12,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
