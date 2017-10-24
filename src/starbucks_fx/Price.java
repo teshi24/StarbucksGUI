@@ -1,5 +1,4 @@
 /**
- * TODO: Icon hinzufügen
  * TODO Natalie: CHF-Label adden
  */
 
@@ -11,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -32,6 +32,7 @@ public class Price{
 
     public void enterPrice(DataHolder dh) {
         Stage priceStage = new Stage();
+        priceStage.getIcons().add(new Image("resources/images/coins.jpg"));
         priceStage.setTitle("Price");
 
         priceStage.initOwner(ownerStage);

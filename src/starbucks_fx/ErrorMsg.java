@@ -1,6 +1,3 @@
-/**
- * TODO: Icon hinzufügen
- */
 package starbucks_fx;
 
 import javafx.event.ActionEvent;
@@ -9,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -24,6 +22,7 @@ public class ErrorMsg {
      */
     public static void addErrorMsg(Stage ownerStage, String errorMsg){
         Stage errorStage = new Stage();
+        errorStage.getIcons().add(new Image("resources/images/error.png"));
         errorStage.setTitle("Error");
         errorStage.setScene(new Scene(setPane(errorStage, errorMsg)));
         errorStage.initOwner(ownerStage);

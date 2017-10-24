@@ -79,7 +79,7 @@ public class Template extends Application {
 
         Label helpMenuLabel = new Label("Help");
         helpMenuLabel.setOnMouseClicked(event -> {
-            //TODO: Add action
+            Help h = new Help(primaryStage);
         });
         help.setGraphic(helpMenuLabel);
 

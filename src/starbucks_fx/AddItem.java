@@ -10,10 +10,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import starbucks.MenuItemFactory;
 
@@ -84,7 +81,6 @@ public class AddItem extends DataObserver{
         choose.setPadding(new Insets(0,10,0,10));
         if(form != null){
             choose.setText("Change the item type if needed.");
-
             bigPicture.getChildren().addAll(choose,choice,form);
         }else{
             choose.setText("Choose the item you want to add.");
@@ -119,6 +115,7 @@ public class AddItem extends DataObserver{
             form.setHgap(10);
             form.setVgap(5);
             form.setPadding(new Insets(10, 10, 10, 10));
+            form.getColumnConstraints().add(new ColumnConstraints(80));
 
             // TODO: Label entfernen, durch Dialog ersetzen
             // fill standard attributes
