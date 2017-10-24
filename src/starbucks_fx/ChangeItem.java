@@ -88,18 +88,6 @@ public class ChangeItem{
         key9.setOnAction((ActionEvent e) -> setDisplay(key9.getText()));
         comma.setOnAction((ActionEvent e) -> setDisplay(comma.getText()));
 
-        ok.setOnAction((ActionEvent e) -> {
-            String priceString = display.getText();
-
-            double price = Double.parseDouble(priceString);
-            // set price in java program..
-            // close Price
-        });
-
-        delete.setOnAction((ActionEvent e) -> {
-            display.setText(display.getText().substring(0, display.getText().length() - 1));
-        });
-
         pane.getChildren().addAll(
                 display,
                 key1, key2, key3,
@@ -108,6 +96,18 @@ public class ChangeItem{
                 comma, key0, delete,
                 ok
         );
+        ok.setOnAction((ActionEvent e) -> {
+            String priceString = display.getText();
+
+            double price = Double.parseDouble(priceString);
+            // set priceL in java program..
+            // close Price
+        });
+
+        delete.setOnAction((ActionEvent e) -> {
+            display.setText(display.getText().substring(0, display.getText().length() - 1));
+        });
+
 
         return new Scene(pane, 210, 240);
     }
