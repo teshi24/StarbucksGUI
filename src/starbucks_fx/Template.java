@@ -65,7 +65,6 @@ public class Template extends Application {
 
         Label modifyMenuLabel = new Label("Modify");
         modifyMenuLabel.setOnMouseClicked(event -> {
-            //TODO: Add action
             Modify m = new Modify();
             layout.setCenter(m.getModifyView());
         });
