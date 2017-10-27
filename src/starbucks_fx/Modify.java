@@ -3,14 +3,19 @@ package starbucks_fx;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import starbucks.*;
+
+import java.io.IOException;
 
 public class Modify extends DataObserver{
 
@@ -32,9 +37,19 @@ public class Modify extends DataObserver{
     private Label titleL, nameL, productL, priceL, ingredientsL, tempL, dietaryInfoL, errorL;
     private TextField name, price, ingredients, optional;
     private HBox heatContainer;
-    private
+
     Button edit, delete;
 
+    Stage primaryStage;
+    BorderPane layout;
+
+    public Modify(DataHolder dh, Stage primaryStage, BorderPane layout){
+        this.dh = dh;
+        this.dh.attach(this);
+
+        this.primaryStage = primaryStage;
+        this.layout = layout;
+    }
     /**
      * get whole view
      * @return Scene with view for menu point 'Modify'
@@ -59,17 +74,40 @@ public class Modify extends DataObserver{
 
     public void setModify() {
         if (!Menu.items.isEmpty()){
+            box.getChildren().removeAll(titleL,cPane, bPane, ePane, fPane);
             box.getChildren().addAll(titleL,cPane, bPane, ePane, fPane);
             for (Category item : Menu.items) {
-                if (item instanceof Coffee) {
-                    nameL = new Label(((Coffee) item).getName());
-                    priceL = new Label(Double.toString(((Coffee) item).getPrice()));
-                    ingredientsL = new Label(((Coffee) item).getIngredients());
-                    edit        = new Button("edit");
-                    delete      = new Button("delete");
+                nameL       = new Label((item).getName());
+                priceL      = new Label(Double.toString((item).getPrice()));
+                edit        = new Button("edit");
+                delete      = new Button("delete");
 
-                    delete.setOnAction((ActionEvent e) -> menu.remove(item));
+                delete.setOnAction((ActionEvent e) ->{
+                    menu.remove(item);
+                    File file = File.getInstance();
+                    try {
+                        file.save(Menu.toStringArray());
+                        //TODO: Message alà 'delete hat geklappt'
+                    } catch (IOException ex) {
+                        ErrorMsg.addErrorMsg(primaryStage,"An file error occurred.");
+                    }
+                    layout.setCenter(getModifyView());
+                });
+                //TODO: write edit
+                //edit.setOnAction((ActionEvent e) -> );
+
+                if (item instanceof Coffee) {
+                    nameL           = new Label(((Coffee) item).getName());
+                    priceL          = new Label(Double.toString(((Coffee) item).getPrice()));
+                    ingredientsL    = new Label(((Coffee) item).getIngredients());
+                    edit            = new Button("edit");
+                    delete          = new Button("delete");
+
+                    delete.setOnAction((ActionEvent e) -> {
+                        menu.remove(item);
+                    });
                     //edit.setOnAction((ActionEvent e) -> menu.edit(item.getName(), item.getPrice(), item.getIngredients()));
+
 
                     cPane.add(nameL, 0, cIndex);
                     cPane.add(priceL, 1, cIndex);
@@ -78,7 +116,6 @@ public class Modify extends DataObserver{
                     cPane.add(delete, 5, cIndex);
 
                     cIndex ++;
-
                 }
                 if (item instanceof Beverage) {
                     nameL = new Label(((Beverage) item).getName());
@@ -107,14 +144,10 @@ public class Modify extends DataObserver{
                 }
 
                 if (item instanceof Extra) {
-                    nameL = new Label(((Extra) item).getName());
-                    priceL = new Label(Double.toString(((Extra) item).getPrice()));
-                    edit        = new Button("edit");
-                    delete      = new Button("delete");
-
-                    delete.setOnAction((ActionEvent e) ->
-                            menu.remove(item));
-                    //edit.setOnAction((ActionEvent e) -> );
+                    // TODO Natalie: do same for the other categories --> button kann vielleicht in einer eigenen Methode gehandelt werden - nur extras unterstützt bis jetzt
+                    // TODO: du kannst die buttons und auch den namen und den preis aus den anderen if(item blabla löschen - habe sie aus den ifs rausgenommen
+                    // TODO: habe remove leider noch nicht korrekt zum laufen gebracht
+                    ePane.getChildren().removeAll(nameL,priceL,edit,delete);
 
                     ePane.add(nameL, 0, eIndex);
                     ePane.add(priceL, 1, eIndex);
@@ -215,6 +248,9 @@ public class Modify extends DataObserver{
         titleL.pseudoClassStateChanged(CssConstants.SUBTITLE,true);
         productL.pseudoClassStateChanged(CssConstants.COLUMN,true);
         priceL.pseudoClassStateChanged(CssConstants.COLUMN,true);
+
+        //TODO: auch das überall anpassen - das remove muss auf allen panes zuerst gemacht werden um die doppelten einträge zu verhindern so viel ich weiss
+        pane.getChildren().removeAll(titleL,productL,priceL);
 
         pane.add(titleL,0,0,6,1);
         pane.add(productL, 0, 1);

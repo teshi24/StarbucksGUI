@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import starbucks.Category;
 import starbucks.File;
 import starbucks.Menu;
 import starbucks.MenuItemFactory;
@@ -40,7 +41,9 @@ public class AddItem extends DataObserver{
     private RadioButton hot;
     private RadioButton cold;
 
-    Stage primaryStage;
+    private Stage primaryStage;
+    private DataHolder dh;
+
     public AddItem(DataHolder dh, Stage primaryStage){
         this.dh = dh;
         this.dh.attach(this);
@@ -298,43 +301,53 @@ public class AddItem extends DataObserver{
      */
     private void sendValues(int category){
         boolean ok = true;
+        boolean nameOk = true;
         String mes = "Please add the required information to your product: " + System.lineSeparator();
         // check inserted values
         if (dh.getName() == null || dh.getName().equals("")) {
             mes += "name" + System.lineSeparator();
             ok = false;
-        }
-        if(dh.getPriceString() == null || dh.getPrice() == 0){
-            mes += "price" + System.lineSeparator();
-            ok = false;
-        }
-        if(category < 2){
-            if(dh.getIngredients() == null || dh.getIngredients().equals("")){
-                mes += "ingredients" + System.lineSeparator();
-                ok = false;
-            }
-            if(category == 1){
-                if(dh.getOptional() == null || dh.getIngredients().equals("")){
-                    mes += "dietary info";
+        }else{
+            for(Category c: Menu.items){
+                if(c.getName().equals((String)dh.getName())){
+                    mes = "This name does already exist. Please enter another.";
                     ok = false;
+                    nameOk = false;
                 }
             }
         }
-        if(ingredients == null){
-            dh.setIngredients(null);
-        }
-        if(optional == null){
-            dh.setOptional(null);
-        }
-        if(heat != null){
-            if(dh.isHot()){
-                dh.setOptional("true");
-            }else{
-                dh.setOptional("false");
+        if(nameOk) {
+            if (dh.getPriceString() == null || dh.getPrice() == 0) {
+                mes += "price" + System.lineSeparator();
+                ok = false;
             }
-        }
-        if(ok){
-            mes = null;
+            if (category < 2) {
+                if (dh.getIngredients() == null || dh.getIngredients().equals("")) {
+                    mes += "ingredients" + System.lineSeparator();
+                    ok = false;
+                }
+                if (category == 1) {
+                    if (dh.getOptional() == null || dh.getIngredients().equals("")) {
+                        mes += "dietary info";
+                        ok = false;
+                    }
+                }
+            }
+            if (ok) {
+                if (ingredients == null) {
+                    dh.setIngredients(null);
+                }
+                if (optional == null) {
+                    dh.setOptional(null);
+                }
+                if (heat != null) {
+                    if (dh.isHot()) {
+                        dh.setOptional("true");
+                    } else {
+                        dh.setOptional("false");
+                    }
+                }
+            }
         }
         // send values to Factory if the input is ok
         if (ok) {
@@ -343,63 +356,13 @@ public class AddItem extends DataObserver{
             File file = File.getInstance();
             try {
                 file.save(Menu.toStringArray());
+                //TODO: Message alà 'add hat geklappt'
             } catch (IOException e) {
                 ErrorMsg.addErrorMsg(primaryStage,"An file error occurred.");
             }
             dh.initVars();
         } else {
-            if(mes != null){
-                ErrorMsg.addErrorMsg(primaryStage, mes);
-            }
-        }
-    }
-
-    /**
-     * check values and send them to MenuItemFactory to finally create the menu items
-     */
-    private void sendValuesOld(){
-        boolean ok = false;
-        String nam = "";
-        double pri = 0;
-        String ing;
-        String opt;
-        String mes = "";
-        // check inserted values
-        if (name != null && !name.getText().equals("")) {
-            nam = name.getText();
-        } else {
-            mes += "Please enter a name for your productL." + System.lineSeparator();
-            ok = false;
-        }
-        try {
-            pri = Double.parseDouble(price.getText());
-        } catch (Exception ex) {
-            mes += "Please enter a valid price. (Format: 9.99)";
-            ok = false;
-        }
-
-        // send values to Factory if the input is ok
-        if (ok) {
-            if (ingredients != null) {
-                ing = ingredients.getText();
-            } else {
-                ing = null;
-            }
-            if (optional != null) {
-                opt = optional.getText();
-            } else {
-                opt = null;
-            }
-            if(heat != null){
-
-            }
-        /**
-         * category: 0 = coffee, 1 = food, 2 = beverage, 3 = extra
-         */
-            MenuItemFactory factory = MenuItemFactory.getInstance();
-            factory.create(nam, pri, ing, opt);
-        } else {
-            ErrorMsg.addErrorMsg(primaryStage,mes);
+            ErrorMsg.addErrorMsg(primaryStage, mes);
         }
     }
 
