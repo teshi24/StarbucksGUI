@@ -10,8 +10,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import starbucks.*;
 
 public class Modify extends DataObserver{
@@ -51,7 +49,7 @@ public class Modify extends DataObserver{
         fPane.setPadding(new Insets(10,10,10,0));
 
         titleL = new Label("Modify Starbucks Menu");
-        titleL.setFont(Font.font("Veranda",FontWeight.BOLD, 20));
+        titleL.pseudoClassStateChanged(CssConstants.TITLE,true);
 
         setModify();
 
@@ -164,10 +162,10 @@ public class Modify extends DataObserver{
         priceL = new Label("Price");
         ingredientsL = new Label("Ingredients");
 
-        setStyle(titleL, "Veranda", 18);
-        setStyle(productL, "Veranda", 13);
-        setStyle(priceL, "Veranda", 13);
-        setStyle(ingredientsL, "Veranda", 13);
+        titleL.pseudoClassStateChanged(CssConstants.SUBTITLE,true);
+        productL.pseudoClassStateChanged(CssConstants.COLUMN,true);
+        priceL.pseudoClassStateChanged(CssConstants.COLUMN,true);
+        ingredientsL.pseudoClassStateChanged(CssConstants.COLUMN,true);
 
         pane.add(titleL,0,0,6,1);
         pane.add(productL, 0, 1);
@@ -189,11 +187,11 @@ public class Modify extends DataObserver{
         ingredientsL = new Label("Ingredients");
         tempL = new Label("Hot/Cold");
 
-        setStyle(titleL, "Veranda", 18);
-        setStyle(productL, "Veranda", 13);
-        setStyle(priceL, "Veranda", 13);
-        setStyle(ingredientsL, "Veranda", 13);
-        setStyle(tempL, "Veranda", 13);
+        titleL.pseudoClassStateChanged(CssConstants.SUBTITLE,true);
+        productL.pseudoClassStateChanged(CssConstants.COLUMN,true);
+        priceL.pseudoClassStateChanged(CssConstants.COLUMN,true);
+        ingredientsL.pseudoClassStateChanged(CssConstants.COLUMN,true);
+        tempL.pseudoClassStateChanged(CssConstants.COLUMN,true);
 
         pane.add(titleL,0,0,6,1);
         pane.add(productL, 0, 1);
@@ -214,9 +212,9 @@ public class Modify extends DataObserver{
         productL = new Label("Product");
         priceL = new Label("Price");
 
-        setStyle(titleL, "Veranda", 18);
-        setStyle(productL, "Veranda", 13);
-        setStyle(priceL, "Veranda", 13);
+        titleL.pseudoClassStateChanged(CssConstants.SUBTITLE,true);
+        productL.pseudoClassStateChanged(CssConstants.COLUMN,true);
+        priceL.pseudoClassStateChanged(CssConstants.COLUMN,true);
 
         pane.add(titleL,0,0,6,1);
         pane.add(productL, 0, 1);
@@ -237,11 +235,11 @@ public class Modify extends DataObserver{
         ingredientsL = new Label("Ingredients");
         dietaryInfoL = new Label("Dietary Info");
 
-        setStyle(titleL, "Veranda", 18);
-        setStyle(productL, "Veranda", 13);
-        setStyle(priceL, "Veranda", 13);
-        setStyle(ingredientsL, "Veranda", 13);
-        setStyle(dietaryInfoL, "Veranda", 13);
+        titleL.pseudoClassStateChanged(CssConstants.SUBTITLE,true);
+        productL.pseudoClassStateChanged(CssConstants.COLUMN,true);
+        priceL.pseudoClassStateChanged(CssConstants.COLUMN,true);
+        ingredientsL.pseudoClassStateChanged(CssConstants.COLUMN,true);
+        dietaryInfoL.pseudoClassStateChanged(CssConstants.COLUMN,true);
 
         pane.add(titleL,0,0,6,1);
         pane.add(productL, 0, 1);
@@ -250,10 +248,6 @@ public class Modify extends DataObserver{
         pane.add(dietaryInfoL, 3,1);
 
         return pane;
-    }
-
-    private void setStyle(Label label, String family, int size){
-        label.setFont(Font.font(family, FontWeight.BOLD, size));
     }
 
     // TODO: check if we could use same frames to add and modify products

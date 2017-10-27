@@ -3,6 +3,14 @@
  -fx-border-width: 1 0 0 0;
  -fx-border-color: #A9A9A9;
 }
+.scroll-pane{
+ -fx-padding:0px;
+ -fx-background-insets:0px;
+}
+.scroll-pane:focused{
+ -fx-padding:0px:
+ -fx-background-insets:0px;
+}
 .button{
  -fx-color:#ffffff;
  -fx-padding:4px,0px,4px,0px;
@@ -10,4 +18,19 @@
  -fx-wrap-text:true;
  -fx-text-alignment:center;
  -fx-background-color:#efeded;
+}
+.label{
+ -fx-font-family:Veranda;
+}
+.label:title{
+ -fx-font-weight:bold;
+ -fx-font-size:20px;
+}
+.label:subtitle{
+ -fx-font-weight:bold;
+ -fx-font-size:18px;
+}
+.label:column{
+ -fx-font-weight:bold;
+ -fx-font-size:13px;
 }
