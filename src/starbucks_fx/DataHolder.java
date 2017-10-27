@@ -15,7 +15,6 @@ public class DataHolder extends Observable {
     private String ingredients;
     private String optional;
     private boolean hot;
-    private boolean ok;
 
     public void attach(DataObserver observer){
         observers.add(observer);
@@ -27,7 +26,6 @@ public class DataHolder extends Observable {
         }
     }
 
-
     public void initVars(){
         name = "";
         price = 0;
@@ -35,7 +33,7 @@ public class DataHolder extends Observable {
         ingredients = "";
         optional = "";
         hot = false;
-        ok = false;
+        notifyAllObservers();
     }
 
     public void setName(String name) {
@@ -74,11 +72,6 @@ public class DataHolder extends Observable {
         notifyAllObservers();
     }
 
-    public void setOk(boolean ok) {
-        this.ok = ok;
-        notifyAllObservers();
-    }
-
     public String getName() {
         return name;
     }
@@ -103,7 +96,4 @@ public class DataHolder extends Observable {
         return hot;
     }
 
-    public boolean isOk() {
-        return ok;
-    }
 }

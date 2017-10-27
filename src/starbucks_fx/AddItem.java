@@ -162,6 +162,7 @@ public class AddItem extends DataObserver{
         form.add(addItem,1,3);
 
         heat = null;
+        optional = null;
     }
 
     /**
@@ -201,6 +202,8 @@ public class AddItem extends DataObserver{
         form.add(addItem,1,2);
 
         heat = null;
+        ingredients = null;
+        optional = null;
     }
 
     private void setChooseText(String item){
@@ -221,6 +224,7 @@ public class AddItem extends DataObserver{
             }
         });
     }
+
     private void initPrice(){
         priceL = new Label("price:");
         price = new TextField();
@@ -231,6 +235,7 @@ public class AddItem extends DataObserver{
             p.enterPrice(dh);
         });
     }
+
     private void initIngredients(){
         ingredientsL = new Label("ingredients:");
         ingredients = new TextField();
@@ -245,6 +250,7 @@ public class AddItem extends DataObserver{
             }
         });
     }
+
     private void initOptional(){
         optionalL = new Label("dietary info:");
         optional = new TextField();
@@ -259,6 +265,7 @@ public class AddItem extends DataObserver{
             }
         });
     }
+
     private void initHeath(){
         optionalL = new Label("heat:");
         optional = new TextField();
@@ -313,12 +320,21 @@ public class AddItem extends DataObserver{
                 }
             }
         }
+        if(ingredients == null){
+            dh.setIngredients(null);
+        }
+        if(optional == null){
+            dh.setOptional(null);
+        }
         if(heat != null){
             if(dh.isHot()){
                 dh.setOptional("true");
             }else{
                 dh.setOptional("false");
             }
+        }
+        if(ok){
+            mes = null;
         }
         // send values to Factory if the input is ok
         if (ok) {
@@ -331,7 +347,6 @@ public class AddItem extends DataObserver{
                 ErrorMsg.addErrorMsg(primaryStage,"An file error occurred.");
             }
             dh.initVars();
-            mes = null;
         } else {
             if(mes != null){
                 ErrorMsg.addErrorMsg(primaryStage, mes);
@@ -390,8 +405,12 @@ public class AddItem extends DataObserver{
 
     @Override
     public void update() {
-        name.setText(dh.getName());
-        price.setText(dh.getPriceString());
+        if(name != null){
+            name.setText(dh.getName());
+        }
+        if(price != null){
+            price.setText(dh.getPriceString());
+        }
         if(ingredients != null){
             ingredients.setText(dh.getIngredients());
         }
