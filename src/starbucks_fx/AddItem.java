@@ -12,7 +12,11 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import starbucks.File;
+import starbucks.Menu;
 import starbucks.MenuItemFactory;
+
+import java.io.IOException;
 
 /**
  * GUI: add an item to the menu
@@ -117,7 +121,6 @@ public class AddItem extends DataObserver{
             form.setPadding(new Insets(10, 10, 10, 10));
             form.getColumnConstraints().add(new ColumnConstraints(80));
 
-            // TODO: Label entfernen, durch Dialog ersetzen
             // fill standard attributes
             initName();
             initPrice();
@@ -157,6 +160,8 @@ public class AddItem extends DataObserver{
         form.add(ingredientsL,0,2);
         form.add(ingredients,1,2);
         form.add(addItem,1,3);
+
+        heat = null;
     }
 
     /**
@@ -172,6 +177,8 @@ public class AddItem extends DataObserver{
         form.add(optionalL,0,3);
         form.add(optional,1,3);
         form.add(addItem,1,4);
+
+        heat = null;
     }
 
     /**
@@ -192,6 +199,8 @@ public class AddItem extends DataObserver{
     private void getExtraAttributes(){
         setChooseText("extra");
         form.add(addItem,1,2);
+
+        heat = null;
     }
 
     private void setChooseText(String item){
@@ -304,14 +313,29 @@ public class AddItem extends DataObserver{
                 }
             }
         }
+        if(heat != null){
+            if(dh.isHot()){
+                dh.setOptional("true");
+            }else{
+                dh.setOptional("false");
+            }
+        }
         // send values to Factory if the input is ok
-        if (ok && dh.isOk()) {
+        if (ok) {
             MenuItemFactory factory = MenuItemFactory.getInstance();
-            factory.create(dh.getName(), dh.getPrice(), dh.getIngredients(), dh.getOptional());
+            Menu.items.add(factory.create(dh.getName(), dh.getPrice(), dh.getIngredients(), dh.getOptional()));
+            File file = File.getInstance();
+            try {
+                file.save(Menu.toStringArray());
+            } catch (IOException e) {
+                ErrorMsg.addErrorMsg(primaryStage,"An file error occurred.");
+            }
             dh.initVars();
+            mes = null;
         } else {
-
-            ErrorMsg.addErrorMsg(primaryStage, mes);
+            if(mes != null){
+                ErrorMsg.addErrorMsg(primaryStage, mes);
+            }
         }
     }
 
@@ -338,6 +362,7 @@ public class AddItem extends DataObserver{
             mes += "Please enter a valid price. (Format: 9.99)";
             ok = false;
         }
+
         // send values to Factory if the input is ok
         if (ok) {
             if (ingredients != null) {
@@ -350,6 +375,12 @@ public class AddItem extends DataObserver{
             } else {
                 opt = null;
             }
+            if(heat != null){
+
+            }
+        /**
+         * category: 0 = coffee, 1 = food, 2 = beverage, 3 = extra
+         */
             MenuItemFactory factory = MenuItemFactory.getInstance();
             factory.create(nam, pri, ing, opt);
         } else {

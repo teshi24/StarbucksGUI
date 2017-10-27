@@ -8,7 +8,7 @@
  -fx-background-insets:0px;
 }
 .scroll-pane:focused{
- -fx-padding:0px:
+ -fx-padding:0px;
  -fx-background-insets:0px;
 }
 .button{

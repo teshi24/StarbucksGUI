@@ -17,7 +17,6 @@ public class DataHolder extends Observable {
     private boolean hot;
     private boolean ok;
 
-
     public void attach(DataObserver observer){
         observers.add(observer);
     }

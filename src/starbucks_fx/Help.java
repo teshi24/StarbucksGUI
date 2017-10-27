@@ -1,7 +1,3 @@
-/**
- * TODO Nadja: gewünschter Text einfüllen
- */
-
 package starbucks_fx;
 
 import javafx.geometry.Insets;

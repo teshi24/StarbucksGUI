@@ -42,7 +42,7 @@ public class Menu {
         }
     }
 
-    public ArrayList<String> toStringArray() {
+    public static ArrayList<String> toStringArray() {
         ArrayList<String> file = new ArrayList<>();
         for (Category item : items) {
             file.add(item.toString());

@@ -1,5 +1,6 @@
 food¦1.5¦Ingr¦Diet
 food2¦1.7¦Ingr¦Diet
-beverage¦2.3¦null¦true
+beverage¦2.3¦¦true
 extra¦2.0
 coffee¦1.4¦ingr
+this has to be tested¦1.0¦¦false
