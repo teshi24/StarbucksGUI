@@ -357,6 +357,8 @@ public class AddItem extends DataObserver{
             try {
                 file.save(Menu.toStringArray());
                 //TODO: Message alà 'add hat geklappt'
+                String toastMsg = "Add was successful.";
+                Toast.makeText(primaryStage, toastMsg);
             } catch (IOException e) {
                 ErrorMsg.addErrorMsg(primaryStage,"An file error occurred.");
             }

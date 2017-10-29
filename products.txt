@@ -3,3 +3,5 @@ beverage¦2.3¦¦true
 extra¦2.0
 coffee¦1.4¦Ingr
 del¦7.0¦del¦del
+test¦1.0¦testing¦diet
+test2¦4.0¦test¦test
