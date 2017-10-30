@@ -15,5 +15,5 @@ public interface Category {
 
     public void setName(String name);
 
-    public void setPrice(int price);
+    public void setPrice(double price);
 }

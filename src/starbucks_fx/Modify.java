@@ -1,7 +1,5 @@
 package starbucks_fx;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -13,17 +11,14 @@ import starbucks.Menu;
 
 import java.io.IOException;
 
-public class Modify extends DataObserver{
+public class Modify {
 
-    ScrollPane sp;
-    VBox box;
+    private ScrollPane sp;
+    private VBox box;
 
-    GridPane pane;
-    GridPane cPane;
-    GridPane bPane;
-    GridPane ePane;
-    GridPane fPane;
+    private GridPane pane, cPane, bPane, ePane, fPane;
     Menu menu      = Menu.getInstance();
+    DataHolder dh;
 
     int cIndex = 3;
     int bIndex = 3;
@@ -31,20 +26,15 @@ public class Modify extends DataObserver{
     int fIndex = 3;
 
     private Label titleL, nameL, productL, priceL, ingredientsL, optionalL, errorL;
-    private TextField name, price, ingredients, optional;
-    private HBox heatContainer;
-    private ToggleGroup heat;
-    private RadioButton hot;
-    private RadioButton cold;
 
-    Button edit, delete;
 
-    Stage primaryStage;
-    BorderPane layout;
+    private Button edit, delete;
+
+    private Stage primaryStage;
+    private BorderPane layout;
 
     public Modify(DataHolder dh, Stage primaryStage, BorderPane layout){
         this.dh = dh;
-        this.dh.attach(this);
 
         this.primaryStage = primaryStage;
         this.layout = layout;
@@ -77,13 +67,13 @@ public class Modify extends DataObserver{
         eIndex = 3;
         fIndex = 3;
 
-        setModify();
+        setList();
 
         sp.setContent(box);
         return sp;
     }
 
-    public void setModify() {
+    public void setList() {
         if (!Menu.items.isEmpty()){
 
             for (Category item : Menu.items) {
@@ -93,7 +83,6 @@ public class Modify extends DataObserver{
                 delete      = new Button("delete");
 
                 delete.setOnAction((ActionEvent e) ->{
-                    //TODO: Natalie: Delete all gridpanes and get them new, so no double entries are generated
                     menu.remove(item);
 
                     File file = File.getInstance();
@@ -106,14 +95,22 @@ public class Modify extends DataObserver{
                     layout.setCenter(getModifyView());
                 });
                 //TODO: write edit
-                /*edit.setOnAction((ActionEvent e) -> {
+                edit.setOnAction((ActionEvent e) -> {
+                    ChangeItem changeItem = new ChangeItem(dh, primaryStage);
+                    changeItem.showEditStage(item);
 
-                 }); */
+                    File file = File.getInstance();
+                    try {
+                        file.save(Menu.toStringArray());
+                        //TODO: Message alà 'delete hat geklappt'
+                    } catch (IOException ex) {
+                        ErrorMsg.addErrorMsg(primaryStage,"A file error occurred.");
+                    }
+                    layout.setCenter(getModifyView());
+                });
 
                 if (item instanceof Coffee) {
                     ingredientsL    = new Label(((Coffee) item).getIngredients());
-
-                    //edit.setOnAction((ActionEvent e) -> menu.edit(item.getName(), item.getPrice(), item.getIngredients()));
 
                     cPane.add(nameL, 0, cIndex);
                     cPane.add(priceL, 1, cIndex);
@@ -131,9 +128,6 @@ public class Modify extends DataObserver{
                     } else {
                         optionalL.setText("Cold");
                     }
-
-                    //edit.setOnAction((ActionEvent e) -> menu.edit(item.getName(), item.getPrice(), item.getIngredients(),));
-
                     bPane.add(nameL, 0, bIndex);
                     bPane.add(priceL, 1, bIndex);
                     bPane.add(ingredientsL, 2, bIndex);
@@ -145,8 +139,6 @@ public class Modify extends DataObserver{
                 }
 
                 if (item instanceof Extra) {
-                    // TODO Natalie: do same for the other categories --> button kann vielleicht in einer eigenen Methode gehandelt werden - nur extras unterstützt bis jetzt
-
                     ePane.add(nameL, 0, eIndex);
                     ePane.add(priceL, 1, eIndex);
                     ePane.add(edit, 4, eIndex);
@@ -272,207 +264,5 @@ public class Modify extends DataObserver{
         pane.add(optionalL, 3,1);
 
         return pane;
-    }
-
-    // TODO: check if we could use same frames to add and modify products
-
-
-    private void initName(){
-        nameL = new Label("name:");
-        name = new TextField();
-        name.setText(dh.getName());
-        name.textProperty().addListener((observable, oldValue, newValue)->{
-            String text = name.getText().toString();
-            if(!text.contains("|") && !text.contains("¦")){
-                dh.setName(text);
-            }else{
-                name.setText(dh.getName());
-                ErrorMsg.addErrorMsg(primaryStage, ErrorMsg.getCharNotAllowed());
-            }
-        });
-    }
-
-    private void initPrice(){
-        priceL = new Label("price:");
-        price = new TextField();
-        price.setText(dh.getPriceString());
-        price.setEditable(false);
-        price.setOnMouseClicked(e -> {
-            Price p = new Price(primaryStage);
-            p.enterPrice(dh);
-        });
-    }
-
-    private void initIngredients(){
-        ingredientsL = new Label("ingredients:");
-        ingredients = new TextField();
-        ingredients.setText(dh.getIngredients());
-        ingredients.textProperty().addListener((observable, oldValue, newValue)->{
-            String text = ingredients.getText().toString();
-            if(!text.contains("|") && !text.contains("¦")){
-                dh.setIngredients(text);
-            }else{
-                ingredients.setText(dh.getIngredients());
-                ErrorMsg.addErrorMsg(primaryStage, ErrorMsg.getCharNotAllowed());
-            }
-        });
-    }
-
-    private void initOptional(){
-        optionalL = new Label("dietary info:");
-        optional = new TextField();
-        optional.setText(dh.getOptional());
-        optional.textProperty().addListener((observable, oldValue, newValue)->{
-            String text = optional.getText().toString();
-            if(!text.contains("|") && !text.contains("¦")){
-                dh.setOptional(text);
-            }else{
-                optional.setText(dh.getOptional());
-                ErrorMsg.addErrorMsg(primaryStage, ErrorMsg.getCharNotAllowed());
-            }
-        });
-    }
-
-    private void initHeath(){
-        optionalL = new Label("heat:");
-        optional = new TextField();
-        heat = new ToggleGroup();
-        hot = new RadioButton("hot");
-        hot.setToggleGroup(heat);
-        cold = new RadioButton("cold");
-        cold.setToggleGroup(heat);
-        if(dh.isHot()){
-            hot.setSelected(true);
-        }else{
-            cold.setSelected(true);
-        }
-        heat.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-            @Override
-            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-                if(cold.isSelected()){
-                    dh.setHot(false);
-                }else{
-                    dh.setHot(true);
-                }
-            }
-        });
-        heatContainer = new HBox(hot,cold);
-        heatContainer.setSpacing(10);
-    }
-/*
-    public void modify(){
-        if(category >= 0 && category < 4) {
-            GridPane form = new GridPane();
-            form.setAlignment(Pos.TOP_LEFT);
-            form.setHgap(10);
-            form.setVgap(5);
-            form.setPadding(new Insets(10, 10, 10, 10));
-            form.getColumnConstraints().add(new ColumnConstraints(80));
-
-            // fill standard attributes
-            initName();
-            initPrice();
-
-            form.add(nameL, 0, 0);
-            form.add(name, 1, 0);
-            form.add(priceL, 0, 1);
-            form.add(price, 1, 1);
-
-            Button editOK = new Button("add item");
-            editOK.setMinSize(50, 40);
-            editOK.setOnAction((ActionEvent e) -> sendValues(category));
-
-            // fill specific attributes
-            switch (category) {
-                case 0: getCoffeeAttributes();
-                    break;
-                case 1: getFoodAttributes();
-                    break;
-                case 2: getBeverageAttributes();
-                    break;
-                case 3: getExtraAttributes();
-                    break;
-                default: return null;
-            }
-            return form;
-        }
-        return null;
-    }
-*/
-    /**
-     * get specific attributes
-     *//*
-    private void getCoffeeAttributes(){
-        setChooseText("coffee");
-        initIngredients();
-        form.add(ingredientsL,0,2);
-        form.add(ingredients,1,2);
-        form.add(addItem,1,3);
-
-        heat = null;
-        optional = null;
-    }
-*/
-    /**
-     * get specific attributes
-     *//*
-    private void getFoodAttributes(){
-        setChooseText("food");
-        initIngredients();
-        initOptional();
-
-        form.add(ingredientsL,0,2);
-        form.add(ingredients,1,2);
-        form.add(optionalL,0,3);
-        form.add(optional,1,3);
-        form.add(addItem,1,4);
-
-        heat = null;
-    }
-*/
-    /**
-     * get specific attributes
-     *//*
-    private void getBeverageAttributes(){
-        setChooseText("beverage");
-        initHeath();
-        initIngredients();
-
-        form.add(ingredientsL,0,2);
-        form.add(ingredients,1,2);
-        form.add(optionalL,0,3);
-        form.add(heatContainer,1,3);
-        form.add(addItem,1,4);
-    }
-*/
-    /**
-     * get specific attributes
-     *//*
-    private void getExtraAttributes(){
-        setChooseText("extra");
-        form.add(addItem,1,2);
-
-        heat = null;
-        ingredients = null;
-        optional = null;
-    }
-*/
-    @Override
-    public void update(){
-        nameL.setText(dh.getName());
-        priceL.setText(dh.getPriceString());
-        if(ingredientsL != null){
-            ingredientsL.setText(dh.getIngredients());
-        }
-        if(optional != null){
-            optional.setText(dh.getOptional());
-        }
-        if(heatContainer != null){
-            if(dh.isHot()){
-                hot.setSelected(true);
-            }else{
-                cold.setSelected(true);
-            }
-        }
     }
 }
