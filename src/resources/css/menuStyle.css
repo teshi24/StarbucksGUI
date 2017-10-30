@@ -53,6 +53,7 @@ thead {
 
 tr {
   padding-bottom: 10px;
+  vertical-align: top;
 }
 
 td {
@@ -88,6 +89,23 @@ tfoot th {
   padding: 10px;
   text-align: center;
   color: #b8c4d2;
+}
+
+.name{
+    width: 80px;
+}
+
+.ingredients{
+    width: 80px;
+}
+
+.optional{
+    width: 80px;
+}
+
+.price{
+    /*width: 100px;*/
+    text-align: right;
 }
 
 .button {
