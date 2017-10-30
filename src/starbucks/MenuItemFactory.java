@@ -5,10 +5,6 @@
  */
 package starbucks;
 
-/**
- *
- * @author natal
- */
 public final class MenuItemFactory {
     
     private static MenuItemFactory factory = new MenuItemFactory();

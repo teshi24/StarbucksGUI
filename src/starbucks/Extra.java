@@ -5,18 +5,11 @@
  */
 package starbucks;
 
-import java.util.Scanner;
-
-/**
- *
- * @author natal
- */
 public class Extra implements Category {
 
     private String name;
     private double price;
-    Scanner userInput = new Scanner(System.in);    
-    
+
     public Extra(String name, double price){
         this.name = name;
         this.price = price;
@@ -37,8 +30,12 @@ public class Extra implements Category {
     public double getPrice() { return price; }
 
     @Override
-    public void edit() {
-
+    public void setName(String name){
+        this.name = name;
     }
-    
+
+    @Override
+    public void setPrice(int price){
+        this.price = price;
+    }
 }

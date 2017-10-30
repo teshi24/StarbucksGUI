@@ -1,19 +1,15 @@
 package starbucks_fx;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import starbucks.*;
+import starbucks.Menu;
 
 import java.io.IOException;
 
@@ -34,9 +30,12 @@ public class Modify extends DataObserver{
     int eIndex = 3;
     int fIndex = 3;
 
-    private Label titleL, nameL, productL, priceL, ingredientsL, tempL, dietaryInfoL, errorL;
+    private Label titleL, nameL, productL, priceL, ingredientsL, optionalL, errorL;
     private TextField name, price, ingredients, optional;
     private HBox heatContainer;
+    private ToggleGroup heat;
+    private RadioButton hot;
+    private RadioButton cold;
 
     Button edit, delete;
 
@@ -66,6 +65,11 @@ public class Modify extends DataObserver{
         titleL = new Label("Modify Starbucks Menu");
         titleL.pseudoClassStateChanged(CssConstants.TITLE,true);
 
+        cIndex = 3;
+        bIndex = 3;
+        eIndex = 3;
+        fIndex = 3;
+
         setModify();
 
         sp.setContent(box);
@@ -74,8 +78,9 @@ public class Modify extends DataObserver{
 
     public void setModify() {
         if (!Menu.items.isEmpty()){
+            box.getChildren().remove(titleL);
             box.getChildren().removeAll(titleL,cPane, bPane, ePane, fPane);
-            box.getChildren().addAll(titleL,cPane, bPane, ePane, fPane);
+
             for (Category item : Menu.items) {
                 nameL       = new Label((item).getName());
                 priceL      = new Label(Double.toString((item).getPrice()));
@@ -83,31 +88,34 @@ public class Modify extends DataObserver{
                 delete      = new Button("delete");
 
                 delete.setOnAction((ActionEvent e) ->{
+                    //TODO: Natalie: Delete all gridpanes and get them new, so no double entries are generated
                     menu.remove(item);
+
                     File file = File.getInstance();
                     try {
                         file.save(Menu.toStringArray());
                         //TODO: Message alà 'delete hat geklappt'
                     } catch (IOException ex) {
-                        ErrorMsg.addErrorMsg(primaryStage,"An file error occurred.");
+                        ErrorMsg.addErrorMsg(primaryStage,"A file error occurred.");
                     }
                     layout.setCenter(getModifyView());
                 });
                 //TODO: write edit
-                //edit.setOnAction((ActionEvent e) -> );
+                /*edit.setOnAction((ActionEvent e) -> {
+
+                 }); */
 
                 if (item instanceof Coffee) {
-                    nameL           = new Label(((Coffee) item).getName());
-                    priceL          = new Label(Double.toString(((Coffee) item).getPrice()));
                     ingredientsL    = new Label(((Coffee) item).getIngredients());
-                    edit            = new Button("edit");
-                    delete          = new Button("delete");
 
-                    delete.setOnAction((ActionEvent e) -> {
-                        menu.remove(item);
-                    });
+                    cPane.getChildren().removeAll(nameL,priceL,ingredientsL,edit,delete);
+                    cPane.getChildren().remove(nameL);
+                    cPane.getChildren().remove(priceL);
+                    cPane.getChildren().remove(ingredientsL);
+                    cPane.getChildren().remove(edit);
+                    cPane.getChildren().remove(delete);
+
                     //edit.setOnAction((ActionEvent e) -> menu.edit(item.getName(), item.getPrice(), item.getIngredients()));
-
 
                     cPane.add(nameL, 0, cIndex);
                     cPane.add(priceL, 1, cIndex);
@@ -118,25 +126,27 @@ public class Modify extends DataObserver{
                     cIndex ++;
                 }
                 if (item instanceof Beverage) {
-                    nameL = new Label(((Beverage) item).getName());
-                    priceL = new Label(Double.toString(((Beverage) item).getPrice()));
                     ingredientsL = new Label(((Beverage) item).getIngredients());
-                    tempL = new Label();
+                    optionalL = new Label();
                     if(((Beverage) item).getHot()){
-                        tempL.setText("Hot");
+                        optionalL.setText("Hot");
                     } else {
-                        tempL.setText("Cold");
+                        optionalL.setText("Cold");
                     }
-                    edit        = new Button("edit");
-                    delete      = new Button("delete");
 
-                    delete.setOnAction((ActionEvent e) -> menu.remove(item));
+                    bPane.getChildren().removeAll(nameL,priceL,ingredientsL,optionalL,edit,delete);
+                    bPane.getChildren().remove(nameL);
+                    bPane.getChildren().remove(priceL);
+                    bPane.getChildren().remove(ingredientsL);
+                    bPane.getChildren().remove(optionalL);
+                    bPane.getChildren().remove(edit);
+                    bPane.getChildren().remove(delete);
                     //edit.setOnAction((ActionEvent e) -> menu.edit(item.getName(), item.getPrice(), item.getIngredients(),));
 
                     bPane.add(nameL, 0, bIndex);
                     bPane.add(priceL, 1, bIndex);
                     bPane.add(ingredientsL, 2, bIndex);
-                    bPane.add(tempL, 3, bIndex);
+                    bPane.add(optionalL, 3, bIndex);
                     bPane.add(edit, 4, bIndex);
                     bPane.add(delete, 5, bIndex);
 
@@ -145,9 +155,12 @@ public class Modify extends DataObserver{
 
                 if (item instanceof Extra) {
                     // TODO Natalie: do same for the other categories --> button kann vielleicht in einer eigenen Methode gehandelt werden - nur extras unterstützt bis jetzt
-                    // TODO: du kannst die buttons und auch den namen und den preis aus den anderen if(item blabla löschen - habe sie aus den ifs rausgenommen
                     // TODO: habe remove leider noch nicht korrekt zum laufen gebracht
                     ePane.getChildren().removeAll(nameL,priceL,edit,delete);
+                    ePane.getChildren().remove(nameL);
+                    ePane.getChildren().remove(priceL);
+                    ePane.getChildren().remove(edit);
+                    ePane.getChildren().remove(delete);
 
                     ePane.add(nameL, 0, eIndex);
                     ePane.add(priceL, 1, eIndex);
@@ -157,27 +170,28 @@ public class Modify extends DataObserver{
                     eIndex ++;
                 }
                 if (item instanceof Food) {
-                    nameL = new Label(((Food) item).getName());
-                    priceL = new Label(Double.toString(((Food) item).getPrice()));
                     ingredientsL = new Label(((Food) item).getIngredients());
-                    dietaryInfoL = new Label(((Food) item).getDietaryInfo());
-                    edit        = new Button("edit");
-                    edit.setOnAction((ActionEvent e) -> {});
-                    delete      = new Button("delete");
+                    optionalL = new Label(((Food) item).getDietaryInfo());
 
-                    delete.setOnAction((ActionEvent e) -> menu.remove(item));
-                    //edit.setOnAction((ActionEvent e) -> );
+                    fPane.getChildren().removeAll(nameL,priceL,ingredientsL,optionalL,edit,delete);
+                    fPane.getChildren().remove(nameL);
+                    fPane.getChildren().remove(priceL);
+                    fPane.getChildren().remove(ingredientsL);
+                    fPane.getChildren().remove(optionalL);
+                    fPane.getChildren().remove(edit);
+                    fPane.getChildren().remove(delete);
 
                     fPane.add(nameL, 0, fIndex);
                     fPane.add(priceL, 1, fIndex);
                     fPane.add(ingredientsL, 2, fIndex);
-                    fPane.add(dietaryInfoL, 3, fIndex);
+                    fPane.add(optionalL, 3, fIndex);
                     fPane.add(edit, 4, fIndex);
                     fPane.add(delete, 5, fIndex);
 
                     fIndex ++;
                 }
             }
+            box.getChildren().addAll(titleL,cPane, bPane, ePane, fPane);
         } else {
             errorL = new Label("Menu is empty. You can add menu-items in the Add-Option.");
             box.getChildren().addAll(titleL, errorL);
@@ -200,6 +214,9 @@ public class Modify extends DataObserver{
         priceL.pseudoClassStateChanged(CssConstants.COLUMN,true);
         ingredientsL.pseudoClassStateChanged(CssConstants.COLUMN,true);
 
+        pane.getChildren().clear();
+        pane.getChildren().removeAll(titleL,productL,priceL,ingredientsL);
+
         pane.add(titleL,0,0,6,1);
         pane.add(productL, 0, 1);
         pane.add(priceL, 1, 1);
@@ -218,19 +235,22 @@ public class Modify extends DataObserver{
         productL = new Label("Product");
         priceL = new Label("Price");
         ingredientsL = new Label("Ingredients");
-        tempL = new Label("Hot/Cold");
+        optionalL = new Label("Hot/Cold");
 
         titleL.pseudoClassStateChanged(CssConstants.SUBTITLE,true);
         productL.pseudoClassStateChanged(CssConstants.COLUMN,true);
         priceL.pseudoClassStateChanged(CssConstants.COLUMN,true);
         ingredientsL.pseudoClassStateChanged(CssConstants.COLUMN,true);
-        tempL.pseudoClassStateChanged(CssConstants.COLUMN,true);
+        optionalL.pseudoClassStateChanged(CssConstants.COLUMN,true);
+
+        pane.getChildren().clear();
+        pane.getChildren().removeAll(titleL,productL,priceL,ingredientsL, optionalL);
 
         pane.add(titleL,0,0,6,1);
         pane.add(productL, 0, 1);
         pane.add(priceL, 1, 1);
         pane.add(ingredientsL, 2, 1);
-        pane.add(tempL, 3,1);
+        pane.add(optionalL, 3,1);
 
         return  pane;
     }
@@ -249,6 +269,7 @@ public class Modify extends DataObserver{
         productL.pseudoClassStateChanged(CssConstants.COLUMN,true);
         priceL.pseudoClassStateChanged(CssConstants.COLUMN,true);
 
+        pane.getChildren().clear();
         //TODO: auch das überall anpassen - das remove muss auf allen panes zuerst gemacht werden um die doppelten einträge zu verhindern so viel ich weiss
         pane.getChildren().removeAll(titleL,productL,priceL);
 
@@ -269,19 +290,22 @@ public class Modify extends DataObserver{
         productL = new Label("Product");
         priceL = new Label("Price");
         ingredientsL = new Label("Ingredients");
-        dietaryInfoL = new Label("Dietary Info");
+        optionalL = new Label("Dietary Info");
 
         titleL.pseudoClassStateChanged(CssConstants.SUBTITLE,true);
         productL.pseudoClassStateChanged(CssConstants.COLUMN,true);
         priceL.pseudoClassStateChanged(CssConstants.COLUMN,true);
         ingredientsL.pseudoClassStateChanged(CssConstants.COLUMN,true);
-        dietaryInfoL.pseudoClassStateChanged(CssConstants.COLUMN,true);
+        optionalL.pseudoClassStateChanged(CssConstants.COLUMN,true);
+
+        pane.getChildren().clear();
+        pane.getChildren().removeAll(titleL,productL,priceL,ingredientsL, optionalL);
 
         pane.add(titleL,0,0,6,1);
         pane.add(productL, 0, 1);
         pane.add(priceL, 1, 1);
         pane.add(ingredientsL, 2, 1);
-        pane.add(dietaryInfoL, 3,1);
+        pane.add(optionalL, 3,1);
 
         return pane;
     }
@@ -289,9 +313,188 @@ public class Modify extends DataObserver{
     // TODO: check if we could use same frames to add and modify products
 
 
+    private void initName(){
+        nameL = new Label("name:");
+        name = new TextField();
+        name.setText(dh.getName());
+        name.textProperty().addListener((observable, oldValue, newValue)->{
+            String text = name.getText().toString();
+            if(!text.contains("|") && !text.contains("¦")){
+                dh.setName(text);
+            }else{
+                name.setText(dh.getName());
+                ErrorMsg.addErrorMsg(primaryStage, ErrorMsg.getCharNotAllowed());
+            }
+        });
+    }
+
+    private void initPrice(){
+        priceL = new Label("price:");
+        price = new TextField();
+        price.setText(dh.getPriceString());
+        price.setEditable(false);
+        price.setOnMouseClicked(e -> {
+            Price p = new Price(primaryStage);
+            p.enterPrice(dh);
+        });
+    }
+
+    private void initIngredients(){
+        ingredientsL = new Label("ingredients:");
+        ingredients = new TextField();
+        ingredients.setText(dh.getIngredients());
+        ingredients.textProperty().addListener((observable, oldValue, newValue)->{
+            String text = ingredients.getText().toString();
+            if(!text.contains("|") && !text.contains("¦")){
+                dh.setIngredients(text);
+            }else{
+                ingredients.setText(dh.getIngredients());
+                ErrorMsg.addErrorMsg(primaryStage, ErrorMsg.getCharNotAllowed());
+            }
+        });
+    }
+
+    private void initOptional(){
+        optionalL = new Label("dietary info:");
+        optional = new TextField();
+        optional.setText(dh.getOptional());
+        optional.textProperty().addListener((observable, oldValue, newValue)->{
+            String text = optional.getText().toString();
+            if(!text.contains("|") && !text.contains("¦")){
+                dh.setOptional(text);
+            }else{
+                optional.setText(dh.getOptional());
+                ErrorMsg.addErrorMsg(primaryStage, ErrorMsg.getCharNotAllowed());
+            }
+        });
+    }
+
+    private void initHeath(){
+        optionalL = new Label("heat:");
+        optional = new TextField();
+        heat = new ToggleGroup();
+        hot = new RadioButton("hot");
+        hot.setToggleGroup(heat);
+        cold = new RadioButton("cold");
+        cold.setToggleGroup(heat);
+        if(dh.isHot()){
+            hot.setSelected(true);
+        }else{
+            cold.setSelected(true);
+        }
+        heat.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+                if(cold.isSelected()){
+                    dh.setHot(false);
+                }else{
+                    dh.setHot(true);
+                }
+            }
+        });
+        heatContainer = new HBox(hot,cold);
+        heatContainer.setSpacing(10);
+    }
+/*
+    public void modify(){
+        if(category >= 0 && category < 4) {
+            GridPane form = new GridPane();
+            form.setAlignment(Pos.TOP_LEFT);
+            form.setHgap(10);
+            form.setVgap(5);
+            form.setPadding(new Insets(10, 10, 10, 10));
+            form.getColumnConstraints().add(new ColumnConstraints(80));
+
+            // fill standard attributes
+            initName();
+            initPrice();
+
+            form.add(nameL, 0, 0);
+            form.add(name, 1, 0);
+            form.add(priceL, 0, 1);
+            form.add(price, 1, 1);
+
+            Button editOK = new Button("add item");
+            editOK.setMinSize(50, 40);
+            editOK.setOnAction((ActionEvent e) -> sendValues(category));
+
+            // fill specific attributes
+            switch (category) {
+                case 0: getCoffeeAttributes();
+                    break;
+                case 1: getFoodAttributes();
+                    break;
+                case 2: getBeverageAttributes();
+                    break;
+                case 3: getExtraAttributes();
+                    break;
+                default: return null;
+            }
+            return form;
+        }
+        return null;
+    }
+*/
+    /**
+     * get specific attributes
+     *//*
+    private void getCoffeeAttributes(){
+        setChooseText("coffee");
+        initIngredients();
+        form.add(ingredientsL,0,2);
+        form.add(ingredients,1,2);
+        form.add(addItem,1,3);
+
+        heat = null;
+        optional = null;
+    }
+*/
+    /**
+     * get specific attributes
+     *//*
+    private void getFoodAttributes(){
+        setChooseText("food");
+        initIngredients();
+        initOptional();
+
+        form.add(ingredientsL,0,2);
+        form.add(ingredients,1,2);
+        form.add(optionalL,0,3);
+        form.add(optional,1,3);
+        form.add(addItem,1,4);
+
+        heat = null;
+    }
+*/
+    /**
+     * get specific attributes
+     *//*
+    private void getBeverageAttributes(){
+        setChooseText("beverage");
+        initHeath();
+        initIngredients();
+
+        form.add(ingredientsL,0,2);
+        form.add(ingredients,1,2);
+        form.add(optionalL,0,3);
+        form.add(heatContainer,1,3);
+        form.add(addItem,1,4);
+    }
+*/
+    /**
+     * get specific attributes
+     *//*
+    private void getExtraAttributes(){
+        setChooseText("extra");
+        form.add(addItem,1,2);
+
+        heat = null;
+        ingredients = null;
+        optional = null;
+    }
+*/
     @Override
     public void update(){
-        /*
         nameL.setText(dh.getName());
         priceL.setText(dh.getPriceString());
         if(ingredientsL != null){
@@ -307,6 +510,5 @@ public class Modify extends DataObserver{
                 cold.setSelected(true);
             }
         }
-        */
     }
 }

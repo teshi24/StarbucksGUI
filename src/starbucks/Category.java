@@ -5,19 +5,15 @@
  */
 package starbucks;
 
-/**
- *
- * @author natal
- */
 public interface Category {
-        
-    public void edit();
-    
+
+    public String toString();
+
     public String getName();
 
     public double getPrice();
-    
-    @Override
-    public String toString();
-    
+
+    public void setName(String name);
+
+    public void setPrice(int price);
 }

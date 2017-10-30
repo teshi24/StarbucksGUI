@@ -5,19 +5,12 @@
  */
 package starbucks;
 
-import java.util.Scanner;
-
-/**
- *
- * @author natal
- */
 public class Coffee implements Category{
     
     private String name;
     private double price;
     private String ingredients;
-    Scanner userInput = new Scanner(System.in);    
-    
+
     public Coffee(String name, double price, String ingredients){
         this.name = name;
         this.price = price;
@@ -41,8 +34,17 @@ public class Coffee implements Category{
     public String getIngredients() { return ingredients; }
 
     @Override
-    public void edit() {
+    public void setName(String name){
+        this.name = name;
+    }
 
+    @Override
+    public void setPrice(int price){
+        this.price = price;
+    }
+
+    public void setIngredients(String ingredients){
+        this.ingredients = ingredients;
     }
 
 
