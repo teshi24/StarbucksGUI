@@ -29,14 +29,17 @@ public final class Toast
         toastStage.initStyle(StageStyle.TRANSPARENT);
 
         Text text = new Text(toastMsg);
-        text.pseudoClassStateChanged(CssConstants.SUBTITLE,true);
         //text.setFont(Font.font("Verdana", 40));
         //text.setFill(Color.RED);
 
         //todo nadja: weniger transparent!
-        StackPane root = new StackPane(text);
-        root.setStyle("-fx-background-radius: 20; -fx-background-color: rgba(0, 0, 0, 0.2); -fx-padding: 50px;");
-        root.setOpacity(0);
+        StackPane root = new StackPane();
+        //root.setStyle("-fx-background-radius: 20; -fx-background-color: rgba(0, 0, 0, 0.2); -fx-padding: 50px;");
+        root.getStylesheets().add("resources/css/style.css");
+        //root.setOpacity(0);
+
+        root.getChildren().add(text);
+        text.pseudoClassStateChanged(CssConstants.SUBTITLE,true);
 
         Scene scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);
