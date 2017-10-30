@@ -49,7 +49,7 @@ public class ChangeItem extends DataObserver{
         Stage editStage = new Stage();
         dh.initVars();
 
-        editStage.getIcons().add(new Image("resources/images/coins.jpg"));
+        editStage.getIcons().add(new Image("resources/images/edit.png"));
         editStage.setTitle("Edit");
 
         editStage.initOwner(ownerStage);
@@ -63,12 +63,15 @@ public class ChangeItem extends DataObserver{
 
     public Scene getEditScene(Category item){
         VBox box = new VBox();
+        box.getStylesheets().add("resources/css/style.css");
         form = new GridPane();
         form.setHgap(10);
         form.setVgap(5);
         form.setPadding(new Insets(10));
         form.getColumnConstraints().add(new ColumnConstraints(80));
         editTitle = new Label("Edit");
+        editTitle.setPadding(new Insets(0,0,0,10));
+        editTitle.pseudoClassStateChanged(CssConstants.COLUMN,true);
 
         // fill standard attributes
         initName(item);
@@ -108,9 +111,9 @@ public class ChangeItem extends DataObserver{
             getFoodAttributes(item);
         }
 
-        box.setPadding(new Insets(10));
+        box.setPadding(new Insets(20,20,20,20));
         box.getChildren().addAll(editTitle, form);
-        return (new Scene(box, 250, 200));
+        return (new Scene(box, 290, 210));
     }
 
     private void setDisplay(String input){

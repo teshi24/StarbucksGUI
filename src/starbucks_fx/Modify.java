@@ -57,11 +57,10 @@ public class Modify {
         sp = new ScrollPane();
         box.setPadding(new Insets(10));
         box.setSpacing(10);
+        box.getStylesheets().add("resources/css/style.css");
 
         cPane = getCoffeePane();
-        cPane.setAlignment(Pos.TOP_LEFT);
         bPane = getBeveragePane();
-        bPane.setAlignment(Pos.TOP_LEFT);
         ePane = getExtraPane();
         fPane = getFoodPane();
 
