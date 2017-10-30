@@ -11,10 +11,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import starbucks.*;
@@ -28,6 +25,8 @@ public class ChangeItem extends DataObserver{
     private Stage editStage;
     private Stage ownerStage;
     private GridPane form;
+    private BorderPane layout;
+    Modify modify;
 
     private Label titleL, nameL, productL, priceL, ingredientsL, optionalL, errorL, editTitle;
     private TextField name, price, ingredients, optional;
@@ -38,10 +37,12 @@ public class ChangeItem extends DataObserver{
     private Button editItem;
 
 
-    public ChangeItem(DataHolder dh, Stage primaryStage){
+    public ChangeItem(DataHolder dh, Stage primaryStage, BorderPane layout, Modify modify){
         this.dh = dh;
         this.dh.attach(this);
         this.ownerStage = primaryStage;
+        this.layout = layout;
+        this.modify = modify;
     }
 
     public void showEditStage(Category item){
@@ -66,7 +67,7 @@ public class ChangeItem extends DataObserver{
         form = new GridPane();
         form.setHgap(10);
         form.setVgap(5);
-        form.setPadding(new Insets(10, 10, 10, 10));
+        form.setPadding(new Insets(10));
         form.getColumnConstraints().add(new ColumnConstraints(80));
         editTitle = new Label("Edit");
 
@@ -80,12 +81,17 @@ public class ChangeItem extends DataObserver{
         form.add(price, 1, 1);
         editItem = new Button("Edit");
         editItem.setOnAction((ActionEvent e) -> {
-
             sendValues(item);
 
-            editStage.close();
-            dh.initVars();
-
+            File file = File.getInstance();
+            try {
+                file.save(Menu.toStringArray());
+                String toastMsg = "Edit was successful.";
+                Toast.makeText(ownerStage, toastMsg);
+            } catch (IOException ex) {
+                ErrorMsg.addErrorMsg(ownerStage,"A file error occurred.");
+            }
+            layout.setCenter(modify.getModifyView());
         });
 
 
@@ -103,8 +109,9 @@ public class ChangeItem extends DataObserver{
             getFoodAttributes(item);
         }
 
+        box.setPadding(new Insets(10));
         box.getChildren().addAll(editTitle, form);
-        return (new Scene(box, 500, 400));
+        return (new Scene(box, 250, 200));
     }
 
     private void setDisplay(String input){
@@ -281,6 +288,8 @@ public class ChangeItem extends DataObserver{
     private void sendValues(Category item){
         boolean ok = true;
         boolean nameOk = true;
+        int id = Menu.items.indexOf(item);
+        Menu.items.remove(id);
         String mes = "Please add the required information to your product: " + System.lineSeparator();
         // check inserted values
         if (dh.getName() == null || dh.getName().equals("")) {
@@ -331,8 +340,7 @@ public class ChangeItem extends DataObserver{
         // send values to Factory if the input is ok
         if (ok) {
             MenuItemFactory factory = MenuItemFactory.getInstance();
-            int id = Menu.items.indexOf(item);
-            Menu.items.remove(id);
+
             Menu.items.add(id, factory.edit(item, dh.getName(), dh.getPrice(), dh.getIngredients(), dh.getOptional()));
             File file = File.getInstance();
             try {
@@ -343,8 +351,10 @@ public class ChangeItem extends DataObserver{
             } catch (IOException e) {
                 ErrorMsg.addErrorMsg(editStage,"An file error occurred.");
             }
+            editStage.close();
             dh.initVars();
         } else {
+            Menu.items.add(id, item);
             ErrorMsg.addErrorMsg(editStage, mes);
         }
     }

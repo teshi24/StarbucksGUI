@@ -102,17 +102,10 @@ public class Modify {
                 });
                 //TODO: write edit
                 edit.setOnAction((ActionEvent e) -> {
-                    ChangeItem changeItem = new ChangeItem(dh, primaryStage);
+                    ChangeItem changeItem = new ChangeItem(dh, primaryStage, layout, this);
                     changeItem.showEditStage(item);
 
-                    File file = File.getInstance();
-                    try {
-                        file.save(Menu.toStringArray());
-                        //TODO: Message alà 'delete hat geklappt'
-                    } catch (IOException ex) {
-                        ErrorMsg.addErrorMsg(primaryStage,"A file error occurred.");
-                    }
-                    layout.setCenter(getModifyView());
+
                 });
 
                 if (item instanceof Coffee) {
