@@ -26,15 +26,6 @@ public class AddItem extends DataObserver{
     private GridPane form;
     private Button addItem;
 
-    private Label nameL, priceL, ingredientsL, optionalL;
-    private TextField name, price, ingredients, optional;
-    private HBox heatContainer;
-    private ToggleGroup heat;
-    private RadioButton hot, cold;
-
-    private Stage primaryStage;
-    private DataHolder dh;
-
     /**
      * @param dh
      * @param primaryStage
@@ -362,29 +353,6 @@ public class AddItem extends DataObserver{
             dh.initVars();
         } else {
             ErrorMsg.addErrorMsg(primaryStage, mes);
-        }
-    }
-
-    @Override
-    public void update() {
-        if(name != null){
-            name.setText(dh.getName());
-        }
-        if(price != null){
-            price.setText(dh.getPriceString());
-        }
-        if(ingredients != null){
-            ingredients.setText(dh.getIngredients());
-        }
-        if(optional != null){
-            optional.setText(dh.getOptional());
-        }
-        if(heatContainer != null){
-            if(dh.isHot()){
-                hot.setSelected(true);
-            }else{
-                cold.setSelected(true);
-            }
         }
     }
 }

@@ -20,18 +20,11 @@ import starbucks.Menu;
 import java.io.IOException;
 
 public class ChangeItem extends DataObserver {
-    private Stage editStage;
-    private Stage ownerStage;
-    private GridPane form;
-    private BorderPane layout;
     private Modify modify;
-
-    private Label nameL, priceL, ingredientsL, optionalL, editTitle;
-    private TextField name, price, ingredients, optional;
-    private HBox heatContainer;
-    private ToggleGroup heat;
-    private RadioButton hot;
-    private RadioButton cold;
+    private Stage editStage;
+    private BorderPane layout;
+    private Label editTitle;
+    private GridPane form;
     private Button editItem;
 
     /**
@@ -43,7 +36,7 @@ public class ChangeItem extends DataObserver {
     public ChangeItem(DataHolder dh, Stage primaryStage, BorderPane layout, Modify modify) {
         this.dh = dh;
         this.dh.attach(this);
-        this.ownerStage = primaryStage;
+        this.primaryStage = primaryStage;
         this.layout = layout;
         this.modify = modify;
     }
@@ -58,7 +51,7 @@ public class ChangeItem extends DataObserver {
         editStage.getIcons().add(new Image("resources/images/edit.png"));
         editStage.setTitle("Edit");
 
-        editStage.initOwner(ownerStage);
+        editStage.initOwner(primaryStage);
         editStage.initModality(Modality.WINDOW_MODAL);
         editStage.setScene(getEditScene(item));
         editStage.setResizable(false);
@@ -98,9 +91,9 @@ public class ChangeItem extends DataObserver {
             try {
                 file.save(Menu.toStringArray());
                 String toastMsg = "Edit was successful.";
-                Toast.makeToast(ownerStage, toastMsg);
+                Toast.makeToast(primaryStage, toastMsg);
             } catch (IOException ex) {
-                ErrorMsg.addErrorMsg(ownerStage, "A file error occurred.");
+                ErrorMsg.addErrorMsg(primaryStage, "A file error occurred.");
             }
             layout.setCenter(modify.getModifyView());
         });
@@ -370,30 +363,6 @@ public class ChangeItem extends DataObserver {
         } else {
             Menu.items.add(id, item);
             ErrorMsg.addErrorMsg(editStage, mes);
-        }
-    }
-
-
-    @Override
-    public void update() {
-        if (name != null) {
-            name.setText(dh.getName());
-        }
-        if (price != null) {
-            price.setText(dh.getPriceString());
-        }
-        if (ingredients != null) {
-            ingredients.setText(dh.getIngredients());
-        }
-        if (optional != null) {
-            optional.setText(dh.getOptional());
-        }
-        if (heatContainer != null) {
-            if (dh.isHot()) {
-                hot.setSelected(true);
-            } else {
-                cold.setSelected(true);
-            }
         }
     }
 }
