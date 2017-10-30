@@ -1,7 +1,3 @@
-/**
- * TODO Natalie: CHF-Label adden
- */
-
 package starbucks_fx;
 
 import javafx.beans.value.ChangeListener;
