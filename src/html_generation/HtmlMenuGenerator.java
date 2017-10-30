@@ -1,24 +1,23 @@
 package html_generation;
 
-
-import javafx.application.Platform;
 import javafx.concurrent.Worker;
 import javafx.scene.web.WebView;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import starbucks.*;
-import starbucks_fx.CssConstants;
 import starbucks_fx.Home;
 
-import javax.swing.event.ChangeListener;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
+/**
+ * This class generates the home page with the client view
+ */
 public class HtmlMenuGenerator {
-    Document doc;
+    private Document doc;
     private ArrayList<Coffee> coffees;
     private ArrayList<Beverage> beverages;
     private ArrayList<Extra> extras;
@@ -87,18 +86,20 @@ public class HtmlMenuGenerator {
     private void getFoodRow(Element foodList, Food food) {
         Element foodToAdd = doc.createElement("tr");
         Element foodName = doc.createElement("td");
-        foodName.setAttribute("class", "name");
         Element foodIngredients = doc.createElement("td");
-        foodIngredients.setAttribute("class", "ingredients");
         Element foodDiet = doc.createElement("td");
-        foodDiet.setAttribute("class", "optional");
         Element foodPrice = doc.createElement("td");
+
+        foodName.setAttribute("class", "name");
+        foodIngredients.setAttribute("class", "ingredients");
+        foodDiet.setAttribute("class", "optional");
         foodPrice.setAttribute("class", "price");
 
         foodName.setTextContent(food.getName());
         foodPrice.setTextContent(setPrice(food.getPrice()) + " CHF");
         foodIngredients.setTextContent(food.getIngredients());
         foodDiet.setTextContent(food.getDietaryInfo());
+
         foodToAdd.appendChild(foodName);
         foodToAdd.appendChild(foodIngredients);
         foodToAdd.appendChild(foodDiet);
@@ -109,16 +110,18 @@ public class HtmlMenuGenerator {
     private void getExtraRow(Element extraList, Extra extra) {
         Element extraToAdd = doc.createElement("tr");
         Element extraName = doc.createElement("td");
-        extraName.setAttribute("class", "name");
         Element extraEmpty1 = doc.createElement("td");
-        extraEmpty1.setAttribute("class", "ingredients");
         Element extraEmpty2 = doc.createElement("td");
-        extraEmpty2.setAttribute("class", "optional");
         Element extraPrice = doc.createElement("td");
+
+        extraName.setAttribute("class", "name");
+        extraEmpty1.setAttribute("class", "ingredients");
+        extraEmpty2.setAttribute("class", "optional");
         extraPrice.setAttribute("class", "price");
 
         extraName.setTextContent(extra.getName());
         extraPrice.setTextContent(setPrice(extra.getPrice()) + " CHF");
+
         extraToAdd.appendChild(extraName);
         extraToAdd.appendChild(extraEmpty1);
         extraToAdd.appendChild(extraEmpty2);
@@ -129,22 +132,24 @@ public class HtmlMenuGenerator {
     private void getBeverageRow(Element beverageList, Beverage beverage) {
         Element beverageToAdd = doc.createElement("tr");
         Element beverageName = doc.createElement("td");
-        beverageName.setAttribute("class", "name");
         Element beverageIngredients = doc.createElement("td");
-        beverageIngredients.setAttribute("class", "ingredients");
         Element beverageTemperature = doc.createElement("td");
-        beverageTemperature.setAttribute("class", "optional");
         Element beveragePrice = doc.createElement("td");
+
+        beverageName.setAttribute("class", "name");
+        beverageIngredients.setAttribute("class", "ingredients");
+        beverageTemperature.setAttribute("class", "optional");
         beveragePrice.setAttribute("class", "price");
 
         beverageName.setTextContent(beverage.getName());
         beveragePrice.setTextContent(setPrice(beverage.getPrice()) + " CHF");
         beverageIngredients.setTextContent(beverage.getIngredients());
-        if (beverage.getHot()){
+        if (beverage.getHot()) {
             beverageTemperature.setTextContent("Hot");
         } else {
             beverageTemperature.setTextContent("Cold");
         }
+
         beverageToAdd.appendChild(beverageName);
         beverageToAdd.appendChild(beverageIngredients);
         beverageToAdd.appendChild(beverageTemperature);
@@ -155,26 +160,24 @@ public class HtmlMenuGenerator {
     private void getCoffeeRow(Element coffeeList, Coffee coffee) {
         Element coffeeToAdd = doc.createElement("tr");
         Element coffeeName = doc.createElement("td");
-        coffeeName.setAttribute("class", "name");
         Element coffeeIngredients = doc.createElement("td");
-        coffeeIngredients.setAttribute("class", "ingredients");
         Element coffeeEmpty = doc.createElement("td");
-        coffeeEmpty.setAttribute("class", "optional");
         Element coffeePrice = doc.createElement("td");
+
+        coffeeName.setAttribute("class", "name");
+        coffeeIngredients.setAttribute("class", "ingredients");
+        coffeeEmpty.setAttribute("class", "optional");
         coffeePrice.setAttribute("class", "price");
 
         coffeeName.setTextContent(coffee.getName());
         coffeePrice.setTextContent(setPrice(coffee.getPrice()) + " CHF");
         coffeeIngredients.setTextContent(coffee.getIngredients());
+
         coffeeToAdd.appendChild(coffeeName);
         coffeeToAdd.appendChild(coffeeIngredients);
         coffeeToAdd.appendChild(coffeeEmpty);
         coffeeToAdd.appendChild(coffeePrice);
         coffeeList.appendChild(coffeeToAdd);
-    }
-
-    public void setDoc(Document doc) {
-        this.doc = doc;
     }
 
     private void initializeItemArrays() {
@@ -184,8 +187,12 @@ public class HtmlMenuGenerator {
         foods = new ArrayList<>();
     }
 
-    private String setPrice(Double price){
+    private String setPrice(Double price) {
         NumberFormat format = new DecimalFormat("#0.00");
         return format.format(price);
+    }
+    
+    public void setDoc(Document doc) {
+        this.doc = doc;
     }
 }
