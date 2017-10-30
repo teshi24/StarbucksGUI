@@ -44,7 +44,7 @@ public class Beverage implements Category {
     }
 
     @Override
-    public void setPrice(int price){
+    public void setPrice(double price){
         this.price = price;
     }
 

@@ -27,6 +27,24 @@ public final class MenuItemFactory {
         }
         return null;
     }
+
+    public Category edit(Category item, String name, Double price, String ingredients, String optional){
+        item.setName(name);
+        item.setPrice(price);
+        if (item instanceof Coffee) {
+            ((Coffee) item).setIngredients(ingredients);
+        }
+        if (item instanceof Beverage) {
+            ((Beverage) item).setIngredients(ingredients);
+            boolean hot = Boolean.parseBoolean(optional);
+            ((Beverage) item).setHot(hot);
+        }
+        if (item instanceof Food) {
+            ((Food) item).setIngredients(ingredients);
+            ((Food) item).setDietaryInfo(optional);
+        }
+        return item;
+    }
     
     public static MenuItemFactory getInstance(){
         return factory;
