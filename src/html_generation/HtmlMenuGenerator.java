@@ -36,7 +36,7 @@ public class HtmlMenuGenerator {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        // add all items to its list
         for (Category item : Menu.items) {
             if (item instanceof Coffee) {
                 coffees.add((Coffee) item);
@@ -54,6 +54,7 @@ public class HtmlMenuGenerator {
         WebView browser = new WebView();
         browser.getEngine().getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
             if (newState == Worker.State.SUCCEEDED) {
+                //initialize and load browser window
                 setDoc(browser.getEngine().getDocument());
 
                 Element coffeeList = doc.getElementById("coffees");
@@ -73,9 +74,9 @@ public class HtmlMenuGenerator {
                 for (Food food : foods) {
                     getFoodRow(foodList, food);
                 }
+
                 String docToLoad = (String) browser.getEngine().executeScript("document.documentElement.outerHTML");
                 Home.browser.getEngine().loadContent(docToLoad);
-
             }
         });
 
@@ -83,6 +84,10 @@ public class HtmlMenuGenerator {
         browser.getEngine().load(url.toString());
     }
 
+    /**
+     * @param foodList
+     * @param food
+     */
     private void getFoodRow(Element foodList, Food food) {
         Element foodToAdd = doc.createElement("tr");
         Element foodName = doc.createElement("td");
@@ -107,6 +112,10 @@ public class HtmlMenuGenerator {
         foodList.appendChild(foodToAdd);
     }
 
+    /**
+     * @param extraList
+     * @param extra
+     */
     private void getExtraRow(Element extraList, Extra extra) {
         Element extraToAdd = doc.createElement("tr");
         Element extraName = doc.createElement("td");
@@ -129,6 +138,10 @@ public class HtmlMenuGenerator {
         extraList.appendChild(extraToAdd);
     }
 
+    /**
+     * @param beverageList
+     * @param beverage
+     */
     private void getBeverageRow(Element beverageList, Beverage beverage) {
         Element beverageToAdd = doc.createElement("tr");
         Element beverageName = doc.createElement("td");
@@ -157,6 +170,10 @@ public class HtmlMenuGenerator {
         beverageList.appendChild(beverageToAdd);
     }
 
+    /**
+     * @param coffeeList
+     * @param coffee
+     */
     private void getCoffeeRow(Element coffeeList, Coffee coffee) {
         Element coffeeToAdd = doc.createElement("tr");
         Element coffeeName = doc.createElement("td");
@@ -187,11 +204,18 @@ public class HtmlMenuGenerator {
         foods = new ArrayList<>();
     }
 
+    /**
+     * @param price
+     * @return
+     */
     private String setPrice(Double price) {
         NumberFormat format = new DecimalFormat("#0.00");
         return format.format(price);
     }
-    
+
+    /**
+     * @param doc
+     */
     public void setDoc(Document doc) {
         this.doc = doc;
     }
