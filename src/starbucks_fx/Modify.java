@@ -29,11 +29,13 @@ public class Modify {
 
     private Label titleL, nameL, productL, priceL, ingredientsL, optionalL, errorL;
 
-
     private Button edit, delete;
 
     private Stage primaryStage;
     private BorderPane layout;
+
+    private Label dummy;
+    private Label dummie;
 
     public Modify(DataHolder dh, Stage primaryStage, BorderPane layout){
         this.dh = dh;
@@ -61,10 +63,10 @@ public class Modify {
         ePane.setPadding(new Insets(10,10,10,0));
         fPane.setPadding(new Insets(10,10,10,0));
 
-        cPane.getColumnConstraints().add(new ColumnConstraints(COLUMN_WIDTH));
-        bPane.getColumnConstraints().add(new ColumnConstraints(COLUMN_WIDTH));
-        ePane.getColumnConstraints().add(new ColumnConstraints(COLUMN_WIDTH));
-        fPane.getColumnConstraints().add(new ColumnConstraints(COLUMN_WIDTH));
+        cPane.getColumnConstraints().add(new ColumnConstraints(80));
+        bPane.getColumnConstraints().add(new ColumnConstraints(80));
+        ePane.getColumnConstraints().add(new ColumnConstraints(80));
+        fPane.getColumnConstraints().add(new ColumnConstraints(80));
 
         titleL = new Label("Modify Starbucks Menu");
         titleL.pseudoClassStateChanged(CssConstants.TITLE,true);
@@ -87,13 +89,15 @@ public class Modify {
                 priceL      = new Label(Double.toString((item).getPrice()));
                 edit        = new Button("edit");
                 delete      = new Button("delete");
+                dummy       = new Label(" ");
+                dummie      = new Label(" ");
 
                 delete.setOnAction((ActionEvent e) ->{
                     menu.remove(item);
                     File file = File.getInstance();
                     try {
                         file.save(Menu.toStringArray());
-                        String toastMsg = "Delete was successful.";
+                        String toastMsg = "Edit was successful.";
                         Toast.makeText(primaryStage, toastMsg);
                     } catch (IOException ex) {
                         ErrorMsg.addErrorMsg(primaryStage,"A file error occurred.");
@@ -114,6 +118,7 @@ public class Modify {
                     cPane.add(nameL, 0, cIndex);
                     cPane.add(priceL, 1, cIndex);
                     cPane.add(ingredientsL, 2, cIndex);
+                    cPane.add(dummy, 3, cIndex);
                     cPane.add(edit, 4, cIndex);
                     cPane.add(delete, 5, cIndex);
 
@@ -140,6 +145,8 @@ public class Modify {
                 if (item instanceof Extra) {
                     ePane.add(nameL, 0, eIndex);
                     ePane.add(priceL, 1, eIndex);
+                    ePane.add(dummy, 2, eIndex);
+                    ePane.add(dummie, 3, eIndex);
                     ePane.add(edit, 4, eIndex);
                     ePane.add(delete, 5, eIndex);
 
