@@ -273,7 +273,7 @@ public class AddItem extends DataObserver{
     }
 
     private void initHeath(){
-        optionalL = new Label("heat:");
+        optionalL = new Label("temperature:");
         optional = new TextField();
         heat = new ToggleGroup();
         hot = new RadioButton("hot");

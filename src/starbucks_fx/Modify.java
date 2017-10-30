@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import starbucks.*;
@@ -32,6 +33,7 @@ public class Modify {
     int fIndex = 3;
 
     private Label titleL, nameL, productL, priceL, ingredientsL, optionalL, errorL;
+    private Text nameT, ingredientsT, optionalT;
 
     private Button edit, delete;
 
@@ -58,7 +60,9 @@ public class Modify {
         box.setSpacing(10);
 
         cPane = getCoffeePane();
+        cPane.setAlignment(Pos.TOP_LEFT);
         bPane = getBeveragePane();
+        bPane.setAlignment(Pos.TOP_LEFT);
         ePane = getExtraPane();
         fPane = getFoodPane();
 
@@ -101,19 +105,22 @@ public class Modify {
     public void setList() {
         if (!Menu.items.isEmpty()){
             for (Category item : Menu.items) {
-                nameL       = new Label(item.getName());
+                nameT       = new Text(item.getName());
+                nameT.setWrappingWidth(80);
+                //nameT.pseudoClassStateChanged(CssConstants.TEXT_STYLE,true);
                 priceL      = new Label(setPrice(item.getPrice()));
                 edit        = new Button("edit");
                 delete      = new Button("delete");
                 dummy       = new Label(" ");
                 dummie      = new Label(" ");
 
+
                 delete.setOnAction((ActionEvent e) ->{
                     menu.remove(item);
                     File file = File.getInstance();
                     try {
                         file.save(Menu.toStringArray());
-                        String toastMsg = "Edit was successful.";
+                        String toastMsg = "Delete was successful.";
                         Toast.makeText(primaryStage, toastMsg);
                     } catch (IOException ex) {
                         ErrorMsg.addErrorMsg(primaryStage,"A file error occurred.");
@@ -127,10 +134,12 @@ public class Modify {
                 });
 
                 if (item instanceof Coffee) {
-                    ingredientsL    = new Label(((Coffee) item).getIngredients());
+                    ingredientsT = new Text(((Coffee) item).getIngredients());
+                    ingredientsT.setWrappingWidth(100);
+                    //ingredientsT.pseudoClassStateChanged(CssConstants.TEXT_STYLE,true);
 
-                    cPane.add(nameL, 0, cIndex);
-                    cPane.add(ingredientsL, 1, cIndex);
+                    cPane.add(nameT, 0, cIndex);
+                    cPane.add(ingredientsT, 1, cIndex);
                     cPane.add(dummy, 2, cIndex);
                     cPane.add(priceL, 3, cIndex);
                     cPane.add(edit, 4, cIndex);
@@ -139,16 +148,22 @@ public class Modify {
                     cIndex ++;
                 }
                 if (item instanceof Beverage) {
-                    ingredientsL = new Label(((Beverage) item).getIngredients());
-                    optionalL = new Label();
+                    ingredientsT = new Text(((Beverage) item).getIngredients());
+                    ingredientsT.setWrappingWidth(100);
+                    //ingredientsT.pseudoClassStateChanged(CssConstants.TEXT_STYLE,true);
+
+                    optionalT = new Text();
+                    optionalT.setWrappingWidth(100);
+                    //optionalT.pseudoClassStateChanged(CssConstants.TEXT_STYLE,true);
+
                     if(((Beverage) item).getHot()){
-                        optionalL.setText("Hot");
+                        optionalT.setText("Hot");
                     } else {
-                        optionalL.setText("Cold");
+                        optionalT.setText("Cold");
                     }
-                    bPane.add(nameL, 0, bIndex);
-                    bPane.add(ingredientsL, 1, bIndex);
-                    bPane.add(optionalL, 2, bIndex);
+                    bPane.add(nameT, 0, bIndex);
+                    bPane.add(ingredientsT, 1, bIndex);
+                    bPane.add(optionalT, 2, bIndex);
                     bPane.add(priceL, 3, bIndex);
                     bPane.add(edit, 4, bIndex);
                     bPane.add(delete, 5, bIndex);
@@ -157,7 +172,7 @@ public class Modify {
                 }
 
                 if (item instanceof Extra) {
-                    ePane.add(nameL, 0, eIndex);
+                    ePane.add(nameT, 0, eIndex);
                     ePane.add(dummy, 1, eIndex);
                     ePane.add(dummie, 2, eIndex);
                     ePane.add(priceL, 3, eIndex);
@@ -167,12 +182,17 @@ public class Modify {
                     eIndex ++;
                 }
                 if (item instanceof Food) {
-                    ingredientsL = new Label(((Food) item).getIngredients());
-                    optionalL = new Label(((Food) item).getDietaryInfo());
+                    ingredientsT = new Text(((Food) item).getIngredients());
+                    ingredientsT.setWrappingWidth(100);
+                    //ingredientsT.pseudoClassStateChanged(CssConstants.TEXT_STYLE,true);
 
-                    fPane.add(nameL, 0, fIndex);
-                    fPane.add(ingredientsL, 1, fIndex);
-                    fPane.add(optionalL, 2, fIndex);
+                    optionalT = new Text(((Food) item).getDietaryInfo());
+                    optionalT.setWrappingWidth(100);
+                    //optionalT.pseudoClassStateChanged(CssConstants.TEXT_STYLE,true);
+
+                    fPane.add(nameT, 0, fIndex);
+                    fPane.add(ingredientsT, 1, fIndex);
+                    fPane.add(optionalT, 2, fIndex);
                     fPane.add(priceL, 3, fIndex);
                     fPane.add(edit, 4, fIndex);
                     fPane.add(delete, 5, fIndex);
@@ -225,7 +245,7 @@ public class Modify {
         productL = new Label("Product");
         priceL = new Label("Price");
         ingredientsL = new Label("Ingredients");
-        optionalL = new Label("Hot/Cold");
+        optionalL = new Label("Temperature");
 
         titleL.pseudoClassStateChanged(CssConstants.SUBTITLE,true);
         productL.pseudoClassStateChanged(CssConstants.COLUMN,true);

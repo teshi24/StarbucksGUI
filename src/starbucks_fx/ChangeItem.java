@@ -49,7 +49,6 @@ public class ChangeItem extends DataObserver{
         Stage editStage = new Stage();
         dh.initVars();
 
-        //TODO: change item
         editStage.getIcons().add(new Image("resources/images/coins.jpg"));
         editStage.setTitle("Edit");
 
@@ -345,7 +344,6 @@ public class ChangeItem extends DataObserver{
             File file = File.getInstance();
             try {
                 file.save(Menu.toStringArray());
-                //TODO: Message alà 'add hat geklappt'
                 String toastMsg = "Edit was successful.";
                 Toast.makeText(editStage, toastMsg);
             } catch (IOException e) {

@@ -41,3 +41,11 @@
  -fx-font-weight:bold;
  -fx-font-size:13px;
 }
+
+/*.text:textStyle{
+    -fx-border-width: 3;
+    -fx-border-color:#A9A9A9;
+    -fx-text-origin: top;
+    -fx-text-alignment: left;
+
+}*/
