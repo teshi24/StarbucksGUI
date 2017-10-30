@@ -190,10 +190,13 @@ public class AddItem extends DataObserver{
      */
     private void getBeverageAttributes(){
         setChooseText("beverage");
+        initIngredients();
         initHeath();
 
-        form.add(optionalL,0,2);
-        form.add(heatContainer,1,2);
+        form.add(ingredientsL,0,2);
+        form.add(ingredients,1,2);
+        form.add(optionalL,0,3);
+        form.add(heatContainer,1,3);
         form.add(addItem,1,3);
     }
 

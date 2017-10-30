@@ -61,10 +61,10 @@ public class Modify {
         ePane.setPadding(new Insets(10,10,10,0));
         fPane.setPadding(new Insets(10,10,10,0));
 
-        cPane.getColumnConstraints().add(new ColumnConstraints(80));
-        bPane.getColumnConstraints().add(new ColumnConstraints(80));
-        ePane.getColumnConstraints().add(new ColumnConstraints(80));
-        fPane.getColumnConstraints().add(new ColumnConstraints(80));
+        cPane.getColumnConstraints().add(new ColumnConstraints(COLUMN_WIDTH));
+        bPane.getColumnConstraints().add(new ColumnConstraints(COLUMN_WIDTH));
+        ePane.getColumnConstraints().add(new ColumnConstraints(COLUMN_WIDTH));
+        fPane.getColumnConstraints().add(new ColumnConstraints(COLUMN_WIDTH));
 
         titleL = new Label("Modify Starbucks Menu");
         titleL.pseudoClassStateChanged(CssConstants.TITLE,true);
