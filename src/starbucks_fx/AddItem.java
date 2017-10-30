@@ -197,7 +197,7 @@ public class AddItem extends DataObserver{
         form.add(ingredients,1,2);
         form.add(optionalL,0,3);
         form.add(heatContainer,1,3);
-        form.add(addItem,1,3);
+        form.add(addItem,1,4);
     }
 
     /**
@@ -324,7 +324,7 @@ public class AddItem extends DataObserver{
                 mes += "price" + System.lineSeparator();
                 ok = false;
             }
-            if (category < 2) {
+            if (category < 3) {
                 if (dh.getIngredients() == null || dh.getIngredients().equals("")) {
                     mes += "ingredients" + System.lineSeparator();
                     ok = false;

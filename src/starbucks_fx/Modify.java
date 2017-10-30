@@ -120,12 +120,10 @@ public class Modify {
                     }
                     layout.setCenter(getModifyView());
                 });
-                //TODO: write edit
+
                 edit.setOnAction((ActionEvent e) -> {
                     ChangeItem changeItem = new ChangeItem(dh, primaryStage, layout, this);
                     changeItem.showEditStage(item);
-
-
                 });
 
                 if (item instanceof Coffee) {
