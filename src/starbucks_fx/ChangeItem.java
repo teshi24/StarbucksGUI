@@ -86,7 +86,7 @@ public class ChangeItem extends DataObserver{
             try {
                 file.save(Menu.toStringArray());
                 String toastMsg = "Edit was successful.";
-                Toast.makeText(ownerStage, toastMsg);
+                Toast.makeToast(ownerStage, toastMsg);
             } catch (IOException ex) {
                 ErrorMsg.addErrorMsg(ownerStage,"A file error occurred.");
             }
@@ -345,7 +345,7 @@ public class ChangeItem extends DataObserver{
             try {
                 file.save(Menu.toStringArray());
                 String toastMsg = "Edit was successful.";
-                Toast.makeText(editStage, toastMsg);
+                Toast.makeToast(editStage, toastMsg);
             } catch (IOException e) {
                 ErrorMsg.addErrorMsg(editStage,"An file error occurred.");
             }

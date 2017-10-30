@@ -7,7 +7,6 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import starbucks.*;
 import starbucks.Menu;
@@ -121,7 +120,7 @@ public class Modify {
                     try {
                         file.save(Menu.toStringArray());
                         String toastMsg = "Delete was successful.";
-                        Toast.makeText(primaryStage, toastMsg);
+                        Toast.makeToast(primaryStage, toastMsg);
                     } catch (IOException ex) {
                         ErrorMsg.addErrorMsg(primaryStage,"A file error occurred.");
                     }
