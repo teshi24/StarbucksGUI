@@ -39,7 +39,6 @@ public final class Toast
         toastStage.setX(ownerStage.getX() + 18);
         toastStage.setY(ownerStage.getY() + ownerStage.getHeight() - 70);
 
-        //todo nadja: weniger transparent!
         StackPane root = new StackPane();
         root.getStylesheets().add("resources/css/style.css");
 

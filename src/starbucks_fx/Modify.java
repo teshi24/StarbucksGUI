@@ -23,6 +23,7 @@ public class Modify extends DataObserver{
     GridPane bPane;
     GridPane ePane;
     GridPane fPane;
+    int COLUMN_WIDTH = 80;
     Menu menu      = Menu.getInstance();
 
     int cIndex = 3;
@@ -68,6 +69,11 @@ public class Modify extends DataObserver{
         bPane.setPadding(new Insets(10,10,10,0));
         ePane.setPadding(new Insets(10,10,10,0));
         fPane.setPadding(new Insets(10,10,10,0));
+
+        cPane.getColumnConstraints().add(new ColumnConstraints(80));
+        bPane.getColumnConstraints().add(new ColumnConstraints(80));
+        ePane.getColumnConstraints().add(new ColumnConstraints(80));
+        fPane.getColumnConstraints().add(new ColumnConstraints(80));
 
         titleL = new Label("Modify Starbucks Menu");
         titleL.pseudoClassStateChanged(CssConstants.TITLE,true);
