@@ -15,14 +15,14 @@ import java.io.IOException;
 
 public class Modify extends DataObserver{
 
-    ScrollPane sp = new ScrollPane();
-    VBox box      = new VBox();
+    ScrollPane sp;
+    VBox box;
 
     GridPane pane;
-    GridPane cPane = getCoffeePane();
-    GridPane bPane = getBeveragePane();
-    GridPane ePane = getExtraPane();
-    GridPane fPane = getFoodPane();
+    GridPane cPane;
+    GridPane bPane;
+    GridPane ePane;
+    GridPane fPane;
     Menu menu      = Menu.getInstance();
 
     int cIndex = 3;
@@ -54,8 +54,15 @@ public class Modify extends DataObserver{
      * @return Scene with view for menu point 'Modify'
      */
     public Node getModifyView() {
+        box = new VBox();
+        sp = new ScrollPane();
         box.setPadding(new Insets(10));
         box.setSpacing(10);
+
+        cPane = getCoffeePane();
+        bPane = getBeveragePane();
+        ePane = getExtraPane();
+        fPane = getFoodPane();
 
         cPane.setPadding(new Insets(10,10,10,0));
         bPane.setPadding(new Insets(10,10,10,0));
@@ -78,8 +85,6 @@ public class Modify extends DataObserver{
 
     public void setModify() {
         if (!Menu.items.isEmpty()){
-            box.getChildren().remove(titleL);
-            box.getChildren().removeAll(titleL,cPane, bPane, ePane, fPane);
 
             for (Category item : Menu.items) {
                 nameL       = new Label((item).getName());
@@ -108,13 +113,6 @@ public class Modify extends DataObserver{
                 if (item instanceof Coffee) {
                     ingredientsL    = new Label(((Coffee) item).getIngredients());
 
-                    cPane.getChildren().removeAll(nameL,priceL,ingredientsL,edit,delete);
-                    cPane.getChildren().remove(nameL);
-                    cPane.getChildren().remove(priceL);
-                    cPane.getChildren().remove(ingredientsL);
-                    cPane.getChildren().remove(edit);
-                    cPane.getChildren().remove(delete);
-
                     //edit.setOnAction((ActionEvent e) -> menu.edit(item.getName(), item.getPrice(), item.getIngredients()));
 
                     cPane.add(nameL, 0, cIndex);
@@ -134,13 +132,6 @@ public class Modify extends DataObserver{
                         optionalL.setText("Cold");
                     }
 
-                    bPane.getChildren().removeAll(nameL,priceL,ingredientsL,optionalL,edit,delete);
-                    bPane.getChildren().remove(nameL);
-                    bPane.getChildren().remove(priceL);
-                    bPane.getChildren().remove(ingredientsL);
-                    bPane.getChildren().remove(optionalL);
-                    bPane.getChildren().remove(edit);
-                    bPane.getChildren().remove(delete);
                     //edit.setOnAction((ActionEvent e) -> menu.edit(item.getName(), item.getPrice(), item.getIngredients(),));
 
                     bPane.add(nameL, 0, bIndex);
@@ -155,12 +146,6 @@ public class Modify extends DataObserver{
 
                 if (item instanceof Extra) {
                     // TODO Natalie: do same for the other categories --> button kann vielleicht in einer eigenen Methode gehandelt werden - nur extras unterstützt bis jetzt
-                    // TODO: habe remove leider noch nicht korrekt zum laufen gebracht
-                    ePane.getChildren().removeAll(nameL,priceL,edit,delete);
-                    ePane.getChildren().remove(nameL);
-                    ePane.getChildren().remove(priceL);
-                    ePane.getChildren().remove(edit);
-                    ePane.getChildren().remove(delete);
 
                     ePane.add(nameL, 0, eIndex);
                     ePane.add(priceL, 1, eIndex);
@@ -172,14 +157,6 @@ public class Modify extends DataObserver{
                 if (item instanceof Food) {
                     ingredientsL = new Label(((Food) item).getIngredients());
                     optionalL = new Label(((Food) item).getDietaryInfo());
-
-                    fPane.getChildren().removeAll(nameL,priceL,ingredientsL,optionalL,edit,delete);
-                    fPane.getChildren().remove(nameL);
-                    fPane.getChildren().remove(priceL);
-                    fPane.getChildren().remove(ingredientsL);
-                    fPane.getChildren().remove(optionalL);
-                    fPane.getChildren().remove(edit);
-                    fPane.getChildren().remove(delete);
 
                     fPane.add(nameL, 0, fIndex);
                     fPane.add(priceL, 1, fIndex);
@@ -214,9 +191,6 @@ public class Modify extends DataObserver{
         priceL.pseudoClassStateChanged(CssConstants.COLUMN,true);
         ingredientsL.pseudoClassStateChanged(CssConstants.COLUMN,true);
 
-        pane.getChildren().clear();
-        pane.getChildren().removeAll(titleL,productL,priceL,ingredientsL);
-
         pane.add(titleL,0,0,6,1);
         pane.add(productL, 0, 1);
         pane.add(priceL, 1, 1);
@@ -243,9 +217,6 @@ public class Modify extends DataObserver{
         ingredientsL.pseudoClassStateChanged(CssConstants.COLUMN,true);
         optionalL.pseudoClassStateChanged(CssConstants.COLUMN,true);
 
-        pane.getChildren().clear();
-        pane.getChildren().removeAll(titleL,productL,priceL,ingredientsL, optionalL);
-
         pane.add(titleL,0,0,6,1);
         pane.add(productL, 0, 1);
         pane.add(priceL, 1, 1);
@@ -268,10 +239,6 @@ public class Modify extends DataObserver{
         titleL.pseudoClassStateChanged(CssConstants.SUBTITLE,true);
         productL.pseudoClassStateChanged(CssConstants.COLUMN,true);
         priceL.pseudoClassStateChanged(CssConstants.COLUMN,true);
-
-        pane.getChildren().clear();
-        //TODO: auch das überall anpassen - das remove muss auf allen panes zuerst gemacht werden um die doppelten einträge zu verhindern so viel ich weiss
-        pane.getChildren().removeAll(titleL,productL,priceL);
 
         pane.add(titleL,0,0,6,1);
         pane.add(productL, 0, 1);
@@ -297,9 +264,6 @@ public class Modify extends DataObserver{
         priceL.pseudoClassStateChanged(CssConstants.COLUMN,true);
         ingredientsL.pseudoClassStateChanged(CssConstants.COLUMN,true);
         optionalL.pseudoClassStateChanged(CssConstants.COLUMN,true);
-
-        pane.getChildren().clear();
-        pane.getChildren().removeAll(titleL,productL,priceL,ingredientsL, optionalL);
 
         pane.add(titleL,0,0,6,1);
         pane.add(productL, 0, 1);
