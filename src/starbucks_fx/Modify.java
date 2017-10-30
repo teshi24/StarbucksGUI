@@ -2,14 +2,18 @@ package starbucks_fx;
 
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import starbucks.*;
 import starbucks.Menu;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 public class Modify {
 
@@ -64,9 +68,21 @@ public class Modify {
         fPane.setPadding(new Insets(10,10,10,0));
 
         cPane.getColumnConstraints().add(new ColumnConstraints(80));
+        cPane.getColumnConstraints().add(new ColumnConstraints(100));
+        cPane.getColumnConstraints().add(new ColumnConstraints(100));
+        cPane.getColumnConstraints().add(new ColumnConstraints(40));
         bPane.getColumnConstraints().add(new ColumnConstraints(80));
+        bPane.getColumnConstraints().add(new ColumnConstraints(100));
+        bPane.getColumnConstraints().add(new ColumnConstraints(100));
+        bPane.getColumnConstraints().add(new ColumnConstraints(40));
         ePane.getColumnConstraints().add(new ColumnConstraints(80));
+        ePane.getColumnConstraints().add(new ColumnConstraints(100));
+        ePane.getColumnConstraints().add(new ColumnConstraints(100));
+        ePane.getColumnConstraints().add(new ColumnConstraints(40));
         fPane.getColumnConstraints().add(new ColumnConstraints(80));
+        fPane.getColumnConstraints().add(new ColumnConstraints(100));
+        fPane.getColumnConstraints().add(new ColumnConstraints(100));
+        fPane.getColumnConstraints().add(new ColumnConstraints(40));
 
         titleL = new Label("Modify Starbucks Menu");
         titleL.pseudoClassStateChanged(CssConstants.TITLE,true);
@@ -85,8 +101,8 @@ public class Modify {
     public void setList() {
         if (!Menu.items.isEmpty()){
             for (Category item : Menu.items) {
-                nameL       = new Label((item).getName());
-                priceL      = new Label(Double.toString((item).getPrice()));
+                nameL       = new Label(item.getName());
+                priceL      = new Label(setPrice(item.getPrice()));
                 edit        = new Button("edit");
                 delete      = new Button("delete");
                 dummy       = new Label(" ");
@@ -116,9 +132,9 @@ public class Modify {
                     ingredientsL    = new Label(((Coffee) item).getIngredients());
 
                     cPane.add(nameL, 0, cIndex);
-                    cPane.add(priceL, 1, cIndex);
-                    cPane.add(ingredientsL, 2, cIndex);
-                    cPane.add(dummy, 3, cIndex);
+                    cPane.add(ingredientsL, 1, cIndex);
+                    cPane.add(dummy, 2, cIndex);
+                    cPane.add(priceL, 3, cIndex);
                     cPane.add(edit, 4, cIndex);
                     cPane.add(delete, 5, cIndex);
 
@@ -133,9 +149,9 @@ public class Modify {
                         optionalL.setText("Cold");
                     }
                     bPane.add(nameL, 0, bIndex);
-                    bPane.add(priceL, 1, bIndex);
-                    bPane.add(ingredientsL, 2, bIndex);
-                    bPane.add(optionalL, 3, bIndex);
+                    bPane.add(ingredientsL, 1, bIndex);
+                    bPane.add(optionalL, 2, bIndex);
+                    bPane.add(priceL, 3, bIndex);
                     bPane.add(edit, 4, bIndex);
                     bPane.add(delete, 5, bIndex);
 
@@ -144,9 +160,9 @@ public class Modify {
 
                 if (item instanceof Extra) {
                     ePane.add(nameL, 0, eIndex);
-                    ePane.add(priceL, 1, eIndex);
-                    ePane.add(dummy, 2, eIndex);
-                    ePane.add(dummie, 3, eIndex);
+                    ePane.add(dummy, 1, eIndex);
+                    ePane.add(dummie, 2, eIndex);
+                    ePane.add(priceL, 3, eIndex);
                     ePane.add(edit, 4, eIndex);
                     ePane.add(delete, 5, eIndex);
 
@@ -157,9 +173,9 @@ public class Modify {
                     optionalL = new Label(((Food) item).getDietaryInfo());
 
                     fPane.add(nameL, 0, fIndex);
-                    fPane.add(priceL, 1, fIndex);
-                    fPane.add(ingredientsL, 2, fIndex);
-                    fPane.add(optionalL, 3, fIndex);
+                    fPane.add(ingredientsL, 1, fIndex);
+                    fPane.add(optionalL, 2, fIndex);
+                    fPane.add(priceL, 3, fIndex);
                     fPane.add(edit, 4, fIndex);
                     fPane.add(delete, 5, fIndex);
 
@@ -173,13 +189,18 @@ public class Modify {
         }
     }
 
+    private String setPrice(Double price){
+        NumberFormat format = new DecimalFormat("#0.00");
+        return format.format(price);
+    }
+
     private GridPane getCoffeePane(){
         pane = new GridPane();
         pane.setPadding(new Insets(10));
         pane.setVgap(10);
         pane.setHgap(10);
 
-        titleL = new Label("Coffee");
+        titleL = new Label("Coffees");
         productL = new Label("Product");
         priceL = new Label("Price");
         ingredientsL = new Label("Ingredients");
@@ -191,9 +212,8 @@ public class Modify {
 
         pane.add(titleL,0,0,6,1);
         pane.add(productL, 0, 1);
-        pane.add(priceL, 1, 1);
-        pane.add(ingredientsL, 2, 1);
-
+        pane.add(ingredientsL, 1, 1);
+        pane.add(priceL, 3, 1);
         return pane;
     }
 
@@ -203,7 +223,7 @@ public class Modify {
         pane.setVgap(10);
         pane.setHgap(10);
 
-        titleL = new Label("Beverage");
+        titleL = new Label("Beverages");
         productL = new Label("Product");
         priceL = new Label("Price");
         ingredientsL = new Label("Ingredients");
@@ -217,9 +237,9 @@ public class Modify {
 
         pane.add(titleL,0,0,6,1);
         pane.add(productL, 0, 1);
-        pane.add(priceL, 1, 1);
-        pane.add(ingredientsL, 2, 1);
-        pane.add(optionalL, 3,1);
+        pane.add(ingredientsL, 1, 1);
+        pane.add(optionalL, 2,1);
+        pane.add(priceL, 3, 1);
 
         return  pane;
     }
@@ -240,7 +260,7 @@ public class Modify {
 
         pane.add(titleL,0,0,6,1);
         pane.add(productL, 0, 1);
-        pane.add(priceL, 1, 1);
+        pane.add(priceL, 3, 1);
 
         return pane;
     }
@@ -265,9 +285,9 @@ public class Modify {
 
         pane.add(titleL,0,0,6,1);
         pane.add(productL, 0, 1);
-        pane.add(priceL, 1, 1);
-        pane.add(ingredientsL, 2, 1);
-        pane.add(optionalL, 3,1);
+        pane.add(ingredientsL, 1, 1);
+        pane.add(optionalL, 2,1);
+        pane.add(priceL, 3, 1);
 
         return pane;
     }
