@@ -25,7 +25,7 @@ import javafx.util.Duration;
 public final class Toast
 {
     public static void makeText(Stage ownerStage, String toastMsg){
-        makeText(ownerStage, toastMsg, 3000);
+        makeText(ownerStage, toastMsg, 2000);
     }
 
     public static void makeText(Stage ownerStage, String toastMsg, int toastDelay) { makeText(ownerStage, toastMsg, toastDelay, 500, 500); }
