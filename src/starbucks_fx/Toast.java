@@ -1,36 +1,43 @@
 package starbucks_fx;
 
-/**
- * sample code from https://stackoverflow.com/questions/26792812/android-toast-equivalent-in-javafx
- * made some changes to fit to our concept
- */
-
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.geometry.Bounds;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.stage.Window;
 import javafx.util.Duration;
 
-public final class Toast
-{
-    public static void makeText(Stage ownerStage, String toastMsg){
-        makeText(ownerStage, toastMsg, 2000);
+/**
+ * short popup messages
+ * sample code from https://stackoverflow.com/questions/26792812/android-toast-equivalent-in-javafx
+ * made some changes to fit to our concept and add comments
+ */
+public final class Toast {
+    /**
+     * set toast text and get a message in the under left corner from the ownerstage for 2 seconds
+     *
+     * @param ownerStage
+     * @param msg
+     */
+    public static void makeToast(Stage ownerStage, String msg) {
+        makeToast(ownerStage, msg, 2000);
     }
 
-    public static void makeText(Stage ownerStage, String toastMsg, int toastDelay) { makeText(ownerStage, toastMsg, toastDelay, 500, 500); }
+    /**
+     * set toast text and get a message in the under left corner from the ownerstage for x seconds
+     *
+     * @param ownerStage
+     * @param msg
+     * @param timeline   seconds how long the toast is shown
+     */
+    public static void makeToast(Stage ownerStage, String msg, int timeline) {
+        int fadeInDelay = 500;
+        int fadeOutDelay = 500;
 
-    public static void makeText(Stage ownerStage, String toastMsg, int toastDelay, int fadeInDelay, int fadeOutDelay) {
         Stage toastStage = new Stage();
         toastStage.initOwner(ownerStage);
         toastStage.setResizable(false);
@@ -42,9 +49,9 @@ public final class Toast
         StackPane root = new StackPane();
         root.getStylesheets().add("resources/css/style.css");
 
-        Button message = new Button(toastMsg);
+        Button message = new Button(msg);
 
-        message.pseudoClassStateChanged(CssConstants.TOAST,true);
+        message.pseudoClassStateChanged(CssConstants.TOAST, true);
         root.getChildren().add(message);
 
         Scene scene = new Scene(root);
@@ -53,17 +60,17 @@ public final class Toast
         toastStage.show();
 
         Timeline fadeInTimeline = new Timeline();
-        KeyFrame fadeInKey1 = new KeyFrame(Duration.millis(fadeInDelay), new KeyValue (toastStage.getScene().getRoot().opacityProperty(), 1));
+        KeyFrame fadeInKey1 = new KeyFrame(Duration.millis(fadeInDelay), new KeyValue(toastStage.getScene().getRoot().opacityProperty(), 1));
         fadeInTimeline.getKeyFrames().add(fadeInKey1);
         fadeInTimeline.setOnFinished((ae) -> {
             new Thread(() -> {
                 try {
-                    Thread.sleep(toastDelay);
+                    Thread.sleep(timeline);
                 } catch (InterruptedException e) {
                     System.out.println("Toast cannot be set sleepy.");
                 }
                 Timeline fadeOutTimeline = new Timeline();
-                KeyFrame fadeOutKey1 = new KeyFrame(Duration.millis(fadeOutDelay), new KeyValue (toastStage.getScene().getRoot().opacityProperty(), 0));
+                KeyFrame fadeOutKey1 = new KeyFrame(Duration.millis(fadeOutDelay), new KeyValue(toastStage.getScene().getRoot().opacityProperty(), 0));
                 fadeOutTimeline.getKeyFrames().add(fadeOutKey1);
                 fadeOutTimeline.setOnFinished((aeb) -> toastStage.close());
                 fadeOutTimeline.play();

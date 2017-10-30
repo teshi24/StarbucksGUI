@@ -11,20 +11,30 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * primary stage & scene controller
+ */
 public class Template extends Application {
     private BorderPane layout = new BorderPane();
+    private Stage primaryStage;
 
+    /**
+     * @param args
+     */
     public static void main(String[] args) {
         launch(args);
     }
-    private Stage primaryStage;
+
+    /**
+     * @param primaryStage
+     */
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         primaryStage.setTitle("Starbucks Manager");
         primaryStage.getIcons().add(new Image("resources/images/icon.png"));
         configureLayoutBorderPane();
-        primaryStage.setScene(new Scene(layout, 500, 400));
+        primaryStage.setScene(new Scene(layout, 510, 400));
 
         Home h = new Home();
         layout.setCenter(h.getHomeView());
@@ -38,6 +48,9 @@ public class Template extends Application {
         layout.setBottom(getFooter());
     }
 
+    /**
+     * @return footer
+     */
     private VBox getFooter() {
         VBox footer = new VBox();
         Label authors = new Label("©NaTaNa");
@@ -47,6 +60,9 @@ public class Template extends Application {
         return footer;
     }
 
+    /**
+     * @return menu bar
+     */
     private MenuBar getMenuBar() {
         MenuBar menu = new MenuBar();
         Menu home = new Menu();
@@ -79,7 +95,7 @@ public class Template extends Application {
 
         Label helpMenuLabel = new Label("Help");
         helpMenuLabel.setOnMouseClicked(event -> {
-            Help h = new Help(primaryStage);
+            new Help(primaryStage);
         });
         help.setGraphic(helpMenuLabel);
 

@@ -9,10 +9,16 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * dialog with help information for the user
+ */
 public class Help {
     private ScrollPane sp = new ScrollPane();
     private Label help, showTitle, addTitle, modifyTitle, deleteTitle, show, add, modify, delete;
 
+    /**
+     * @param ownerStage
+     */
     public Help(Stage ownerStage){
         Stage helpStage = new Stage();
         helpStage.getIcons().add(new Image("resources/images/questionMark.jpg"));

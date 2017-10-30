@@ -11,16 +11,18 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * popup for error messages
+ */
 public class ErrorMsg {
 
-    private void ErrorMsg() {}
-
     /**
-     * generates a popup for errorL messages
+     * generates a popup for error messages
+     *
      * @param ownerStage - stage which is calling the method
-     * @param errorMsg - message which should be shown
+     * @param errorMsg   - message which should be shown
      */
-    public static void addErrorMsg(Stage ownerStage, String errorMsg){
+    public static void addErrorMsg(Stage ownerStage, String errorMsg) {
         Stage errorStage = new Stage();
         errorStage.getIcons().add(new Image("resources/images/error.png"));
         errorStage.setTitle("Error");
@@ -30,18 +32,23 @@ public class ErrorMsg {
         errorStage.setResizable(false);
         errorStage.show();
     }
-    public static String getCharNotAllowed(){
+
+    /**
+     * @return
+     */
+    public static String getCharNotAllowed() {
         return "Entered char is not allowed.";
     }
+
     /**
      * @param errorStage
      * @param errorMsg
      * @return
      */
-    private static VBox setPane(Stage errorStage, String errorMsg){
+    private static VBox setPane(Stage errorStage, String errorMsg) {
         VBox pane = new VBox();
         pane.setAlignment(Pos.CENTER);
-        pane.setPadding(new Insets(10,10,10,10));
+        pane.setPadding(new Insets(10, 10, 10, 10));
         pane.setSpacing(10);
         pane.getStylesheets().add("resources/css/style.css");
 
@@ -50,7 +57,7 @@ public class ErrorMsg {
         ok.setPrefSize(100, 30);
 
         ok.setOnAction((ActionEvent e) -> {
-                errorStage.close();
+            errorStage.close();
         });
 
         pane.getChildren().addAll(msg, ok);

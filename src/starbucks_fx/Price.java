@@ -1,35 +1,33 @@
-/**
- * TODO Natalie: CHF-Label adden
- */
-
 package starbucks_fx;
 
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class Price{
-
-    TextField display;
-    String price;
+/**
+ * dialog to enter a price in a proper way
+ */
+public class Price {
+    private TextField display;
     private Stage priceStage;
     private Stage ownerStage;
 
-    public Price(Stage ownerStage){
+    /**
+     * @param ownerStage
+     */
+    public Price(Stage ownerStage) {
         this.ownerStage = ownerStage;
     }
 
-    public String getPrice() {
-        return price;
-    }
-
+    /**
+     * @param dh
+     */
     public void enterPrice(DataHolder dh) {
         Stage priceStage = new Stage();
         priceStage.getIcons().add(new Image("resources/images/coins.jpg"));
@@ -44,7 +42,11 @@ public class Price{
         priceStage.show();
     }
 
-    private Scene getPriceScene(DataHolder dh){
+    /**
+     * @param dh
+     * @return
+     */
+    private Scene getPriceScene(DataHolder dh) {
         FlowPane pane = new FlowPane();
         pane.setPadding(new Insets(10));
         pane.setHgap(10);
@@ -53,21 +55,20 @@ public class Price{
 
         Button key0, key1, key2, key3, key4, key5, key6, key7, key8, key9;
         Button comma, ok, delete;
-        Label priceLabel;
 
-        key0   = new Button("0");
-        key1   = new Button("1");
-        key2   = new Button("2");
-        key3   = new Button("3");
-        key4   = new Button("4");
-        key5   = new Button("5");
-        key6   = new Button("6");
-        key7   = new Button("7");
-        key8   = new Button("8");
-        key9   = new Button("9");
-        comma  = new Button(".");
-        ok     = new Button("OK");
-        delete = new Button("C");
+        key0    = new Button("0");
+        key1    = new Button("1");
+        key2    = new Button("2");
+        key3    = new Button("3");
+        key4    = new Button("4");
+        key5    = new Button("5");
+        key6    = new Button("6");
+        key7    = new Button("7");
+        key8    = new Button("8");
+        key9    = new Button("9");
+        comma   = new Button(".");
+        ok      = new Button("OK");
+        delete  = new Button("C");
 
         display = new TextField();
         display.setEditable(false);
@@ -85,7 +86,7 @@ public class Price{
         key9.setPrefSize(60, 30);
         comma.setPrefSize(60, 30);
         ok.setPrefSize(200, 30);
-        delete.setPrefSize(60,30);
+        delete.setPrefSize(60, 30);
         display.setPrefSize(200, 30);
 
         key0.setOnAction((ActionEvent e) -> setDisplay(key0.getText()));
@@ -99,14 +100,14 @@ public class Price{
         key8.setOnAction((ActionEvent e) -> setDisplay(key8.getText()));
         key9.setOnAction((ActionEvent e) -> setDisplay(key9.getText()));
         comma.setOnAction((ActionEvent e) -> {
-            try{
+            try {
                 String currentText = display.getText();
-                if(!currentText.equals("")){
+                if (!currentText.equals("")) {
                     Integer.parseInt(currentText);
                 }
                 setDisplay(comma.getText());
-            }catch(Exception ex){
-                ErrorMsg.addErrorMsg(priceStage,"Please enter a price in the format '0' or '0.00'.");
+            } catch (Exception ex) {
+                ErrorMsg.addErrorMsg(priceStage, "Please enter a price in the format '0' or '0.00'.");
             }
         });
 
@@ -129,11 +130,13 @@ public class Price{
                 comma, key0, delete,
                 ok
         );
-
         return new Scene(pane, 210, 240);
     }
 
-    private void setDisplay(String input){
+    /**
+     * @param input
+     */
+    private void setDisplay(String input) {
         display.setText(display.getText() + input);
     }
 }

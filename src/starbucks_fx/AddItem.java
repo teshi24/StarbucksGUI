@@ -1,6 +1,3 @@
-/**
- * TODO Nadja: Handle Button addItem
- */
 package starbucks_fx;
 
 import javafx.beans.value.ChangeListener;
@@ -23,27 +20,25 @@ import java.io.IOException;
  * GUI: add an item to the menu
  */
 public class AddItem extends DataObserver{
-    /** whole view */
     private VBox bigPicture;
-    /** info text to the choice */
     private Label choose;
-    /** buttons to choose the item which wants to be added */
     private FlowPane choice;
-    /** individual form to enter the item attributes */
     private GridPane form;
-    /** form button */
     private Button addItem;
-    /** all possible attribute fields */
+
     private Label nameL, priceL, ingredientsL, optionalL;
     private TextField name, price, ingredients, optional;
     private HBox heatContainer;
     private ToggleGroup heat;
-    private RadioButton hot;
-    private RadioButton cold;
+    private RadioButton hot, cold;
 
     private Stage primaryStage;
     private DataHolder dh;
 
+    /**
+     * @param dh
+     * @param primaryStage
+     */
     public AddItem(DataHolder dh, Stage primaryStage){
         this.dh = dh;
         this.dh.attach(this);
@@ -122,7 +117,7 @@ public class AddItem extends DataObserver{
             form.setHgap(10);
             form.setVgap(5);
             form.setPadding(new Insets(10, 10, 10, 10));
-            form.getColumnConstraints().add(new ColumnConstraints(80));
+            form.getColumnConstraints().add(new ColumnConstraints(100));
 
             // fill standard attributes
             initName();
@@ -360,7 +355,7 @@ public class AddItem extends DataObserver{
             try {
                 file.save(Menu.toStringArray());
                 String toastMsg = "Add was successful.";
-                Toast.makeText(primaryStage, toastMsg);
+                Toast.makeToast(primaryStage, toastMsg);
             } catch (IOException e) {
                 ErrorMsg.addErrorMsg(primaryStage,"An file error occurred.");
             }

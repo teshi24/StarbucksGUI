@@ -4,8 +4,10 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Observable;
-import java.util.Observer;
 
+/**
+ * holds data for one item
+ */
 public class DataHolder extends Observable {
     private ArrayList<DataObserver> observers = new ArrayList<>();
 
@@ -16,17 +18,17 @@ public class DataHolder extends Observable {
     private String optional;
     private boolean hot;
 
-    public void attach(DataObserver observer){
+    public void attach(DataObserver observer) {
         observers.add(observer);
     }
 
-    public void notifyAllObservers(){
-        for(DataObserver observer : observers){
+    public void notifyAllObservers() {
+        for (DataObserver observer : observers) {
             observer.update();
         }
     }
 
-    public void initVars(){
+    public void initVars() {
         name = "";
         price = 0;
         priceString = "";
@@ -43,6 +45,7 @@ public class DataHolder extends Observable {
 
     /**
      * sets priceL and priceString to be ensure that they stores same value
+     *
      * @param price
      */
     public void setPrice(double price) {
@@ -95,5 +98,4 @@ public class DataHolder extends Observable {
     public boolean isHot() {
         return hot;
     }
-
 }
