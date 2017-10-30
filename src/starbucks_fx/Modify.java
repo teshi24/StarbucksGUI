@@ -85,7 +85,6 @@ public class Modify extends DataObserver{
 
     public void setModify() {
         if (!Menu.items.isEmpty()){
-
             for (Category item : Menu.items) {
                 nameL       = new Label((item).getName());
                 priceL      = new Label(Double.toString((item).getPrice()));
@@ -93,13 +92,12 @@ public class Modify extends DataObserver{
                 delete      = new Button("delete");
 
                 delete.setOnAction((ActionEvent e) ->{
-                    //TODO: Natalie: Delete all gridpanes and get them new, so no double entries are generated
                     menu.remove(item);
-
                     File file = File.getInstance();
                     try {
                         file.save(Menu.toStringArray());
-                        //TODO: Message alà 'delete hat geklappt'
+                        String toastMsg = "Delete was successful.";
+                        Toast.makeText(primaryStage, toastMsg);
                     } catch (IOException ex) {
                         ErrorMsg.addErrorMsg(primaryStage,"A file error occurred.");
                     }
