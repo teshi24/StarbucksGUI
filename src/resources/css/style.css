@@ -22,6 +22,10 @@
  -fx-text-alignment:center;
  -fx-background-color:#efeded;
 }
+.button:toast{
+ -fx-color:#000000;
+ -fx-background-color:#00704a;
+}
 .label{
  -fx-font-family:Veranda;
 }

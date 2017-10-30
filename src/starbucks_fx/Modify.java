@@ -75,7 +75,6 @@ public class Modify {
 
     public void setList() {
         if (!Menu.items.isEmpty()){
-
             for (Category item : Menu.items) {
                 nameL       = new Label((item).getName());
                 priceL      = new Label(Double.toString((item).getPrice()));
@@ -84,11 +83,11 @@ public class Modify {
 
                 delete.setOnAction((ActionEvent e) ->{
                     menu.remove(item);
-
                     File file = File.getInstance();
                     try {
                         file.save(Menu.toStringArray());
-                        //TODO: Message alà 'delete hat geklappt'
+                        String toastMsg = "Delete was successful.";
+                        Toast.makeText(primaryStage, toastMsg);
                     } catch (IOException ex) {
                         ErrorMsg.addErrorMsg(primaryStage,"A file error occurred.");
                     }
