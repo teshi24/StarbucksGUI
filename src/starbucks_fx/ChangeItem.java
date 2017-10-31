@@ -74,16 +74,6 @@ public class ChangeItem extends DataObserver {
         sendValues = new Button("Edit");
         sendValues.setOnAction((ActionEvent e) -> {
             sendValues();
-            // save changes in file
-            File file = File.getInstance();
-            try {
-                file.save(Menu.toStringArray());
-                String toastMsg = "Edit was successful.";
-                Toast.makeToast(primaryStage, toastMsg);
-            } catch (IOException ex) {
-                ErrorMsg.addErrorMsg(primaryStage, "A file error occurred.");
-            }
-            layout.setCenter(modify.getModifyView());
         });
 
         // fill standard attributes
@@ -258,6 +248,7 @@ public class ChangeItem extends DataObserver {
             }
             editStage.close();
             dh.initVars();
+            layout.setCenter(modify.getModifyView());
         } else {
             Menu.items.add(id, item);
             ErrorMsg.addErrorMsg(editStage, mes);
