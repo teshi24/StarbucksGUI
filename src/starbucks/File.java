@@ -69,6 +69,11 @@ public class File {
                 }
                 writer1.flush();
             }
+        } else {
+            try (FileWriter writer1 = new FileWriter(file1)) {
+                writer1.write("");
+                writer1.flush();
+            }
         }
     }
     
