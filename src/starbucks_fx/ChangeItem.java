@@ -1,7 +1,5 @@
 package starbucks_fx;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -114,6 +112,26 @@ public class ChangeItem extends DataObserver {
         return box;
     }
 
+    protected void getCoffeeAttributes() {
+        super.getCoffeeAttributes();
+        editTitle.setText("Edit Coffee");
+    }
+
+    protected void getFoodAttributes() {
+        super.getFoodAttributes();
+        editTitle.setText("Edit Food");
+    }
+
+    protected void getBeverageAttributes() {
+        super.getBeverageAttributes();
+        editTitle.setText("Edit Beverage");
+    }
+
+    protected void getExtraAttributes() {
+        super.getExtraAttributes();
+        editTitle.setText("Edit Extra");
+    }
+
     protected void initName() {
         super.initName();
         String itemName = item.getName();
@@ -161,29 +179,6 @@ public class ChangeItem extends DataObserver {
             cold.setSelected(true);
             dh.setHot(false);
         }
-    }
-
-    protected void getCoffeeAttributes() {
-        super.getCoffeeAttributes();
-        editTitle.setText("Edit Coffee");
-    }
-
-    protected void getFoodAttributes() {
-        super.getFoodAttributes();
-        editTitle.setText("Edit Food");
-    }
-
-    protected void getBeverageAttributes() {
-        super.getBeverageAttributes();
-        editTitle.setText("Edit Beverage");
-    }
-
-    /**
-     * get specific attributes
-     */
-    protected void getExtraAttributes() {
-        super.getExtraAttributes();
-        editTitle.setText("Edit Extra");
     }
 
     /**

@@ -7,7 +7,6 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import starbucks.Category;
 import starbucks.File;
 import starbucks.Menu;
 import starbucks.MenuItemFactory;
@@ -174,14 +173,6 @@ public class AddItem extends DataObserver {
 
     private void setChooseText(String item) {
         choose.setText("You are adding some " + item + " to your menu.");
-    }
-
-    protected void initName() {
-        super.initName();
-    }
-
-    protected void initPrice() {
-        super.initPrice();
     }
 
     protected void initIngredients() {
