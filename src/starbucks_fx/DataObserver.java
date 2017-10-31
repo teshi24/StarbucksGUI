@@ -1,9 +1,9 @@
 package starbucks_fx;
 
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
@@ -13,12 +13,134 @@ import javafx.stage.Stage;
 abstract public class DataObserver {
     protected DataHolder dh;
     protected Stage primaryStage;
+    protected GridPane form;
 
     protected Label nameL, priceL, ingredientsL, optionalL;
     protected TextField name, price, ingredients, optional;
     protected HBox heatContainer;
     protected ToggleGroup heat;
     protected RadioButton hot, cold;
+    protected Button sendValues;
+
+    protected void getCoffeeAttributes() {
+        initIngredients();
+        form.add(ingredientsL, 0, 2);
+        form.add(ingredients, 1, 2);
+        form.add(sendValues, 1, 3);
+
+        heat = null;
+        optional = null;
+    }
+
+    protected void getFoodAttributes() {
+        initIngredients();
+        initOptional();
+
+        form.add(ingredientsL, 0, 2);
+        form.add(ingredients, 1, 2);
+        form.add(optionalL, 0, 3);
+        form.add(optional, 1, 3);
+        form.add(sendValues, 1, 4);
+
+        heat = null;
+    }
+
+    protected void getBeverageAttributes() {
+        initIngredients();
+        initHeath();
+
+        form.add(ingredientsL, 0, 2);
+        form.add(ingredients, 1, 2);
+        form.add(optionalL, 0, 3);
+        form.add(heatContainer, 1, 3);
+        form.add(sendValues, 1, 4);
+    }
+
+    protected void getExtraAttributes() {
+        form.add(sendValues, 1, 2);
+
+        heat = null;
+        ingredients = null;
+        optional = null;
+    }
+
+    protected void initName() {
+        nameL = new Label("name:");
+        name = new TextField();
+        name.setText(dh.getName());
+        name.textProperty().addListener((observable, oldValue, newValue) -> {
+            String text = name.getText().toString();
+            if (!text.contains("|") && !text.contains("¦")) {
+                dh.setName(text);
+            } else {
+                name.setText(dh.getName());
+                ErrorMsg.addErrorMsg(primaryStage, ErrorMsg.getCharNotAllowed());
+            }
+        });
+    }
+
+    protected void initPrice() {
+        priceL = new Label("price:");
+        price = new TextField();
+        price.setText(dh.getPriceString());
+        price.setEditable(false);
+        price.setOnMouseClicked(e -> {
+            Price p = new Price(primaryStage);
+            p.enterPrice(dh);
+        });
+    }
+
+    protected void initIngredients() {
+        ingredientsL = new Label("ingredients:");
+        ingredients = new TextField();
+        ingredients.textProperty().addListener((observable, oldValue, newValue) -> {
+            String text = ingredients.getText().toString();
+            if (!text.contains("|") && !text.contains("¦")) {
+                dh.setIngredients(text);
+            } else {
+                ingredients.setText(dh.getIngredients());
+                ErrorMsg.addErrorMsg(primaryStage, ErrorMsg.getCharNotAllowed());
+            }
+        });
+    }
+
+    protected void initOptional() {
+        optionalL = new Label("dietary info:");
+        optional = new TextField();
+        optional.textProperty().addListener((observable, oldValue, newValue) -> {
+            String text = optional.getText().toString();
+            if (!text.contains("|") && !text.contains("¦")) {
+                dh.setOptional(text);
+            } else {
+                optional.setText(dh.getOptional());
+                ErrorMsg.addErrorMsg(primaryStage, ErrorMsg.getCharNotAllowed());
+            }
+        });
+    }
+
+    protected void initHeath() {
+        optionalL = new Label("temperature:");
+        optional = new TextField();
+        heat = new ToggleGroup();
+        hot = new RadioButton("hot");
+        hot.setToggleGroup(heat);
+        cold = new RadioButton("cold");
+        cold.setToggleGroup(heat);
+
+        heat.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+                if (cold.isSelected()) {
+                    dh.setHot(false);
+                } else {
+                    dh.setHot(true);
+                }
+            }
+        });
+
+        heatContainer = new HBox(hot, cold);
+        heatContainer.setSpacing(10);
+    }
 
     public void update() {
         if (name != null) {

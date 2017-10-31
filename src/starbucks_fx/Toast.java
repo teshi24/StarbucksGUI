@@ -12,7 +12,7 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 /**
- * short popup messages
+ * GUI: short popup messages
  * sample code from https://stackoverflow.com/questions/26792812/android-toast-equivalent-in-javafx
  * made some changes to fit to our concept and add comments
  */

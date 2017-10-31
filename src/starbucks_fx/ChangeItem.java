@@ -15,13 +15,16 @@ import starbucks.Menu;
 
 import java.io.IOException;
 
+/**
+ * GUI: edit dialog
+ */
 public class ChangeItem extends DataObserver {
     private Modify modify;
     private Stage editStage;
     private BorderPane layout;
+
+    private Category item;
     private Label editTitle;
-    private GridPane form;
-    private Button editItem;
 
     /**
      * @param dh
@@ -33,6 +36,7 @@ public class ChangeItem extends DataObserver {
         this.dh = dh;
         this.dh.attach(this);
         this.primaryStage = primaryStage;
+
         this.layout = layout;
         this.modify = modify;
     }
@@ -41,48 +45,36 @@ public class ChangeItem extends DataObserver {
      * @param item
      */
     public void showEditStage(Category item) {
-        Stage editStage = new Stage();
-        dh.initVars();
+        this.item = item;
 
+        Stage editStage = new Stage();
         editStage.getIcons().add(new Image("resources/images/edit.png"));
         editStage.setTitle("Edit");
-
         editStage.initOwner(primaryStage);
         editStage.initModality(Modality.WINDOW_MODAL);
-        editStage.setScene(getEditScene(item));
+        editStage.setScene(new Scene(getEditItemView(), 290, 210));
         editStage.setResizable(false);
         this.editStage = editStage;
         editStage.show();
     }
 
     /**
-     * @param item
      * @return
      */
-    private Scene getEditScene(Category item) {
+    private VBox getEditItemView() {
+        dh.initVars();
+
         VBox box = new VBox();
         box.getStylesheets().add("resources/css/style.css");
-        form = new GridPane();
-        form.setHgap(10);
-        form.setVgap(5);
-        form.setPadding(new Insets(10));
-        form.getColumnConstraints().add(new ColumnConstraints(80));
+
         editTitle = new Label("Edit");
         editTitle.setPadding(new Insets(0, 0, 0, 10));
         editTitle.pseudoClassStateChanged(CssConstants.COLUMN, true);
 
-        // fill standard attributes
-        initName(item);
-        initPrice(item);
-
-        form.add(nameL, 0, 0);
-        form.add(name, 1, 0);
-        form.add(priceL, 0, 1);
-        form.add(price, 1, 1);
-        editItem = new Button("Edit");
-        editItem.setOnAction((ActionEvent e) -> {
-            sendValues(item);
-
+        sendValues = new Button("Edit");
+        sendValues.setOnAction((ActionEvent e) -> {
+            sendValues();
+            // save changes in file
             File file = File.getInstance();
             try {
                 file.save(Menu.toStringArray());
@@ -94,63 +86,51 @@ public class ChangeItem extends DataObserver {
             layout.setCenter(modify.getModifyView());
         });
 
+        // fill standard attributes
+        initName();
+        initPrice();
+
+        form = new GridPane();
+        form.setHgap(10);
+        form.setVgap(5);
+        form.setPadding(new Insets(10));
+        form.getColumnConstraints().add(new ColumnConstraints(80));
+
+        form.add(nameL, 0, 0);
+        form.add(name, 1, 0);
+        form.add(priceL, 0, 1);
+        form.add(price, 1, 1);
+
         if (item instanceof Coffee) {
-            getCoffeeAttributes(item);
+            getCoffeeAttributes();
         } else if (item instanceof Beverage) {
-            getBeverageAttributes(item);
+            getBeverageAttributes();
         } else if (item instanceof Extra) {
-            getExtraAttributes(item);
+            getExtraAttributes();
         } else if (item instanceof Food) {
-            getFoodAttributes(item);
+            getFoodAttributes();
         }
 
         box.setPadding(new Insets(20, 20, 20, 20));
         box.getChildren().addAll(editTitle, form);
-        return (new Scene(box, 290, 210));
+        return box;
     }
 
-    /**
-     * @param item
-     */
-    private void initName(Category item) {
-        nameL = new Label("name:");
-        name = new TextField();
+    protected void initName() {
+        super.initName();
         String itemName = item.getName();
         name.setText(itemName);
         dh.setName(itemName);
-        name.textProperty().addListener((observable, oldValue, newValue) -> {
-            String text = name.getText().toString();
-            if (!text.contains("|") && !text.contains("¦")) {
-                dh.setName(text);
-            } else {
-                name.setText(dh.getName());
-                ErrorMsg.addErrorMsg(editStage, ErrorMsg.getCharNotAllowed());
-            }
-        });
     }
 
-    /**
-     * @param item
-     */
-    private void initPrice(Category item) {
-        priceL = new Label("price:");
-        price = new TextField();
+    protected void initPrice() {
+        super.initPrice();
         Double itemPrice = item.getPrice();
         dh.setPrice(itemPrice);
-        price.setText(dh.getPriceString());
-        price.setEditable(false);
-        price.setOnMouseClicked(e -> {
-            Price p = new Price(editStage);
-            p.enterPrice(dh);
-        });
     }
 
-    /**
-     * @param item
-     */
-    private void initIngredients(Category item) {
-        ingredientsL = new Label("ingredients:");
-        ingredients = new TextField();
+    protected void initIngredients() {
+        super.initIngredients();
         String itemIngredients = "";
         if (item instanceof Coffee) {
             Coffee ingrItem = (Coffee) item;
@@ -164,50 +144,18 @@ public class ChangeItem extends DataObserver {
         }
         ingredients.setText(itemIngredients);
         dh.setIngredients(itemIngredients);
-        ingredients.textProperty().addListener((observable, oldValue, newValue) -> {
-            String text = ingredients.getText().toString();
-            if (!text.contains("|") && !text.contains("¦")) {
-                dh.setIngredients(text);
-            } else {
-                ingredients.setText(dh.getIngredients());
-                ErrorMsg.addErrorMsg(editStage, ErrorMsg.getCharNotAllowed());
-            }
-        });
     }
 
-    /**
-     * @param item
-     */
-    private void initOptional(Category item) {
+    protected void initOptional() {
         Food food = (Food) item;
-        optionalL = new Label("dietary info:");
-        optional = new TextField();
         String itemOptional = food.getDietaryInfo();
         optional.setText(itemOptional);
         dh.setOptional(itemOptional);
-        optional.textProperty().addListener((observable, oldValue, newValue) -> {
-            String text = optional.getText().toString();
-            if (!text.contains("|") && !text.contains("¦")) {
-                dh.setOptional(text);
-            } else {
-                optional.setText(dh.getOptional());
-                ErrorMsg.addErrorMsg(editStage, ErrorMsg.getCharNotAllowed());
-            }
-        });
     }
 
-    /**
-     * @param item
-     */
-    private void initHeath(Category item) {
+    protected void initHeath() {
+        super.initHeath();
         Beverage bev = (Beverage) item;
-        optionalL = new Label("heat:");
-        optional = new TextField();
-        heat = new ToggleGroup();
-        hot = new RadioButton("hot");
-        hot.setToggleGroup(heat);
-        cold = new RadioButton("cold");
-        cold.setToggleGroup(heat);
         if (bev.getHot()) {
             hot.setSelected(true);
             dh.setHot(true);
@@ -215,82 +163,35 @@ public class ChangeItem extends DataObserver {
             cold.setSelected(true);
             dh.setHot(false);
         }
-        heat.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-            @Override
-            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-                if (cold.isSelected()) {
-                    dh.setHot(false);
-                } else {
-                    dh.setHot(true);
-                }
-            }
-        });
-        heatContainer = new HBox(hot, cold);
-        heatContainer.setSpacing(10);
     }
 
-    /**
-     * get specific attributes
-     */
-    private void getCoffeeAttributes(Category item) {
+    protected void getCoffeeAttributes() {
+        super.getCoffeeAttributes();
         editTitle.setText("Edit Coffee");
-        initIngredients(item);
-        form.add(ingredientsL, 0, 2);
-        form.add(ingredients, 1, 2);
-        form.add(editItem, 1, 3);
-
-        heat = null;
-        optional = null;
     }
 
-    /**
-     * get specific attributes
-     */
-    private void getFoodAttributes(Category item) {
+    protected void getFoodAttributes() {
+        super.getFoodAttributes();
         editTitle.setText("Edit Food");
-        initIngredients(item);
-        initOptional(item);
-
-        form.add(ingredientsL, 0, 2);
-        form.add(ingredients, 1, 2);
-        form.add(optionalL, 0, 3);
-        form.add(optional, 1, 3);
-        form.add(editItem, 1, 4);
-
-        heat = null;
     }
 
-    /**
-     * get specific attributes
-     */
-    private void getBeverageAttributes(Category item) {
+    protected void getBeverageAttributes() {
+        super.getBeverageAttributes();
         editTitle.setText("Edit Beverage");
-        initHeath(item);
-        initIngredients(item);
-
-        form.add(ingredientsL, 0, 2);
-        form.add(ingredients, 1, 2);
-        form.add(optionalL, 0, 3);
-        form.add(heatContainer, 1, 3);
-        form.add(editItem, 1, 4);
     }
 
     /**
      * get specific attributes
      */
-    private void getExtraAttributes(Category item) {
+    protected void getExtraAttributes() {
+        super.getExtraAttributes();
         editTitle.setText("Edit Extra");
-        form.add(editItem, 1, 2);
-
-        heat = null;
-        ingredients = null;
-        optional = null;
     }
 
     /**
      * check values and send them to MenuItemFactory to finally create the menu items
      */
-    private void sendValues(Category item) {
+    private void sendValues() {
         boolean ok = true;
         boolean nameOk = true;
         int id = Menu.items.indexOf(item);
@@ -346,6 +247,7 @@ public class ChangeItem extends DataObserver {
         if (ok) {
             MenuItemFactory factory = MenuItemFactory.getInstance();
             Menu.items.add(id, factory.edit(item, dh.getName(), dh.getPrice(), dh.getIngredients(), dh.getOptional()));
+            // save changes in file
             File file = File.getInstance();
             try {
                 file.save(Menu.toStringArray());

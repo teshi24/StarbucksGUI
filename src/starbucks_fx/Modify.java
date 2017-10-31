@@ -94,6 +94,7 @@ public class Modify {
 
                 delete.setOnAction((ActionEvent e) -> {
                     menu.remove(item);
+                    // save changes in file
                     File file = File.getInstance();
                     try {
                         file.save(Menu.toStringArray());

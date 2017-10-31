@@ -1,22 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package starbucks;
 
 import java.util.ArrayList;
 
 public class Menu {
 
-    public static ArrayList<Category> items = new ArrayList<>();
     private static final Menu menu = new Menu();
     private MenuItemFactory factory = MenuItemFactory.getInstance();
+    public static ArrayList<Category> items = new ArrayList<>();
 
     private Menu() {
-
     }
 
+    /**
+     * get items from file and set them into the static array list 'items'
+     * @param products
+     */
     public void fillItems(ArrayList<ArrayList<String>> products) {
         items = new ArrayList<>();
         String name;
@@ -36,6 +34,10 @@ public class Menu {
         }
     }
 
+    /**
+     * prepare array list to write the file
+     * @return
+     */
     public static ArrayList<String> toStringArray() {
         ArrayList<String> file = new ArrayList<>();
         for (Category item : items) {
@@ -44,19 +46,17 @@ public class Menu {
         return file;
     }
 
+    /**
+     * @param toDelete
+     */
     public void remove(Category toDelete) {
-        try {
-            items.remove(toDelete);
-        } catch (Exception e) {
-            return;
-            //TODO: add catch Clause
-        }
+        items.remove(toDelete);
     }
 
+    /**
+     * @return
+     */
     public static Menu getInstance() {
-        if (menu == null) {
-            Menu menu = new Menu();
-        }
         return menu;
     }
 }

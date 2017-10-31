@@ -11,7 +11,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
- * dialog to enter a price in a proper way
+ * GUI: dialog to enter a price in a proper way
  */
 public class Price {
     private TextField display;
