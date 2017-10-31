@@ -6,6 +6,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import starbucks.Category;
+import starbucks.Menu;
 
 /**
  * abstract observer for DataHolder
@@ -140,6 +142,71 @@ abstract public class DataObserver {
 
         heatContainer = new HBox(hot, cold);
         heatContainer.setSpacing(10);
+    }
+
+    /**
+     * call this.sendValues(category, mes) in implementation
+     * @param category
+     */
+    abstract protected void sendValues(int category);
+
+    /**
+     * check values and send them to MenuItemFactory to finally create the menu items
+     */
+    protected String sendValues(int category, String mes){
+        boolean ok = true;
+        boolean nameOk = true;
+        mes = "Please add the required information to your product: " + System.lineSeparator();
+        // check inserted values
+        if (dh.getName() == null || dh.getName().equals("")) {
+            mes += "name" + System.lineSeparator();
+            ok = false;
+        } else {
+            for (Category c : Menu.items) {
+                if (c.getName().equals(dh.getName())) {
+                    mes = "This name does already exist. Please enter another.";
+                    ok = false;
+                    nameOk = false;
+                }
+            }
+        }
+        if (nameOk) {
+            if (dh.getPriceString() == null || dh.getPrice() == 0) {
+                mes += "price" + System.lineSeparator();
+                ok = false;
+            }
+            if (category < 3) {
+                if (dh.getIngredients() == null || dh.getIngredients().equals("")) {
+                    mes += "ingredients" + System.lineSeparator();
+                    ok = false;
+                }
+                if (category == 1) {
+                    if (dh.getOptional() == null || dh.getIngredients().equals("")) {
+                        mes += "dietary info";
+                        ok = false;
+                    }
+                }
+            }
+            if (ok) {
+                if (ingredients == null) {
+                    dh.setIngredients(null);
+                }
+                if (optional == null) {
+                    dh.setOptional(null);
+                }
+                if (heat != null) {
+                    if (dh.isHot()) {
+                        dh.setOptional("true");
+                    } else {
+                        dh.setOptional("false");
+                    }
+                }
+            }
+        }
+        if(ok){
+            return null;
+        }
+        return mes;
     }
 
     public void update() {

@@ -206,58 +206,10 @@ public class AddItem extends DataObserver {
     /**
      * check values and send them to MenuItemFactory to finally create the menu items
      */
-    private void sendValues(int category) {
-        boolean ok = true;
-        boolean nameOk = true;
-        String mes = "Please add the required information to your product: " + System.lineSeparator();
-        // check inserted values
-        if (dh.getName() == null || dh.getName().equals("")) {
-            mes += "name" + System.lineSeparator();
-            ok = false;
-        } else {
-            for (Category c : Menu.items) {
-                if (c.getName().equals((String) dh.getName())) {
-                    mes = "This name does already exist. Please enter another.";
-                    ok = false;
-                    nameOk = false;
-                }
-            }
-        }
-        if (nameOk) {
-            if (dh.getPriceString() == null || dh.getPrice() == 0) {
-                mes += "price" + System.lineSeparator();
-                ok = false;
-            }
-            if (category < 3) {
-                if (dh.getIngredients() == null || dh.getIngredients().equals("")) {
-                    mes += "ingredients" + System.lineSeparator();
-                    ok = false;
-                }
-                if (category == 1) {
-                    if (dh.getOptional() == null || dh.getIngredients().equals("")) {
-                        mes += "dietary info";
-                        ok = false;
-                    }
-                }
-            }
-            if (ok) {
-                if (ingredients == null) {
-                    dh.setIngredients(null);
-                }
-                if (optional == null) {
-                    dh.setOptional(null);
-                }
-                if (heat != null) {
-                    if (dh.isHot()) {
-                        dh.setOptional("true");
-                    } else {
-                        dh.setOptional("false");
-                    }
-                }
-            }
-        }
+    protected void sendValues(int category) {
+        String mes = super.sendValues(category, "");
         // send values to Factory if the input is ok
-        if (ok) {
+        if (null == mes) {
             MenuItemFactory factory = MenuItemFactory.getInstance();
             Menu.items.add(factory.create(dh.getName(), dh.getPrice(), dh.getIngredients(), dh.getOptional()));
             // save changes in file

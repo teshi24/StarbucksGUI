@@ -73,7 +73,15 @@ public class ChangeItem extends DataObserver {
 
         sendValues = new Button("Edit");
         sendValues.setOnAction((ActionEvent e) -> {
-            sendValues();
+            if(item instanceof Coffee){
+                sendValues(0);
+            }else if(item instanceof Food){
+                sendValues(1);
+            }else if(item instanceof Beverage){
+                sendValues(2);
+            }else if(item instanceof Extra){
+                sendValues(3);
+            }
         });
 
         // fill standard attributes
@@ -181,60 +189,12 @@ public class ChangeItem extends DataObserver {
     /**
      * check values and send them to MenuItemFactory to finally create the menu items
      */
-    private void sendValues() {
-        boolean ok = true;
-        boolean nameOk = true;
+    protected void sendValues(int category) {
         int id = Menu.items.indexOf(item);
         Menu.items.remove(id);
-        String mes = "Please add the required information to your product: " + System.lineSeparator();
-        // check inserted values
-        if (dh.getName() == null || dh.getName().equals("")) {
-            mes += "name" + System.lineSeparator();
-            ok = false;
-        } else {
-            for (Category c : Menu.items) {
-                if (c.getName().equals(dh.getName())) {
-                    mes = "This name does already exist. Please enter another.";
-                    ok = false;
-                    nameOk = false;
-                }
-            }
-        }
-        if (nameOk) {
-            if (dh.getPriceString() == null || dh.getPrice() == 0) {
-                mes += "price" + System.lineSeparator();
-                ok = false;
-            }
-            if (item instanceof Coffee || item instanceof Food) {
-                if (dh.getIngredients() == null || dh.getIngredients().equals("")) {
-                    mes += "ingredients" + System.lineSeparator();
-                    ok = false;
-                }
-                if (item instanceof Food) {
-                    if (dh.getOptional() == null || dh.getIngredients().equals("")) {
-                        mes += "dietary info";
-                        ok = false;
-                    }
-                }
-            }
-            if (ok) {
-                if (ingredients == null) {
-                    dh.setIngredients(null);
-                }
-                if (optional == null) {
-                    dh.setOptional(null);
-                }
-                if (heat != null) {
-                    if (dh.isHot()) {
-                        dh.setOptional("true");
-                    } else {
-                        dh.setOptional("false");
-                    }
-                }
-            }
-        }
+        String mes = super.sendValues(category, "");
         // send values to Factory if the input is ok
-        if (ok) {
+        if (null == mes) {
             MenuItemFactory factory = MenuItemFactory.getInstance();
             Menu.items.add(id, factory.edit(item, dh.getName(), dh.getPrice(), dh.getIngredients(), dh.getOptional()));
             // save changes in file
@@ -246,8 +206,8 @@ public class ChangeItem extends DataObserver {
             } catch (IOException e) {
                 ErrorMsg.addErrorMsg(editStage, "An file error occurred.");
             }
-            editStage.close();
             dh.initVars();
+            editStage.close();
             layout.setCenter(modify.getModifyView());
         } else {
             Menu.items.add(id, item);
