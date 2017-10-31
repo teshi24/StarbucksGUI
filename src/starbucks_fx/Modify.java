@@ -25,9 +25,8 @@ public class Modify {
     private Menu menu = Menu.getInstance();
     private DataHolder dh;
 
-    private Label titleL, productL, priceL, ingredientsL, optionalL, errorL;
+    private Label titleL, productL, priceL, ingredientsL, optionalL, errorL, dummy, dummie;
     private Text nameT, ingredientsT, optionalT;
-    private Label dummy, dummie;
     private int cIndex, bIndex, eIndex, fIndex;
     private Button edit, delete;
 
@@ -169,7 +168,19 @@ public class Modify {
                     fIndex++;
                 }
             }
-            box.getChildren().addAll(titleL, cPane, bPane, ePane, fPane);
+            if(cIndex <= 3){
+                cPane.add(new Text("No coffees in menu yet."), 0, cIndex++);
+            }
+            if(bIndex <= 3){
+                bPane.add(new Text("No beverages in menu yet."), 0, bIndex++);
+            }
+            if(eIndex <= 3){
+                ePane.add(new Text("No extras in menu yet."), 0, eIndex++);
+            }
+            if(fIndex <= 3){
+                fPane.add(new Text("No food in menu yet."), 0, fIndex++);
+            }
+            box.getChildren().addAll(titleL, cPane, bPane, ePane,fPane);
         } else {
             errorL = new Label("Menu is empty. You can add menu-items in the Add-Option.");
             box.getChildren().addAll(titleL, errorL);
