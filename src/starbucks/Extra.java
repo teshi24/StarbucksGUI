@@ -10,7 +10,7 @@ public class Extra implements Category {
     private String name;
     private double price;
 
-    public Extra(String name, double price){
+    public Extra(String name, double price) {
         this.name = name;
         this.price = price;
     }
@@ -27,15 +27,17 @@ public class Extra implements Category {
     }
 
     @Override
-    public double getPrice() { return price; }
+    public double getPrice() {
+        return price;
+    }
 
     @Override
-    public void setName(String name){
+    public void setName(String name) {
         this.name = name;
     }
 
     @Override
-    public void setPrice(double price){
+    public void setPrice(double price) {
         this.price = price;
     }
 }

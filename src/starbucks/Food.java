@@ -5,14 +5,14 @@
  */
 package starbucks;
 
-public class Food implements Category{
-    
+public class Food implements Category {
+
     private String name;
     private double price;
     private String ingredients;
     private String dietaryInfo;
 
-    public Food(String name, double price, String ingredients, String dietaryInfo){
+    public Food(String name, double price, String ingredients, String dietaryInfo) {
         this.name = name;
         this.price = price;
         this.ingredients = ingredients;
@@ -31,28 +31,34 @@ public class Food implements Category{
     }
 
     @Override
-    public double getPrice() { return price; }
+    public double getPrice() {
+        return price;
+    }
 
-    public String getIngredients() { return ingredients; }
+    public String getIngredients() {
+        return ingredients;
+    }
 
-    public String getDietaryInfo() { return dietaryInfo; }
+    public String getDietaryInfo() {
+        return dietaryInfo;
+    }
 
     @Override
-    public void setName(String name){
+    public void setName(String name) {
         this.name = name;
     }
 
     @Override
-    public void setPrice(double price){
+    public void setPrice(double price) {
         this.price = price;
     }
 
-    public void setIngredients(String ingredients){
+    public void setIngredients(String ingredients) {
         this.ingredients = ingredients;
     }
 
-    public void setDietaryInfo(String dietaryInfo){
+    public void setDietaryInfo(String dietaryInfo) {
         this.dietaryInfo = dietaryInfo;
     }
-    
+
 }

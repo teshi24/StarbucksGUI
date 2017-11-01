@@ -13,6 +13,7 @@ public class Menu {
 
     /**
      * get items from file and set them into the static array list 'items'
+     *
      * @param products
      */
     public void fillItems(ArrayList<ArrayList<String>> products) {
@@ -36,6 +37,7 @@ public class Menu {
 
     /**
      * prepare array list to write the file
+     *
      * @return
      */
     public static ArrayList<String> toStringArray() {

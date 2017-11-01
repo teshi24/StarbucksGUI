@@ -5,13 +5,13 @@
  */
 package starbucks;
 
-public class Coffee implements Category{
-    
+public class Coffee implements Category {
+
     private String name;
     private double price;
     private String ingredients;
 
-    public Coffee(String name, double price, String ingredients){
+    public Coffee(String name, double price, String ingredients) {
         this.name = name;
         this.price = price;
         this.ingredients = ingredients;
@@ -22,28 +22,32 @@ public class Coffee implements Category{
         String concat = name + "¦" + price + "¦" + ingredients;
         return concat;
     }
-    
+
     @Override
     public String getName() {
         return name;
     }
 
     @Override
-    public double getPrice() { return price; }
+    public double getPrice() {
+        return price;
+    }
 
-    public String getIngredients() { return ingredients; }
+    public String getIngredients() {
+        return ingredients;
+    }
 
     @Override
-    public void setName(String name){
+    public void setName(String name) {
         this.name = name;
     }
 
     @Override
-    public void setPrice(double price){
+    public void setPrice(double price) {
         this.price = price;
     }
 
-    public void setIngredients(String ingredients){
+    public void setIngredients(String ingredients) {
         this.ingredients = ingredients;
     }
 

@@ -13,32 +13,31 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- *
  * @author natal
  */
 public class File {
     private static final File file = new File();
-    Menu menu = Menu.getInstance();
-    
-    private File(){
-        
+    private Menu menu = Menu.getInstance();
+
+    private File() {
+
     }
-    
-    public ArrayList<ArrayList<String>> load() throws IOException{
+
+    public ArrayList<ArrayList<String>> load() throws IOException {
         ArrayList<ArrayList<String>> products = new ArrayList<>();
         java.io.File file1 = new java.io.File("products.txt");
         if (!file1.exists()) {
             System.out.println("-- The file 'products.txt' doesn't exist. A new file 'products.txt' will be created. --");
         } else {
             try (BufferedReader br = new BufferedReader(new FileReader(file1))) {
-                for (String line; (line = br.readLine()) != null;) {
+                for (String line; (line = br.readLine()) != null; ) {
                     String[] splitString;
                     splitString = line.split("¦");
                     String ingredients = null;
                     String optional = null;
 
-                    switch(splitString.length){
-                        case 4: 
+                    switch (splitString.length) {
+                        case 4:
                             optional = splitString[3];
                         case 3:
                             ingredients = splitString[2];
@@ -50,11 +49,12 @@ public class File {
                 menu.fillItems(products);
             }
         }
-        
+
         return products;
     }
-    public void save(ArrayList<String> items) throws IOException{
-        java.io.File file1 = new java.io.File("products.txt");        
+
+    public void save(ArrayList<String> items) throws IOException {
+        java.io.File file1 = new java.io.File("products.txt");
         if (!file1.exists()) {
             file1.createNewFile();
         }
@@ -76,8 +76,8 @@ public class File {
             }
         }
     }
-    
-    public static File getInstance(){
+
+    public static File getInstance() {
         return file;
     }
 }
