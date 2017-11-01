@@ -146,6 +146,7 @@ abstract public class DataObserver {
 
     /**
      * call this.sendValues(category, mes) in implementation
+     *
      * @param category
      */
     abstract protected void sendValues(int category);
@@ -153,7 +154,7 @@ abstract public class DataObserver {
     /**
      * check values and send them to MenuItemFactory to finally create the menu items
      */
-    protected String sendValues(int category, String mes){
+    protected String sendValues(int category, String mes) {
         boolean ok = true;
         boolean nameOk = true;
         mes = "Please add the required information to your product: " + System.lineSeparator();
@@ -203,7 +204,7 @@ abstract public class DataObserver {
                 }
             }
         }
-        if(ok){
+        if (ok) {
             return null;
         }
         return mes;

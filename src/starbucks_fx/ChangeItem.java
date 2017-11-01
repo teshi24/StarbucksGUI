@@ -71,13 +71,13 @@ public class ChangeItem extends DataObserver {
 
         sendValues = new Button("Edit");
         sendValues.setOnAction((ActionEvent e) -> {
-            if(item instanceof Coffee){
+            if (item instanceof Coffee) {
                 sendValues(0);
-            }else if(item instanceof Food){
+            } else if (item instanceof Food) {
                 sendValues(1);
-            }else if(item instanceof Beverage){
+            } else if (item instanceof Beverage) {
                 sendValues(2);
-            }else if(item instanceof Extra){
+            } else if (item instanceof Extra) {
                 sendValues(3);
             }
         });

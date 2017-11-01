@@ -56,19 +56,19 @@ public class Price {
         Button key0, key1, key2, key3, key4, key5, key6, key7, key8, key9;
         Button comma, ok, delete;
 
-        key0    = new Button("0");
-        key1    = new Button("1");
-        key2    = new Button("2");
-        key3    = new Button("3");
-        key4    = new Button("4");
-        key5    = new Button("5");
-        key6    = new Button("6");
-        key7    = new Button("7");
-        key8    = new Button("8");
-        key9    = new Button("9");
-        comma   = new Button(".");
-        ok      = new Button("OK");
-        delete  = new Button("C");
+        key0 = new Button("0");
+        key1 = new Button("1");
+        key2 = new Button("2");
+        key3 = new Button("3");
+        key4 = new Button("4");
+        key5 = new Button("5");
+        key6 = new Button("6");
+        key7 = new Button("7");
+        key8 = new Button("8");
+        key9 = new Button("9");
+        comma = new Button(".");
+        ok = new Button("OK");
+        delete = new Button("C");
 
         display = new TextField();
         display.setEditable(false);
