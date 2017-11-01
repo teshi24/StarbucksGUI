@@ -1,5 +1,8 @@
-food¦1.5¦Ingr¦Diet
-beverage¦2.3¦etw¦true
-extra¦2.0
-coffee¦1.4¦Ingr
-hi¦4.0¦hi¦false
+Espresso¦2.5¦Columbian Coffee
+Muffin¦5.0¦flour, sugar, eggs¦not vegan
+Maple Sirup¦2.0
+Lemonade¦3.5¦lemonade¦false
+Ginger Beer¦4.0¦Beer, Ginger¦false
+Sandwich¦7.5¦jam, cheese¦meet
+Caramel¦3.0
+Cappuccino¦4.5¦Coffee, milk
